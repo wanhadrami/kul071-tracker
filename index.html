@@ -406,6 +406,9 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .srbig{text-align:center;font-size:54px;font-weight:800;margin:14px 0 6px}.srpad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.srpad button{height:50px;border-radius:14px;background:var(--card2);font-weight:800;font-size:16px}
 .srl{max-height:200px;overflow:auto;border-radius:12px;background:var(--card2);padding:6px 10px}.srl div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:12.5px;border-top:1px solid var(--line)}.srl div:first-child{border-top:0}.srl b{white-space:nowrap}
 .srpb .li{display:flex;justify-content:space-between;padding:10px 0;font-size:13.5px}.srpb .li small{display:block;color:var(--mute);font-size:11px}.srpb .li em{font-style:normal;font-weight:800}
+.smp{display:grid;grid-template-columns:44px repeat(3,minmax(0,1fr));gap:6px;align-items:stretch;padding:8px 0;border-top:1px solid var(--line)}.smp>b{font-size:12px;font-weight:800;align-self:center}
+.smp span{background:var(--card2);border-radius:12px;padding:7px 8px;font-size:11.5px;font-weight:600;line-height:1.25}.smp i{display:block;font-style:normal;font-size:10px;font-weight:800;color:var(--navy);margin-bottom:2px}
+.smn{font-size:11.5px;color:var(--mute);padding-top:8px;border-top:1px solid var(--line)}
 /* pro dashboard */
 .dht{display:flex;justify-content:space-between;align-items:flex-end}
 .dseg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--card);border-radius:14px;padding:4px;margin-top:12px;box-shadow:var(--sh)}
@@ -1183,7 +1186,9 @@ function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
    ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=SO[id];return`<div class="srr"><b>${esc(SITEM[id].area)}${o?' <i class="mo">edited</i>':''}</b>${[0,1,2].map(k=>`<button class="src ${st[k]?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${st[k]?'site':'last'} ${f[k]>l[k]+.004?'▲':''}</small></button>`).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}</small></span></div>`}).join('')}</div>`}).join('')}
   <div class="ctaw"><button class="cta" data-sgen><span class="ct">Generate SRP · W${W0}<small>Fills your master Excel and saves this week</small></span><span class="ca">↓</span></button></div>
   <div class="blk srpb"><div class="bh"><h2>Saved weeks</h2><span>${Object.keys(SWK).length}</span></div>${Object.values(SWK).sort((a,b)=>b.w-a.w).map(x=>`<div class="li" style="border-top:1px solid var(--line)"><div>W${x.w} · ${dmy(x.cut)}<small>${esc(x.by||x.src||'')}</small></div><em>${p1(avg(SIDS.map(id=>sPh(x.v[id]||SITEM[id].base))))}%</em></div>`).join('')||'<p class="none">Nothing saved yet. Each Generate saves the week.</p>'}</div>
-  <p class="dhint" style="margin:14px 20px">Mapping: ACMV 1st = pipe/duct/drain, 2nd = equipment, 3rd = connection. ELE 1st = containment/trunking/support, 2nd = cable/busduct/equipment, 3rd = final fix/termination. GF/FF Mezzanine are not in the SRP.</p>`;
+  <div class="blk srpb"><div class="bh"><h2>How fixes are mapped</h2><span>50 · 30 · 20%</span></div>
+   ${[['ACMV',['Pipe · duct · drain','Equipment','Connection']],['ELE',['Containment · trunking','Cable · busduct · equip.','Final fix · termination']]].map(([t,f])=>`<div class="smp"><b>${t}</b>${f.map((x,i)=>`<span><i>${i+1}${['st','nd','rd'][i]}</i>${x}</span>`).join('')}</div>`).join('')}
+   <div class="smn">GF / FF Mezzanine are not in the SRP.</div></div>`;
   animate($('#s-srp'))}
 function sOpen(id,k){const f=sFinal(id),st=sSite(id),l=sLast(id);sTmp={id,k,v:f[k]};
   $('#sheet').innerHTML=`<div class="grab"></div><h3>${esc(SITEM[id].area)} · ${FIXN[k]}</h3><div class="sub">${SITEM[id].sh.label} · last SRP ${Math.round(l[k]*100)}% · weight ${SW[k]*100}%</div>
