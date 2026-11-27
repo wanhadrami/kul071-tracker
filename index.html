@@ -1333,7 +1333,18 @@ document.addEventListener('input',e=>{const t=e.target;if(t.classList?.contains(
 document.addEventListener('keydown',e=>{if(e.target.id==='hpw'&&e.key==='Enter')hUnlock()});
 document.addEventListener('change',e=>{if(e.target.id==='sCut'&&e.target.value){const d=new Date(e.target.value+'T00:00');d.setDate(d.getDate()+((3-d.getDay()+7)%7));sCut=ymd(d);if(sCut!==e.target.value)toast('Cut-off moved to Wed '+dmy(sCut));renderSrp();db&&db.doc('srpm/cut').set({date:sCut}).catch(()=>{})}});
 $('#xerIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)importXer(f)});
-$('#phIn').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f||!assets)return;
+let pmxLogo;async function getLogo(){if(pmxLogo!==undefined)return pmxLogo;try{const r=await fetch('pmx-logo.png');pmxLogo=r.ok?await createImageBitmap(await r.blob()):null}catch(e){pmxLogo=null}return pmxLogo}
+// burn PMX logo, date/time and activity onto the photo before upload
+async function stampPhoto(file,a){try{const bm=await createImageBitmap(file,{imageOrientation:'from-image'}),k=Math.min(1,2048/Math.max(bm.width,bm.height)),W=Math.round(bm.width*k),H=Math.round(bm.height*k);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');g.drawImage(bm,0,0,W,H);
+  const u=Math.max(W,H)/1000,pad=18*u,lh=26*u,t=new Date(file.lastModified&&Date.now()-file.lastModified<36e5*24*7?file.lastModified:Date.now());
+  const lines=[t.toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})+'  ·  KUL071 ROMP 3 & 4',`${a.id}  ·  ${FS[a.R]} ${ROOMS[a.area]?.[1]||a.area}`,a.sn.slice(0,60),`${me||'Site team'}  ·  ${wEv==='V'?'Seen on site':'Reported'}`];
+  const bh=pad*2+lh*lines.length;g.fillStyle='rgba(8,22,49,.72)';g.fillRect(0,H-bh,W,bh);g.fillStyle='#d23a46';g.fillRect(0,H-bh,W,4*u);
+  const logo=await getLogo();let x=pad;if(logo){const lh2=bh-pad*2,lw=logo.width*lh2/logo.height;g.drawImage(logo,pad,H-bh+pad,lw,lh2);x=pad*2+lw}
+  else{g.font=`800 ${44*u}px "Plus Jakarta Sans",Arial,sans-serif`;g.fillStyle='#fff';g.textBaseline='middle';g.fillText('PMX',pad,H-bh/2);x=pad*2+g.measureText('PMX').width}
+  g.textBaseline='top';lines.forEach((l,i)=>{g.font=`${i?600:800} ${(i?19:21)*u}px Inter,Arial,sans-serif`;g.fillStyle=i?'rgba(255,255,255,.88)':'#fff';g.fillText(l,x,H-bh+pad+i*lh)});
+  const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));return new File([blob],(a.id+'_'+t.toISOString().slice(0,16).replace(/[:T]/g,'')+'.jpg'),{type:'image/jpeg'})}catch(e){return file}}
+$('#phIn').addEventListener('change',async e=>{let f=e.target.files[0];e.target.value='';if(!f||!assets)return;f=await stampPhoto(f,F?F.a:A.find(x=>x.id===phFor)||A[0]);
   if(!F&&phFor){const id=phFor;phFor=null;try{toast('Uploading photo…');const r=await assets.upload(f),a=A.find(x=>x.id===id),g={...eff(a),...pick(U[sid(id)])};g.ph=[...(g.ph||[]),r.id];g.ev=g.ev||wEv;if(await save(a,g,true))toast('Photo saved')}catch(err){toast('Upload failed – check signal')}return}
   if(!F)return;
   try{toast('Uploading photo…');const r=await assets.upload(f);F.ph.push(r.id);readF();drawSheet();toast('Photo added – tap Save')}catch(err){toast('Upload failed')}});
