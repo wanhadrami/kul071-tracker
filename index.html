@@ -674,7 +674,17 @@ const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+Stri
 const today=()=>ymd(new Date()),wkAgo=()=>ymd(new Date(Date.now()-7*864e5));
 const dmy=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(2,4):'–';
 const sid=id=>id.replace(/[^A-Za-z0-9_\-.~:@+]/g,'_');
-const vib=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}};
+// very soft synthesized sound effects (no files); mute toggle in Site Walk header
+let sfxOn=(()=>{try{return localStorage.getItem('ksfx')!=='0'}catch(e){return true}})(),AC=null;
+let sfxT=0,sfxK='';function sfx(k){if(!sfxOn)return;const n=performance.now();if(n-sfxT<350&&k!=='tap'&&sfxK!=='tap')return;sfxT=n;sfxK=k;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime,
+  tone=(f,d,v,type='sine',at=0,f2)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+at+d);g.gain.setValueAtTime(0,t+at);g.gain.linearRampToValueAtTime(v,t+at+.008);g.gain.exponentialRampToValueAtTime(.0001,t+at+d);o.connect(g).connect(AC.destination);o.start(t+at);o.stop(t+at+d+.02)};
+  if(k==='tap')tone(1400,.035,.018,'sine');
+  else if(k==='save')tone(880,.12,.03,'sine'),tone(1320,.16,.025,'sine',.07);
+  else if(k==='done')tone(784,.14,.03,'sine'),tone(988,.14,.028,'sine',.08),tone(1319,.22,.026,'sine',.16);
+  else if(k==='err')tone(220,.16,.04,'triangle',0,160);
+  else if(k==='swipe')tone(600,.09,.015,'sine',0,1100)}catch(e){}}
+const vib=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}if(Array.isArray(n))sfx(n[0]===15?'done':'err');else if(n>=6)sfx('swipe')};
+document.addEventListener('click',e=>{if(e.isTrusted&&e.target.closest('button,a,label,summary'))sfx('tap')},true);
 const IC={back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
@@ -814,7 +824,7 @@ function renderHome(anim){try{sessionStorage.setItem('kwalk',JSON.stringify({d:t
      ${op?`<div class="rmb">${l.map(itemRow).join('')||'<p class="dhint">Nothing outstanding here.</p>'}</div>`:''}</div>`}).join('');
   const WM=`<span class="wlk" aria-hidden="true"><svg viewBox="0 0 32 40"><circle cx="17" cy="6" r="4"/><path class="bd" d="M16 11l-2 13"/><path class="a1" d="M15.5 13l-5 7"/><path class="a2" d="M15.5 13l5 7"/><path class="l1" d="M14 24l-4 12"/><path class="l2" d="M14 24l5 12"/></svg><i></i></span>`,dl=wDate===today()?'today':'for '+dmy(wDate);
   const hs=done===0?{c:'idle',t:'Ready when you are · tap Start walk'}:done>=tot?{c:'ok',t:'All items checked · send the changes to P6 from the P6 sync tab'}:{c:'run',t:`<b>Walk in progress</b> · ${wEv==='V'?'seen on site':'reported'} · ${wDate===today()?'today':dmy(wDate)}`};
-  $('#s-home').innerHTML=`<div class="hx hxw"><div class="hxg"></div><div class="hrow"><div><div class="hello">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div><div class="proj">Site Walk</div></div><div style="display:flex;gap:8px"><button class="hbtn" data-help aria-label="How it works">?</button><button class="hbtn" data-find aria-label="Find an activity">${IC.search}</button></div></div>
+  $('#s-home').innerHTML=`<div class="hx hxw"><div class="hxg"></div><div class="hrow"><div><div class="hello">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div><div class="proj">Site Walk</div></div><div style="display:flex;gap:8px"><button class="hbtn" data-sfx aria-label="Sound ${sfxOn?'on':'off'}">${sfxOn?'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6"/></svg>':'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l4 6M21 9l-4 6"/></svg>'}</button><button class="hbtn" data-help aria-label="How it works">?</button><button class="hbtn" data-find aria-label="Find an activity">${IC.search}</button></div></div>
    <div class="hxs ${hs.c}">${hs.c==='run'?WM:'<i></i>'}<span>${hs.t}</span></div>
    <div class="hxm"><div><div class="hxv"><b data-n="${done}">${anim?0:done}</b><em>/ ${tot}</em></div><div class="hxl">items checked ${dl}</div></div><div class="hxc wpc"><small>Walk</small><b>${pc}%</b><span>${tot-done} left</span></div></div>
    <div class="hxb"><i class="b1" style="width:${pc}%"></i></div></div>
@@ -914,7 +924,7 @@ async function save(a,f,quiet){
 function quickDone(id){const a=A.find(x=>x.id===id),e=eff(a);const f={...e,...pick(U[sid(id)])};f.st='C';f.pct=100;f.as=e.as||today();f.af=today();save(a,f,true).then(ok=>{if(!ok){rerender();openSheet(id)}})}
 function confetti(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const c=$('#conf'),cols=['#d23a46','#f0a0a8','#8cc4ea','#2f8fd8','#18489c','#1fb877'];
   c.innerHTML=Array.from({length:28},(_,i)=>`<i style="background:${cols[i%6]};--x:${(Math.random()-.5)*360}px;--y:${-60-Math.random()*260}px;--r:${Math.random()*720}deg"></i>`).join('');setTimeout(()=>c.innerHTML='',1000)}
-function toast(m,u){$('#tmsg').textContent=m;$('#tundo').hidden=!u;$('#toast').classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>$('#toast').classList.remove('on'),4500)}
+function toast(m,u){$('#tmsg').textContent=m;if(/not |fail|cannot|wrong|rejected|check signal/i.test(m))sfx('err');else if(/saved|updated|accepted|confirmed|generated|marked|added|reset|cleared|deleted|cancelled|loaded/i.test(m))sfx('save');$('#tundo').hidden=!u;$('#toast').classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>$('#toast').classList.remove('on'),4500)}
 
 /* ---------- dashboard ---------- */
 const xRow=(a,f)=>{const p=eff(a).pct,x=f(a),r=15.5,c=2*Math.PI*r;return`<button class="xr" data-open="${esc(a.id)}"><svg class="xg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="${r}" fill="none" stroke="var(--soft)" stroke-width="3.5"/><circle cx="18" cy="18" r="${r}" fill="none" stroke="${p>=100?'var(--ok)':'var(--navy)'}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 18 18)"/><text x="18" y="21.5" text-anchor="middle">${p}</text></svg>
@@ -1221,6 +1231,7 @@ document.addEventListener('change',ev=>{const q=ev.target.dataset?.qd;if(q)qStat
 document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[data-dn]');if(dp){dnSel=dnSel===+dp.dataset.dn?null:+dp.dataset.dn;chartDonut(DL);vib(4);return}const to=ev.target.closest('tr[data-open]');if(to){openSheet(to.dataset.open);return}const tr=ev.target.closest('tr[data-room],g[data-room]');if(tr){romp=ROOMS[tr.dataset.room][0];goRoom(tr.dataset.room);return}const t=ev.target.closest('button');if(!t)return;const d=t.dataset;
   if(d.tab){if(tour)endTour();if(d.tab===tab){toTop();return}goTab(d.tab);return}
   if('totop' in d){toTop();return}
+  if('sfx' in d){sfxOn=!sfxOn;try{localStorage.setItem('ksfx',sfxOn?'1':'0')}catch(e){}renderHome(false);if(sfxOn)sfx('save');toast(sfxOn?'Sound on':'Sound off');return}
   if('dr' in d){dR=d.dr;renderDash();return}
   if(d.scr){scR=d.scr;document.querySelectorAll('[data-scr]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scr===scR));drawCurve(DL);return}
   if(d.ars){arSort=d.ars;document.querySelectorAll('[data-ars]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ars===arSort));chartAreas(DL);return}
