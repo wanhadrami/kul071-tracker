@@ -559,6 +559,11 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .wrc{width:min(380px,100%);border-radius:26px;padding:20px;color:#fff;background:radial-gradient(120% 80% at 100% 0,#2fbf7a 0,transparent 55%),linear-gradient(165deg,#0f5a3e,#06301f 80%);box-shadow:0 30px 80px rgba(0,0,0,.45);transform:translateY(24px) scale(.96);transition:transform .45s cubic-bezier(.2,.9,.3,1.2)}#wres.on .wrc{transform:none}
 .wrh{display:flex;gap:12px;align-items:center}.wrk{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#5ef0a8;color:#06301f;font-weight:800;font-size:22px}.wrh b{display:block;font:800 18px "Plus Jakarta Sans",sans-serif}.wrh small{font-size:12px;color:rgba(255,255,255,.75)}
 .wrm{margin-top:18px;padding:14px;border-radius:18px;background:rgba(255,255,255,.1)}.wrm small{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.7)}.wrn{display:flex;align-items:baseline;gap:8px;margin-top:4px;font-variant-numeric:tabular-nums}.wrn span{font-size:16px;color:rgba(255,255,255,.7);font-weight:700}.wrn i{font-style:normal;color:#ffd08a}.wrn b{font:800 38px/1 "Plus Jakarta Sans",sans-serif}.wrn b+b{font-size:20px;margin-left:-6px}
+.shb{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:var(--card);text-align:left}.shb>span:first-child{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:800}.shb b{display:block;font-size:14px}.shb small{font-size:11.5px;color:var(--mut)}.shb em{margin-left:auto;font-style:normal;color:var(--mut)}
+#shr{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;padding:16px;background:rgba(6,14,32,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .35s}#shr.on{opacity:1;pointer-events:auto}
+.shc{width:min(420px,100%);border-radius:26px;padding:20px;color:#fff;background:radial-gradient(120% 80% at 100% 0,#2d5bd1 0,transparent 55%),linear-gradient(165deg,#13306b,#081631 80%);box-shadow:0 30px 80px rgba(0,0,0,.45);transform:translateY(40px);transition:transform .5s cubic-bezier(.2,.9,.3,1.1)}#shr.on .shc{transform:none}
+.shg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;margin:18px 0 14px}.shg button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border:0;border-radius:18px;background:rgba(255,255,255,.12);color:#fff;font-weight:700;font-size:13px}.shg span{font-size:20px}
+.shl{display:block;font-size:11.5px;font-weight:700;color:rgba(255,255,255,.7)}.shl input{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px 14px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font:600 15px inherit}.shl input::placeholder{color:rgba(255,255,255,.45)}
 .wrm em{display:inline-block;margin-top:6px;font-style:normal;font-weight:800;font-size:14px;color:#06301f;background:#5ef0a8;padding:3px 10px;border-radius:99px}
 .wrl{margin-top:12px}.wrl div{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:7px 2px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px;align-items:center}.wrl b{font-weight:800}.wrl em{font-style:normal;font-weight:800;color:#5ef0a8}
 .wrp{margin:12px 2px 0;font-size:12.5px;color:rgba(255,255,255,.8)}.wrb{width:100%;height:48px;margin-top:16px;border-radius:14px;background:#fff;color:#06301f;font-weight:800;font-size:15px}
@@ -1075,6 +1080,23 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;
   const step=n=>{const k=Math.max(0,Math.min(1,(n-st)/1600)),e=1-Math.pow(1-k,3);b.textContent=(a0+(a1-a0)*e).toFixed(2);g.textContent='+'+((a1-a0)*e).toFixed(2)+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
+let srpOut=null;
+function shFile(){return new File([srpOut.blob],srpOut.fn,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+function openShare(){if(!srpOut)return;let o=$('#shr');if(!o){o=document.createElement('div');o.id='shr';document.body.appendChild(o)}
+  const cs=!!(navigator.canShare&&navigator.canShare({files:[shFile()]})),em=(()=>{try{return localStorage.getItem('srpMail')||''}catch(e){return''}})();
+  o.innerHTML=`<div class="shc" role="dialog" aria-label="Share SRP"><div class="wrh"><span class="wrk">✓</span><div><b>SRP W${srpOut.w} ready</b><small>${esc(srpOut.fn)}</small></div></div>
+   <div class="shg"><button data-shsave><span>↓</span>Save</button>${cs?`<button data-shshare><span>⇪</span>Share</button>`:''}</div>
+   <label class="shl">Email to<input id="shTo" type="email" inputmode="email" multiple placeholder="name@company.com, …" value="${esc(em)}"></label>
+   <button class="wrb" data-shmail>Send email ›</button><button class="wrb2" data-shx>Close</button></div>`;
+  requestAnimationFrame(()=>o.classList.add('on'))}
+function closeShare(){$('#shr')?.classList.remove('on')}
+async function shareDo(k){if(!srpOut)return;const dd=new Date(srpOut.cut+'T00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),sub=`PMX Daily SRP – ${dd} (W${srpOut.w})`,body=`Hi,\n\nPlease find attached the PMX Daily SRP for ${dd} (W${srpOut.w}).\n\nRegards,\n${me||''}`;
+  if(k==='save'){if(dl)await dl.save({filename:srpOut.fn,data:srpOut.blob});toast('Saved');return}
+  if(k==='share'){try{await navigator.share({files:[shFile()],title:sub,text:body})}catch(e){if(e.name!=='AbortError')toast('Share failed')}return}
+  const to=($('#shTo')?.value||'').split(/[,;\s]+/).filter(x=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x));if(!to.length){toast('Enter a valid email');$('#shTo')?.focus();return}
+  try{localStorage.setItem('srpMail',to.join(', '))}catch(e){}
+  if(dl)await dl.save({filename:srpOut.fn,data:srpOut.blob});
+  location.href=`mailto:${to.join(',')}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;toast('Email opened · attach the saved file')}
 function closeWalkResult(){const o=$('#wres');if(!o||!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showWalkResult.t);if(tab!=='dash')return;
   setTimeout(()=>{if(tab==='dash'){curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')}},350)}
 let hxLa=false,hxDay='',hxK='',hxLaNew=false,hxKNew=false;
@@ -1332,7 +1354,7 @@ async function importXer(file){try{const txt=await new Promise((res,rej)=>{const
 /* ---------- events ---------- */
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('#glp,[data-gl]'))glClose()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')glClose()});
 document.addEventListener('click',ev=>{if(!ev.isTrusted||tab!=='home'||!oItem||tour)return;const t=ev.target;if(t.tagName==='INPUT')return;
-  if(!t.isConnected||t.closest('.it.op,.rsa,#wres,.totop,.tabs,#toast,#sheet,#dim,#ai,#aiBtn,#tour,#onb,#glp,#s-find'))return;
+  if(!t.isConnected||t.closest('.it.op,.rsa,#wres,#shr,.totop,.tabs,#toast,#sheet,#dim,#ai,#aiBtn,#tour,#onb,#glp,#s-find'))return;
   ev.preventDefault();ev.stopPropagation();const k=oRoom;oItem=null;oRoom=null;qPanel='';qVal=null;renderHome(false);
   requestAnimationFrame(()=>document.getElementById('rm-'+sid(k||''))?.scrollIntoView({behavior:'smooth',block:'center'}))},true);
 {let sw=null,x0=0,y0=0,dx=0,mv=false,openEl=null,dragT=0,W=92;
@@ -1355,6 +1377,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('totop' in d){toTop();return}
   if('wresx' in d){closeWalkResult();return}
   if(d.wnext){const f=d.wnext;$('#wres')?.classList.remove('on');romp=f;const k=ORDER[f].find(r=>toCheck(r).length);setTimeout(()=>{if(k)startRoom(k);else renderHome(false);curScr()?.scrollTo({top:0,behavior:'smooth'})},300);return}
+  if('shopen' in d){openShare();return}if('shx' in d){closeShare();return}if('shsave' in d){shareDo('save');return}if('shshare' in d){shareDo('share');return}if('shmail' in d){shareDo('mail');return}
   if('wdash' in d){$('#wres')?.classList.remove('on');goTab('dash');setTimeout(()=>{curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')},300);return}
   if(d.hk){hxK=hxK===d.hk?'':d.hk;hxKNew=true;hxLaNew=false;renderDash(1);hxKNew=false;const L=$('#s-dash .hkl');if(L){const sd=$('#s-dash'),y=L.getBoundingClientRect().top-sd.getBoundingClientRect().top-140;if(y>0)sd.scrollBy({top:y,behavior:RM.matches?'auto':'smooth'})}return}
   if('hxla' in d){hxLa=!hxLa;if(!hxLa)hxDay='';hxLaNew=true;hxKNew=false;renderDash(1);hxLaNew=false;return}
@@ -1719,7 +1742,7 @@ function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
   <div class="sgrid">${SRP.map(s=>{const ii=s.rows.map(([r])=>s.k+r);return`<div class="blk srpb ${s.k.startsWith('gf')?'f-gf':'f-ff'}"><div class="bh"><h2>${s.label}</h2><span>${p1(avg(ii.map(id=>sPh(sFinal(id)))))}% phys.</span></div>
    <div class="srt"><span></span><span>1st</span><span>2nd</span><span>3rd</span><span>Phys</span></div>
    ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=soG(id),ed=o&&f.some((v,k)=>Math.abs(v-l[k])>.004);const rv=!!o;return`<div class="srr${rv?' rv':''}"><button class="srn" data-sconf="${id}"><b>${esc(SITEM[id].area)}</b><small>${rv?'✓ reviewed':ed?'edited':''}</small></button>${[0,1,2].map(k=>{const pd=sPend(id,k,st);return`<button class="src ${pd?'sg':f[k]>l[k]+.004?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${pd?'→ '+Math.round(st[k].v*100)+'?':f[k]>l[k]+.004?'▲ set':''}</small></button>`}).join('')}<span class="srp2">${p1(sPh(f))}${Math.abs(sPh(f)-sPh(l))<.0005?'':`<small style="color:${tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}%</small>`}</span></div>`}).join('')}</div>`}).join('')}
-  </div>${(()=>{const ids=SIDS.filter(id=>soG(id));if(!ids.length)return'';return sClr?`<div class="wrs on"><b>Clear all W${W0} SRP edits?</b><span>${ids.length} row${ids.length>1?'s':''} go back to ${SWK[W0]?'the saved W'+W0+' values':'last week\'s SRP'}. Accepted suggestions come back as suggestions. Saved history is not touched. Undo is available for a few seconds.</span><div class="qrow"><button class="qb" data-sclr="0">Cancel</button><button class="qb red" data-sclr="go">Yes, clear ${ids.length}</button></div></div>`:`<button class="wrs" data-sclr="ask"><i>↺</i><span><b>Clear all SRP edits</b><small>${ids.length} row${ids.length>1?'s':''} changed for W${W0}</small></span><em>›</em></button>`})()}<div class="ctaw"><button class="cta" data-sgen><span class="ct">${SWK[W0]?`Update saved W${W0}`:`Generate SRP · W${W0}`}<small>${sPendAll().length?sPendAll().length+(sPendAll().length>1?' suggestions':' suggestion')+' not reviewed – not included yet':'Fills your master Excel and saves this week'}</small></span><span class="ca">↓</span></button></div>
+  </div>${(()=>{const ids=SIDS.filter(id=>soG(id));if(!ids.length)return'';return sClr?`<div class="wrs on"><b>Clear all W${W0} SRP edits?</b><span>${ids.length} row${ids.length>1?'s':''} go back to ${SWK[W0]?'the saved W'+W0+' values':'last week\'s SRP'}. Accepted suggestions come back as suggestions. Saved history is not touched. Undo is available for a few seconds.</span><div class="qrow"><button class="qb" data-sclr="0">Cancel</button><button class="qb red" data-sclr="go">Yes, clear ${ids.length}</button></div></div>`:`<button class="wrs" data-sclr="ask"><i>↺</i><span><b>Clear all SRP edits</b><small>${ids.length} row${ids.length>1?'s':''} changed for W${W0}</small></span><em>›</em></button>`})()}${srpOut?`<button class="shb" data-shopen><span>⇪</span><span><b>Share last SRP</b><small>${esc(srpOut.fn)}</small></span><em>›</em></button>`:''}<div class="ctaw"><button class="cta" data-sgen><span class="ct">${SWK[W0]?`Update saved W${W0}`:`Generate SRP · W${W0}`}<small>${sPendAll().length?sPendAll().length+(sPendAll().length>1?' suggestions':' suggestion')+' not reviewed – not included yet':'Fills your master Excel and saves this week'}</small></span><span class="ca">↓</span></button></div>
   ${sHist()}
   `;
   animate($('#s-srp'))}
@@ -1784,11 +1807,11 @@ async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel too
    if(iss.length){sDiff={type:'err',items:iss};renderSrp();toast('Some cells could not be written – nothing generated');return}
    wb=/<calcPr[^>]*fullCalcOnLoad/.test(wb)?wb:wb.replace(/<calcPr/,'<calcPr fullCalcOnLoad="1"');zip.file('xl/workbook.xml',wb);
    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'}),dd=new Date(sCut+'T00:00'),fn=`PMX Daily SRP_${dd.getDate()} ${dd.toLocaleString('en-GB',{month:'short'})} ${dd.getFullYear()}.xlsx`;
-   if(dl)await dl.save({filename:fn,data:blob});
+   srpOut={blob,fn,w:W0,cut:sCut};
    // 3. history only after a valid file; keep every previous submission of this week
    const old=SG[W0]||null,snap={w:W0,cut:sCut,v:Object.fromEntries(SIDS.map(id=>[id,sFinal(id)])),at:Date.now(),by:me||'',rev:[...(old?.rev||[]),...(old?[{v:old.v,at:old.at,by:old.by,cut:old.cut}]:[])]};
    let hok=true;if(db)try{await db.doc('srpg/'+sWid(W0)).set(snap)}catch(e){hok=false}
-   if(hok){SG[W0]=snap;sMerge()}renderSrp();toast(hok?`SRP W${W0} generated · ${n} cells${old?' · previous version kept':''}`:'File downloaded but history NOT saved – generate again')}
+   if(hok){SG[W0]=snap;sMerge()}renderSrp();toast(hok?`SRP W${W0} generated · ${n} cells${old?' · previous version kept':''}`:'File ready but history NOT saved – generate again');openShare()}
   catch(e){sDiff={type:'err',items:[e.message||String(e)]};renderSrp();toast('Master not compatible – nothing generated')}}
 function sDiffHTML(){if(!sDiff)return'';const d=sDiff;if(d.type==='err')return`<div class="blk srpb sdf er"><div class="bh"><h2>${esc(d.head||'Cannot generate')}</h2><button class="ix" data-sdx>×</button></div><p class="sinf">Nothing was written and history is unchanged. Fix the master or upload the right file:</p><ul>${d.items.slice(0,12).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
  return`<div class="blk srpb sdf"><div class="bh"><h2>Master differs · ${d.items.length} cell${d.items.length>1?'s':''}</h2><button class="ix" data-sdx>×</button></div><p class="sinf">The uploaded master and the app's W${d.W0} values disagree. Choose which to keep before generating.</p>
