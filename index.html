@@ -1087,7 +1087,7 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;hapRoll(1600,500);
   const step=n=>{const k=Math.max(0,Math.min(1,(n-st)/1600)),e=1-Math.pow(1-k,3);b.textContent=(a0+(a1-a0)*e).toFixed(2);g.textContent='+'+((a1-a0)*e).toFixed(2)+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
-const BUILD='28 Nov 06:50';
+const BUILD='28 Nov 06:25';
 let hapT=0,hapSw=null;
 /* iPhone-style haptics: selection tick, light/medium impact, success double-tap */
 const HP={sel:10,light:16,med:26,ok:[14,70,26],tick:9,end:18};
