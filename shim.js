@@ -19,7 +19,7 @@ const fire=()=>subs.forEach(s=>s.kind==='doc'?s.next(snapDoc(s.p)):s.next(snapCo
 let sig='';async function pull(){try{const r=await api('/api/db');const all=await r.json(),n=JSON.stringify(all);if(n===sig)return;sig=n;Object.keys(cache).forEach(k=>delete cache[k]);Object.assign(cache,all);fire()}catch(e){}}window.__pull=pull;
 let timer=null;const startPoll=()=>{if(!timer){pull();timer=1}};
 
-const docRef=p=>({id:last(p),path:p,get:async()=>{await pull();return snapDoc(p)},
+const docRef=p=>({id:last(p),path:p,get:async()=>{const all=await (await api('/api/db')).json();return{id:last(p),exists:p in all,data:()=>all[p],metadata:{fromCache:false,hasPendingWrites:false}}},
  set:async d=>{await api('/api/db',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({path:p,data:d})});cache[p]=d},
  update:async d=>{const n={...(cache[p]||{}),...d};await docRef(p).set(n)},
  delete:async()=>{await api('/api/db?path='+encodeURIComponent(p),{method:'DELETE'});delete cache[p]},

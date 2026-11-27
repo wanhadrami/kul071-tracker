@@ -493,10 +493,17 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 /* desktop */
 @media(min-width:1000px){#app{max-width:1240px}.tabs{left:50%;right:auto;width:560px;transform:translateX(-50%)}body.walking .tabs{transform:translate(-50%,140%)}
  #s-home>*:not(.hx){max-width:720px;margin-left:auto!important;margin-right:auto!important}#s-home .sw{max-width:688px}
- .pd2{display:grid;grid-template-columns:1fr 1fr;align-items:start}.pd2>.hx,.pd2>.dfl,.pd2>.pdft2{grid-column:1/-1}#toast{left:calc(50% - 280px)!important;right:calc(50% - 280px)!important}
+ .pd2{columns:2;column-gap:0}.pd2>*{break-inside:avoid}.pd2>.hx,.pd2>.dfl,.pd2>.pdft2{column-span:all}#s-dash .pd2>.blk{display:inline-block;width:calc(100% - 32px)}#toast{left:calc(50% - 280px)!important;right:calc(50% - 280px)!important}
  .sgrid{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:row dense;align-items:start}.sgrid .f-gf{grid-column:1}.sgrid .f-ff{grid-column:2}
  #s-srp>.ctaw,#s-srp>.srpb:last-child,#s-srp>.wset,#s-srp>.sgb{max-width:900px;margin-left:auto!important;margin-right:auto!important}
  #s-sync>*:not(.hx){max-width:720px;margin-left:auto!important;margin-right:auto!important}}
+.rph.b1,.rpr.b1{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 8px}.rph.b1>span:first-child,.rpr.b1>b{grid-column:1/-1}.rph.b1>span:first-child{display:none}.rpr.b1>b{margin-bottom:2px}.rpr.b1 .rpp,.rpr.b1 .rpv,.rpr.b1 .rpd,.rpr.b1 .rpw{text-align:left}.rph.b1 span{text-align:left}.rpp{text-align:right;font:700 13px "Plus Jakarta Sans",sans-serif;color:var(--mute);font-variant-numeric:tabular-nums}
+.rpd{text-align:right;font:800 13px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums;color:var(--mute)}.rpd.pos{color:var(--ok)}.rpd.neg{color:var(--r4)}.rpr.b1 .rpv,.rpr.b1 .rpw{font-size:13.5px}
+.rpv i{position:relative;overflow:visible!important}.rpv i u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--r4);border-radius:2px}
+.hxl b.up{color:#5ef0a8}.hxl b.dn{color:#ff9aa3}
+.sdf ul{margin:6px 0 0;padding-left:18px;font-size:12.5px;line-height:1.5}.sdf.er{box-shadow:inset 0 0 0 1.5px var(--r4)!important}.sdf .sdt{border-radius:12px;background:var(--card2);padding:4px 10px;margin:8px 0 10px;max-height:260px;overflow:auto}
+.sdt>div{display:grid;grid-template-columns:minmax(0,1fr) 56px 56px;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:12.5px;align-items:center}.sdt>div:first-child{border-top:0}.sdt b{text-align:right}.sdt small{display:block;color:var(--mute);font-size:10.5px}.sdt .dn{color:var(--r4)}.sdt .up{color:var(--ok)}.sdh{font-size:10.5px!important;font-weight:800;color:var(--mute)}
+.hxtc{margin-top:14px;font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}.hxtc+.hxk{margin-top:6px}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -675,7 +682,8 @@ const dn=s=>s?Math.round(Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10))/
 function setBase(b){B=b;A=b.acts.filter(a=>ROOMS[a.area]&&disc(a)).map(a=>({...a,sn:a.sn.replace(/^\S*\[[^\]]*\]\S*\s+/,''),R:ROOMS[a.area][0],rm:ROOMS[a.area][1],D:disc(a)}))}
 
 /* ---------- logic ---------- */
-const eff=a=>{const u=U[sid(a.id)];if(u&&u.pat&&u.pat>B.at)return{st:u.st,pct:u.pct,as:u.as||'',af:u.af||'',src:'site'};return{st:a.st,pct:a.pct,as:a.as,af:a.af,src:'p6'}};
+const RK={N:0,A:1,C:2},ahead=(u,a)=>RK[u.st]>RK[a.st]||(u.st===a.st&&u.pct>a.pct)||(!!u.as&&!a.as)||(!!u.af&&!a.af);
+const eff=a=>{const u=U[sid(a.id)];if(u&&u.pat&&(u.pat>B.at||ahead(u,a)))return{st:u.st,pct:u.pct,as:u.as||'',af:u.af||'',src:'site'};return{st:a.st,pct:a.pct,as:a.as,af:a.af,src:'p6'}};
 const pend=a=>{const e=eff(a);return e.src==='site'&&(e.st!==a.st||e.pct!==a.pct||e.as!==a.as||e.af!==a.af)};
 const isOpen=a=>eff(a).st!=='C',late=a=>isOpen(a)&&a.pf&&a.pf<today(),blk=a=>isOpen(a)&&!!U[sid(a.id)]?.cons;
 const remDur=(a,e)=>e.st==='C'?0:+(a.od*(1-e.pct/100)).toFixed(1);
@@ -856,9 +864,13 @@ async function save(a,f,quiet){
   const e=validate(f);if(e){if(!quiet){$('#fErr').textContent=e;F.showD=true;$('.dd').classList.add('on')}vib([30,40,30]);return false}
   const key=sid(a.id),old=U[key]?{...U[key]}:null,wasOpen=isOpen(a);
   const doc={id:a.id,wd:wDate,st:f.st,pct:f.pct,as:f.as,af:f.af,pat:Date.now(),ev:f.ev,rm:f.rm,cons:f.cons,cown:f.cown,ph:f.ph,by:me||'',at:Date.now(),hist:[...(f.hist||[]),{t:Date.now(),by:me||'',st:f.st,pct:f.pct,ev:f.ev}].slice(-15)};
+  // merge: only the fields this user changed overwrite the latest stored record (protects other people's edits)
+  const base=old||{st:a.st,pct:a.pct,as:a.as||'',af:a.af||'',ev:'',rm:'',cons:'',cown:'',ph:[]},FL6=['st','pct','as','af','ev','rm','cons','cown','ph'],chg=FL6.filter(k=>JSON.stringify(doc[k]??'')!==JSON.stringify(base[k]??''));
   U[key]=doc;closeSheet();rerender();
   if(f.st==='C'&&wasOpen){confetti();vib([15,30,15])}
-  if(db){try{await db.doc('upd/'+key).set(doc)}catch(err){if(old)U[key]=old;else delete U[key];if(err?.code==='invalid_argument'){canWrite=false;noteMsg='View-only access. Ask the owner for Contributor access.'}rerender();toast('Not saved – check signal and retry');return false}}
+  if(db){try{let cur=null;try{const sn=await db.doc('upd/'+key).get();cur=sn.exists?sn.data():null}catch(e){}
+    if(cur&&cur.at!==old?.at){const m={...cur,id:a.id,wd:doc.wd,pat:doc.pat,by:doc.by,at:doc.at};chg.forEach(k=>m[k]=doc[k]);m.hist=[...(cur.hist||[]),doc.hist[doc.hist.length-1]].slice(-15);Object.assign(doc,m);U[key]=doc;rerender()}
+    await db.doc('upd/'+key).set(doc);U[key]=doc}catch(err){if(old)U[key]=old;else delete U[key];if(err?.code==='invalid_argument'){canWrite=false;noteMsg='View-only access. Ask the owner for Contributor access.'}rerender();toast('Not saved – check signal and retry');return false}}
   undo=()=>{if(old){U[key]=old;db&&db.doc('upd/'+key).set(old)}else{delete U[key];db&&db.doc('upd/'+key).delete()}rerender()};
   toast(f.st==='C'?'Marked done ✓':`Updated to ${f.pct}%`,true);return true}
 function quickDone(id){const a=A.find(x=>x.id===id),e=eff(a);const f={...e,...pick(U[sid(id)])};f.st='C';f.pct=100;f.as=e.as||today();f.af=today();save(a,f,true).then(ok=>{if(!ok){rerender();openSheet(id)}})}
@@ -906,20 +918,25 @@ function laHTML(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{con
  ${la.length?groups.map(g=>`<div class="lg2"><div class="lgh"><b>${lab(g.k)}</b><span>${g.l.length}</span></div>${g.l.map(row).join('')}</div>`).join('')+(laDay||f.length<=6?'':moreBtn('la',f.length,laAll)):'<div class="eok">Nothing due in the next 14 days.</div>'}</section>`}
 const p6p=(a,e)=>e.st==='C'?100:(a.pt==='P'||e.src==='site')?e.pct:e.st==='N'?0:(a.od?Math.max(0,Math.min(100,100*(1-a.rd/a.od))):0);
 const RPT=[['Construction',''],['Ground floor','GROUND FLOOR'],['GF Mezzanine','GROUND FLOOR MEZZANINE'],['First floor','FIRST FLOOR'],['FF Mezzanine','FIRST FLOOR MEZZANINE'],['Roof floor','ROOF FLOOR']];
-let rptX=false;const RPTX=['ROMP4-3250'];
-function rptCalc(){const S=B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')&&!(rptX&&RPTX.includes(a.id))),wp=(l,f)=>{const w=l.reduce((t,a)=>t+a.od,0);return w?l.reduce((t,a)=>t+a.od*f(a),0)/w:0};
- return RPT.map(([n,lv])=>{const l=S.filter(a=>!lv||a.lvl===lv);return{n,lv,c:l.length,p6:wp(l,a=>p6p(a,{st:a.st,pct:a.pct,src:'p6'})),wk:wp(l,a=>p6p(a,eff(a)))}})}
-function rptHTML(R){const f2=v=>v.toFixed(2);return`<section class="blk rpt"><div class="bh"><h2>Progress summary</h2><span>as P6 · ${dmy(B.dd)}</span></div>
- <div class="rph"><span></span><span>P6 % compl.</span><span>After walk</span></div>
- ${R.map((r,i)=>{const d=r.wk-r.p6;return`<div class="rpr${i?'':' tot'}"><b>${r.n}</b><span class="rpv">${f2(r.p6)}%<i><em style="width:${r.p6}%"></em></i></span><span class="rpw">${f2(r.wk)}%${d>.005?`<small>+${f2(d)}%</small>`:''}</span></div>`}).join('')}
- <p class="rpn">P6 % Complete method: PMX scope, Romp R3 &amp; R4 activities, weighted by original duration. After walk = same with site walk updates.</p><button class="rpx" data-rptx aria-pressed="${rptX}"><span>ROMP4-3250 Chiller Delivery &amp; Installation</span><b>${rptX?'Excluded (matches P6)':'Included'}</b></button></section>`}
+let B1=null;const b1Cache={};
+function b1wd(a,b,cid){const c=B1.cals[cid]||B1.cals['6591']||Object.values(B1.cals)[0];if(!c._h){c._h=new Set(c.h);c._x=new Set(c.x);c._d=new Set(c.d)}let n=0;const d=new Date(a+'T00:00Z'),e=new Date(b+'T00:00Z');
+ while(d<e){const k=d.toISOString().slice(0,10);if((c._d.has(d.getUTCDay()+1)||c._x.has(k))&&!c._h.has(k))n++;d.setUTCDate(d.getUTCDate()+1)}return n}
+const addD=(s,n)=>{const d=new Date(s+'T00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+function b1Plan(id,dd){const k=id+'|'+dd;if(k in b1Cache)return b1Cache[k];const b=B1&&B1.acts[id];if(!b)return null;const[bs,bf,,cid]=b,e=addD(dd,1);
+ return b1Cache[k]=e<=bs?0:e>bf?100:100*b1wd(bs,e,cid)/(b1wd(bs,addD(bf,1),cid)||1)}
+function rptCalc(){const S=B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')&&(!B1||B1.acts[a.id])),wp=(l,f,w=a=>a.od)=>{const t=l.reduce((x,a)=>x+w(a),0);return t?l.reduce((x,a)=>x+w(a)*f(a),0)/t:0};
+ return RPT.map(([n,lv])=>{const l=S.filter(a=>!lv||a.lvl===lv);return{n,lv,c:l.length,pl:B1?wp(l,a=>b1Plan(a.id,B.dd),a=>B1.acts[a.id][2]):null,p6:wp(l,a=>p6p(a,{st:a.st,pct:a.pct,src:'p6'})),wk:wp(l,a=>p6p(a,eff(a)))}})}
+function rptHTML(R){const f2=v=>v.toFixed(2),sg=v=>(v>=0?'+':'')+f2(v);return`<section class="blk rpt"><div class="bh"><h2>Progress summary</h2><span>P6 ${dmy(B.dd)}${B1?' · vs B1':''}</span></div>
+ <div class="rph${B1?' b1':''}"><span></span>${B1?'<span>B1 plan</span>':''}<span>% compl.</span>${B1?'<span>Var.</span>':''}<span>After walk</span></div>
+ ${R.map((r,i)=>{const d=r.wk-r.p6,v=B1?r.p6-r.pl:0;return`<div class="rpr${B1?' b1':''}${i?'':' tot'}"><b>${r.n}</b>${B1?`<span class="rpp">${f2(r.pl)}%</span>`:''}<span class="rpv">${f2(r.p6)}%<i><em style="width:${r.p6}%"></em>${B1?`<u style="left:${Math.min(100,r.pl)}%"></u>`:''}</i></span>${B1?`<span class="rpd ${v<-.005?'neg':v>.005?'pos':''}">${sg(v)}%</span>`:''}<span class="rpw">${f2(r.wk)}%${d>.005?`<small>+${f2(d)}%</small>`:''}</span></div>`}).join('')}
+ <p class="rpn">Same method as P6: PMX activities coded Romp R3/R4 under Construction${B1?' that exist in the B1 baseline':''}, weighted by original duration. ${B1?'B1 plan = Schedule % Complete at the P6 data date. Var. = % complete − B1 plan. ':''}After walk = % complete with site walk updates.</p></section>`}
 function heroX(o){const f=v=>v.toFixed(2);
  return`<div class="hx"><div class="hxg"></div><div class="hrow"><div><div class="hello">${o.eye}</div><div class="proj">${o.title}</div></div>${o.btn}</div>
   <div class="hxs ${o.st.cls}"><i></i><span>${o.st.txt}</span></div>
   <div class="hxm"><div><div class="hxv"><b data-n="${f(o.val)}" data-dec="2">0</b><em>%</em></div><div class="hxl">${o.label}</div></div>${o.chip?`<div class="hxc ${o.chip.d<0?'dn':''}"><small>${o.chip.lab}</small><b>${f(o.chip.v)}%</b><span>${o.chip.d>=0?'▲ +':'▼ '}${f(o.chip.d)}%</span></div>`:''}</div>
   <div class="hxb"><i class="b1" style="width:${Math.min(100,o.val)}%"></i>${o.bar2!=null?`<i class="b2" style="left:${Math.min(100,o.val)}%;width:${Math.max(0,Math.min(100,o.bar2)-Math.min(100,o.val))}%"></i>`:''}${o.mark!=null?`<u style="left:${Math.min(100,o.mark)}%" title="Plan"></u>`:''}</div>
   <div class="hxt"><span>0</span><span>${o.scale||'50'}</span><span>100</span></div>
-  ${o.tiles?`<div class="hxk">${o.tiles.map(([n,l,c])=>`<div class="${c||''}"><b data-n="${n}">0</b><span>${l}</span></div>`).join('')}</div>`:''}</div>`}
+  ${o.tcap?`<div class="hxtc">${o.tcap}</div>`:''}${o.tiles?`<div class="hxk">${o.tiles.map(([n,l,c])=>`<div class="${c||''}"><b data-n="${n}">0</b><span>${l}</span></div>`).join('')}</div>`:''}</div>`}
 function walkStatus(){const P=A.filter(pend),last=Object.values(U).reduce((m,u)=>Math.max(m,u.pat||0),0),t=last?new Date(last).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'';
  return P.length?{cls:'pend',txt:`As of site walk ${t} · <b>${P.length} update${P.length>1?'s':''} not in P6 yet</b> · not final until next P6 update`}:{cls:'ok',txt:`P6 ${dmy(B.dd)} · no site updates waiting${t?' · last walk '+t:''}`}}
 function renderDash(){
@@ -937,7 +954,7 @@ function renderDash(){
   const exc=[...bl.map(a=>({a,b:1})),...lt.filter(a=>!blk(a)).map(a=>({a,b:0}))].sort((x,y)=>(y.b-x.b)||(daysLate(y.a)-daysLate(x.a)));
   const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
-  ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,label:`Construction % complete · P6 ${dmy(B.dd)} · forecast finish ${ffin?dmy(ffin):'–'}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,tiles:[[open.length,'Open'],[lt.length,'Late','lt'],[bl.length,'Blocked','bk'],[dn7,'Done 7d','ok']]})}
+  ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,tcap:`Counts below: ${dR?FL[dR]:'PMX scope'} · ${dD||'Overall'}${ffin?` · forecast finish ${dmy(ffin)} (${esc((open.find(a=>(a.ef>today()?a.ef:today())===ffin)||{}).sn||'')})`:''}`,label:`Construction % complete (all floors & trades) · P6 ${dmy(B.dd)}${R6[0].pl!=null?` · B1 plan ${R6[0].pl.toFixed(2)}% · <b class="${act>=R6[0].pl?'up':'dn'}">${act>=R6[0].pl?'+':''}${(act-R6[0].pl).toFixed(2)}% ${act>=R6[0].pl?'ahead':'behind'}</b>`:''}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,mark:R6[0].pl,tiles:[[open.length,'Open'],[lt.length,'Late','lt'],[bl.length,'Blocked','bk'],[dn7,'Done 7d','ok']]})}
   <div class="dfl"><div class="seg3">${[['','PMX scope'],['R4','GF'],['R3','1F'],['RF','Roof']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','Overall'],['ELE','ELE'],['MECH','MECH'],['FIRE','FIRE']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
 ${rptHTML(R6)}
 <section class="blk"><div class="bh"><h2>Cumulative progress</h2><div class="seg2 sm">${[['all','All'],['6m','6M'],['3m','3M']].map(([k,l])=>`<button data-scr="${k}" aria-pressed="${scR===k}">${l}</button>`).join('')}</div></div>
@@ -1137,7 +1154,7 @@ function exportOut(){if(typeof XLSX==='undefined')return toast('Excel library di
   const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[8,10,13,48,11,8,12,5,10,10,8,30,14,13,40].map(w=>({wch:w}));ws['!autofilter']={ref:ws['!ref']};
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Outstanding');saveX(wb,`Outstanding_ROMP34_${today()}.xlsx`)}
 async function importXer(file){try{const txt=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsText(file,'windows-1252')});
-  const nb=parseXER(txt);if(!nb.acts.length)throw new Error('No CONSTRUCTION activities');const prev={};B.acts.forEach(a=>prev[a.id]={st:a.st,pct:a.pct});
+  const nb=parseXER(txt);if(!nb.acts.length)throw new Error('No CONSTRUCTION activities');if(B.dd&&nb.dd&&nb.dd<B.dd){toast(`Not loaded: this XER is dated ${dmy(nb.dd)}, older than the current P6 ${dmy(B.dd)}`);return}const prev={};B.acts.forEach(a=>prev[a.id]={st:a.st,pct:a.pct});
   const doc={...nb,at:Date.now(),by:me||'',prev};if(db)await db.doc('base/current').set(doc);prevBase=prev;setBase(doc);rerender();toast(`XER loaded · P6 ${dmy(nb.dd)}`)}
   catch(e){toast('Load failed: '+(e?.message||e?.code||''))}}
 
@@ -1164,7 +1181,6 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.ar){arSel=arSel===d.ar?null:d.ar;chartAreas(DL);vib(4);return}
   if(d.walkarea){startRoom(d.walkarea);return}
   if(d.dn!==undefined){dnSel=dnSel===+d.dn?null:+d.dn;chartDonut(DL);vib(4);return}
-  if('rptx' in d){rptX=!rptX;renderDash();return}
   if('gl' in d){glToggle(t);return}
   if(d.glk){glK=d.glk;glDraw();vib(4);return}
   if('glx' in d){glClose();return}
@@ -1190,7 +1206,10 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('ssave' in d){if(t.classList.contains('ghost'))sTmp.v=sFinal(sTmp.id)[sTmp.k];sSaveCell();return}
   if('suse' in d){sTmp.v=sTmp.sg;sSaveCell();return}
   if('sacc' in d){sAcceptAll();return}
-  if(d.sconf){const id=d.sconf,W0=sWeek(sCut),o=SO[id];if(o&&o.w===W0){toast('Already reviewed – tap a cell to change');return}const st=sSite(id);SO[id]={v:sFinal(id).slice(),sg:st.map(x=>x?x.v:null),w:W0,at:Date.now(),by:me||''};renderSrp();vib(6);toast(SITEM[id].area+' confirmed for W'+W0);if(db)try{await db.doc('srpo/'+id).set(SO[id])}catch(e){toast('Not saved')}return}
+  if('sdx' in d){sDiff=null;renderSrp();return}
+  if('sdw' in d){sGenOk=true;sGenerate();return}
+  if('sdm' in d){const D=sDiff,W0=D.W0,by={};D.items.forEach(x=>{(by[x.id]??=sFinal(x.id).slice())[x.i]=x.mv});const r=await Promise.all(Object.entries(by).map(([id,v])=>soW(id,{v,sg:[null,null,null],w:W0,at:Date.now(),by:me||'',src:'master'})));sDiff=null;renderSrp();toast(r.every(Boolean)?`Master values loaded into W${W0} – generate again`:'Some rows not saved – retry');return}
+  if(d.sconf){const id=d.sconf,W0=sWeek(sCut);if(soG(id)){toast('Already reviewed – tap a cell to change');return}const st=sSite(id),ok=await soW(id,{v:sFinal(id).slice(),sg:st.map(x=>x?x.v:null),w:W0,at:Date.now(),by:me||''});renderSrp();vib(6);toast(ok?SITEM[id].area+' confirmed for W'+W0:'Not saved – check signal and retry');return}
   if('sreset' in d){sReset(sTmp.id);return}
   if('smaster' in d){$('#srpIn').click();return}
   if('sgen' in d){sGenerate();return}
@@ -1415,10 +1434,14 @@ const nextWed2=()=>{const d=new Date();d.setDate(d.getDate()+((3-d.getDay()+7)%7
 const sActs=id=>A.filter(a=>SMAP[a.area]?.[a.D]===id);
 function sSite(id){const L=sActs(id),W=a=>Math.max(1,a.od||1),lv=sLast(id);return[0,1,2].map(k=>{const l=L.filter(a=>fixOf(a)===k);if(!l.length||!l.some(a=>eff(a).src==='site'))return null;const w=l.reduce((s,a)=>s+W(a),0);
   const use=a=>eff(a).src==='site'?eff(a).pct/100:lv[k];return{v:Math.max(lv[k],l.reduce((s,a)=>s+W(a)*use(a),0)/w),n:l.length,l,last:lv[k]}})}
-const sPend=(id,k,st=sSite(id))=>{const s=st[k];if(!s)return false;const f=sFinal(id),o=SO[id];if(Math.abs(s.v-f[k])<.005)return false;return!(o&&o.w===sWeek(sCut)&&o.sg&&o.sg[k]!=null&&Math.abs(o.sg[k]-s.v)<.005)};
+const sPend=(id,k,st=sSite(id))=>{const s=st[k];if(!s)return false;const f=sFinal(id),o=soG(id);if(Math.abs(s.v-f[k])<.005)return false;return!(o&&o.sg&&o.sg[k]!=null&&Math.abs(o.sg[k]-s.v)<.005)};
 const sPendAll=()=>SIDS.flatMap(id=>{const st=sSite(id);return[0,1,2].filter(k=>sPend(id,k,st)).map(k=>[id,k,st[k].v])});
 function sLast(id){const ws=Object.values(SWK).filter(x=>x.w<sWeek(sCut)).sort((a,b)=>a.w-b.w),x=ws[ws.length-1];return x?.v?.[id]||SITEM[id].base}
-function sFinal(id){const o=SO[id];if(o&&Array.isArray(o.v)&&(!o.w||o.w===sWeek(sCut)))return o.v;return sLast(id)}
+const soK=(id,w=sWeek(sCut))=>sWid(w)+'_'+id;
+function soG(id,w=sWeek(sCut)){const o=SO[soK(id,w)];if(o)return o;const l=SO[id];return l&&Array.isArray(l.v)&&(l.w===w||(!l.w&&w===sWeek(nextWed2())))?l:null}
+async function soW(id,doc,w=sWeek(sCut)){const k=soK(id,w),old=SO[k];if(doc)SO[k]=doc;else delete SO[k];
+  try{if(db){if(doc)await db.doc('srpo/'+k).set(doc);else await db.doc('srpo/'+k).delete()}return true}catch(e){if(old)SO[k]=old;else delete SO[k];return false}}
+function sFinal(id){const o=soG(id);if(o)return o.v;const sv=SWK[sWeek(sCut)];if(sv&&sv.v&&sv.v[id])return sv.v[id];return sLast(id)}
 const sPh=v=>v[0]*SW[0]+v[1]*SW[1]+v[2]*SW[2];
 const sPlanFix=([s,f],d)=>{const c=Date.parse(d),a=Date.parse(s),b=Date.parse(f);return c>b?1:c<a?0:(c-a)/(b-a)};
 const sPlan=(id,d)=>SITEM[id].plan.reduce((t,p,i)=>t+sPlanFix(p,d)*SW[i],0);
@@ -1457,15 +1480,16 @@ function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
   const act=avg(SIDS.map(id=>sPh(sFinal(id)))),last=avg(SIDS.map(id=>sPh(sLast(id)))),pl=avg(SIDS.map(id=>sPlan(id,sCut)));
   const lw=Object.values(SWK).filter(x=>x.w<W0).sort((a,b)=>b.w-a.w)[0];
   const tone=d=>d>=0?'var(--ok)':'var(--r4)';
-  const svd=SWK[W0],svP=svd?wPh(svd)*100:null,rev=SIDS.filter(id=>SO[id]&&SO[id].w===W0).length,lastW=Object.values(SWK).filter(x=>x.w<W0).sort((a,b)=>b.w-a.w)[0];
+  const svd=SWK[W0],svP=svd?wPh(svd)*100:null,rev=SIDS.filter(id=>soG(id)).length,lastW=Object.values(SWK).filter(x=>x.w<W0).sort((a,b)=>b.w-a.w)[0];
   const nP=sPendAll().length,gen=SG[W0],sst=nP?{cls:'pend',txt:`<b>${nP} site walk suggestion${nP>1?'s':''} to review</b> · W${W0} not final until reviewed and generated`}:gen?{cls:'ok',txt:`W${W0} generated ${new Date(gen.at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}`}:svd?{cls:'ok',txt:`<b>Saved W${W0}</b> · ${dmy(svd.cut)} · ${svP.toFixed(1)}% · edits below are a draft until you update it`}:{cls:'pend',txt:`Draft W${W0} · not final until you Generate SRP${lastW?` · last saved W${lastW.w} ${dmy(lastW.cut)} · ${(wPh(lastW)*100).toFixed(1)}%`:''}`};
   $('#s-srp').innerHTML=`${heroX({eye:`Recovery plan · W${W0} · cut-off ${dmy(sCut).slice(0,5)}`,title:'SRP',btn:'<div class="hbtns"><button class="hb" data-sinfo aria-label="How the SRP works">i</button></div>',st:sst,val:act*100,label:`% physical · ${p1(Math.abs(act-pl))} pp ${act-pl>=0?'ahead of':'behind'} plan (${p1(pl)}%) · rows reviewed ${rev}/${SIDS.length}`,chip:svd?{lab:`Saved ${svP.toFixed(1)}% → draft`,v:act*100,d:act*100-svP}:{lab:`vs ${lw?'W'+lw.w:'last SRP'}`,v:act*100,d:(act-last)*100},mark:pl*100})}
   <div class="wset hpills"><label class="wsb"><span class="wsl">Collecting for · cut-off Wed</span><b>📅 W${W0} · ${new Date(sCut+'T00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} ▾</b><input type="date" id="sCut" value="${sCut}"></label><button class="wsb" data-smaster><span class="wsl">Master SRP file</span><b>${SM.name?esc(SM.name.slice(0,18)):'Upload ▸'}</b></button></div>
   ${sInfo?sInfoBox():''}
   ${(()=>{const P=sPendAll();return P.length?`<div class="sgb"><div><b>${P.length} suggestion${P.length>1?'s':''} from site walk</b><span>Cells marked → are waiting for you. Tap one to review the numbers.</span></div><button data-sacc>Accept all</button></div>`:''})()}
+  ${sDiffHTML()}
   <div class="sgrid">${SRP.map(s=>{const ii=s.rows.map(([r])=>s.k+r);return`<div class="blk srpb ${s.k.startsWith('gf')?'f-gf':'f-ff'}"><div class="bh"><h2>${s.label}</h2><span>${p1(avg(ii.map(id=>sPh(sFinal(id)))))}% phys.</span></div>
    <div class="srt"><span></span><span>1st</span><span>2nd</span><span>3rd</span><span>Phys</span></div>
-   ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=SO[id],ed=o&&(!o.w||o.w===W0)&&f.some((v,k)=>Math.abs(v-l[k])>.004);const rv=o&&o.w===W0;return`<div class="srr${rv?' rv':''}"><button class="srn" data-sconf="${id}"><b>${esc(SITEM[id].area)}</b><small>${rv?'✓ reviewed':ed?'set · tap to confirm':'tap to confirm'}</small></button>${[0,1,2].map(k=>{const pd=sPend(id,k,st);return`<button class="src ${pd?'sg':f[k]>l[k]+.004?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${pd?'→ '+Math.round(st[k].v*100)+'?':f[k]>l[k]+.004?'▲ set':'carried'}</small></button>`}).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${Math.abs(sPh(f)-sPh(l))<.0005?'var(--mute)':tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}%</small></span></div>`}).join('')}</div>`}).join('')}
+   ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=soG(id),ed=o&&f.some((v,k)=>Math.abs(v-l[k])>.004);const rv=!!o;return`<div class="srr${rv?' rv':''}"><button class="srn" data-sconf="${id}"><b>${esc(SITEM[id].area)}</b><small>${rv?'✓ reviewed':ed?'set · tap to confirm':'tap to confirm'}</small></button>${[0,1,2].map(k=>{const pd=sPend(id,k,st);return`<button class="src ${pd?'sg':f[k]>l[k]+.004?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${pd?'→ '+Math.round(st[k].v*100)+'?':f[k]>l[k]+.004?'▲ set':'carried'}</small></button>`}).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${Math.abs(sPh(f)-sPh(l))<.0005?'var(--mute)':tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}%</small></span></div>`}).join('')}</div>`}).join('')}
   </div><div class="ctaw"><button class="cta" data-sgen><span class="ct">${SWK[W0]?`Update saved W${W0}`:`Generate SRP · W${W0}`}<small>${sPendAll().length?sPendAll().length+(sPendAll().length>1?' suggestions':' suggestion')+' not reviewed – not included yet':'Fills your master Excel and saves this week'}</small></span><span class="ca">↓</span></button></div>
   ${sHist()}
   `;
@@ -1475,13 +1499,14 @@ function sOpen(id,k){const f=sFinal(id),st=sSite(id),l=sLast(id),pd=sPend(id,k,s
   <div class="srbig" id="sv">${Math.round(sTmp.v*100)}%</div>
   <div class="srpad">${[-5,-1,1,5].map(d=>`<button data-sd="${d}">${d>0?'+':''}${d}</button>`).join('')}</div>
   ${st[k]?`${pd?`<button class="sgu" data-suse>Use suggestion · ${Math.round(st[k].v*100)}%<small>${st[k].v>=f[k]?'+':''}${Math.round((st[k].v-f[k])*100)}% vs now</small></button>`:''}<div class="lb">Site walk suggestion ${Math.round(st[k].v*100)}% · duration-weighted, never below last SRP</div><div class="srl"><div class="srh"><span>Activity</span><b>P6</b><b>Used</b></div>${st[k].l.map(a=>{const e=eff(a),si=e.src==='site';return`<div><span>${esc(a.sn)}<small>${a.od}d</small></span><b class="mu">${a.pct}%</b><b>${si?e.pct+'% <i class="tg">site</i>':Math.round(st[k].last*100)+'% <i class="tg l">last SRP</i>'}</b></div>`}).join('')}</div>`:'<div class="lb">No site walk update for this fix since the last XER – value carried from last SRP.</div>'}
-  <button class="save" data-ssave>Save ${Math.round(sTmp.v*100)}% for ${FIXN[k]}</button>${pd?`<button class="ghost" data-ssave>Keep ${Math.round(f[k]*100)}% (dismiss suggestion)</button>`:''}${SO[id]&&(!SO[id].w||SO[id].w===sWeek(sCut))?'<button class="ghost" data-sreset>Clear my values (back to last SRP)</button>':''}`;
+  <button class="save" data-ssave>Save ${Math.round(sTmp.v*100)}% for ${FIXN[k]}</button>${pd?`<button class="ghost" data-ssave>Keep ${Math.round(f[k]*100)}% (dismiss suggestion)</button>`:''}${soG(id)&&(!0||SO[id].w===sWeek(sCut))?'<button class="ghost" data-sreset>Clear my values (back to last SRP)</button>':''}`;
   $('#sheet').classList.add('on');$('#dim').classList.add('on')}
-async function sSaveCell(){const {id,k,v}=sTmp,f=sFinal(id).slice(),o=SO[id],W0=sWeek(sCut);f[k]=Math.max(0,Math.min(1,v));const sg=(o&&o.w===W0&&o.sg)?o.sg.slice():[null,null,null];sg[k]=sTmp.sg;const doc={v:f,sg,w:W0,at:Date.now(),by:me||''};SO[id]=doc;closeSheet();renderSrp();
-  if(db)try{await db.doc('srpo/'+id).set(doc);toast('SRP updated')}catch(e){toast('Not saved')}}
-async function sAcceptAll(){const P=sPendAll(),W0=sWeek(sCut),by={};P.forEach(([id,k,v])=>{const o=SO[id],b=by[id]??={v:sFinal(id).slice(),sg:(o&&o.w===W0&&o.sg)?o.sg.slice():[null,null,null]};b.v[k]=v;b.sg[k]=v});
-  const ids=Object.keys(by);ids.forEach(id=>SO[id]={...by[id],w:W0,at:Date.now(),by:me||''});renderSrp();toast(P.length+' suggestions accepted');if(db)try{await Promise.all(ids.map(id=>db.doc('srpo/'+id).set(SO[id])))}catch(e){toast('Not saved')}}
-async function sReset(id){delete SO[id];closeSheet();renderSrp();if(db)try{await db.doc('srpo/'+id).delete()}catch(e){}}
+async function sSaveCell(){const {id,k,v}=sTmp,f=sFinal(id).slice(),o=soG(id),W0=sWeek(sCut);f[k]=Math.max(0,Math.min(1,v));const sg=(o&&o.sg)?o.sg.slice():[null,null,null];sg[k]=sTmp.sg;
+  const p=soW(id,{v:f,sg,w:W0,at:Date.now(),by:me||''});closeSheet();renderSrp();const ok=await p;renderSrp();toast(ok?'SRP updated':'Not saved – value reverted, check signal and retry')}
+async function sAcceptAll(){const P=sPendAll(),W0=sWeek(sCut),by={};P.forEach(([id,k,v])=>{const o=soG(id),b=by[id]??={v:sFinal(id).slice(),sg:(o&&o.sg)?o.sg.slice():[null,null,null]};b.v[k]=v;b.sg[k]=v});
+  const ids=Object.keys(by),ps=ids.map(id=>soW(id,{...by[id],w:W0,at:Date.now(),by:me||''}));renderSrp();const res=await Promise.all(ps);const bad=res.filter(x=>!x).length;renderSrp();
+  toast(bad?`${bad} row${bad>1?'s':''} not saved – reverted, retry`:P.length+' suggestions accepted')}
+async function sReset(id){closeSheet();const W0=sWeek(sCut),ok=await soW(id,null);if(SO[id]&&(SO[id].w===W0||!SO[id].w)){delete SO[id];try{db&&await db.doc('srpo/'+id).delete()}catch(e){}}renderSrp();if(!ok)toast('Not reset – check signal')}
 async function sUploadMaster(f){if(!assets){toast('Upload not available');return}try{toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now()};if(db)await db.doc('srpm/master').set(SM);renderSrp();toast('Master SRP saved')}catch(e){toast('Upload failed')}}
 const sColN=c=>[...c].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0),sXe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sRx=ref=>new RegExp('<c r="'+ref+'"([^>]*?)(/>|>([\\s\\S]*?)</c>)');
@@ -1492,12 +1517,24 @@ function sPut(x,ref,mk,opt={}){const m=x.match(sRx(ref)),f=a=>mk(a).replace('"__
   return[x.replace(rm[0],`<row r="${r}"${rm[1]}>${cells.slice(0,pos)}${f(opt.s?` s="${opt.s}"`:'')}${cells.slice(pos)}</row>`),'set']}
 const sNum=v=>a=>`<c r="__"${a}><v>${v}</v></c>`,sStr=t=>a=>`<c r="__"${a} t="inlineStr"><is><t xml:space="preserve">${sXe(t)}</t></is></c>`;
 const sSer=s=>Math.round((Date.parse(s)-Date.UTC(1899,11,30))/864e5);
+let sDiff=null,sGenOk=false;
+const sCellV=(x,ref)=>{const m=x.match(sRx(ref));if(!m)return null;const v=(m[3]||'').match(/<v>([^<]*)<\/v>/);return v?+v[1]:null};
 async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel tool did not load');if(!SM.id)return toast('Upload the master SRP file first');
-  toast('Building SRP…');try{const buf=await (await fetch('/_blob/'+encodeURIComponent(SM.id))).arrayBuffer();const zip=await JSZip.loadAsync(buf);
-   let wb=await zip.file('xl/workbook.xml').async('string');const rels=await zip.file('xl/_rels/workbook.xml.rels').async('string');
+  const W0=sWeek(sCut),ok=sGenOk;sGenOk=false;toast('Checking master…');
+  try{const buf=await (await fetch('/_blob/'+encodeURIComponent(SM.id))).arrayBuffer();const zip=await JSZip.loadAsync(buf);
+   let wb=await zip.file('xl/workbook.xml')?.async('string'),rels=await zip.file('xl/_rels/workbook.xml.rels')?.async('string');if(!wb||!rels)throw new Error('Not an Excel workbook');
    const path=name=>{const m=wb.match(new RegExp('<sheet[^>]*?name="'+sXe(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"[^>]*r:id="([^"]+)"'));if(!m)return null;const t=rels.match(new RegExp('Id="'+m[1]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('Target="([^"]+)"[^>]*Id="'+m[1]+'"'));return t?'xl/'+t[1].replace(/^\/?xl\//,''):null};
-   const W0=sWeek(sCut),iss=[];let n=0;
-   for(const s of SRP){const p=path(s.name);if(!p||!zip.file(p)){iss.push('missing sheet '+s.name);continue}let x=await zip.file(p).async('string'),r;
+   // 1. validate every sheet and mapped cell before anything is written
+   const err=[],dif=[],X={};
+   for(const s of SRP){const p=path(s.name);if(!p||!zip.file(p)){err.push(`Missing sheet “${s.name.trim()}”`);continue}const x=await zip.file(p).async('string');X[s.k]={p,x};
+    for(const[row] of s.rows){if(!new RegExp('<row r="'+row+'"').test(x)){err.push(`${s.name.trim()}: row ${row} not found`);continue}
+     const f=sFinal(s.k+row);for(let i=0;i<3;i++){const ref=SCOL.p[i]+row,m=x.match(sRx(ref));if(m&&/<f[ >]/.test(m[3]||'')){err.push(`${s.name.trim()}!${ref} is a formula cell`);continue}
+      const mv=sCellV(x,ref),av=Math.round(f[i]*1000)/1000;if(mv!=null&&Math.abs(mv-av)>.0005)dif.push({sh:s.name.trim(),ref,id:s.k+row,i,mv,av,area:SITEM[s.k+row].area})}}}
+   if(err.length){sDiff={type:'err',items:err};renderSrp();toast('Master not compatible – nothing generated');return}
+   // 2. master differs from what the app would write → show differences, ask
+   if(dif.length&&!ok){sDiff={type:'diff',items:dif,W0};renderSrp();toast(dif.length+' cell'+(dif.length>1?'s':'')+' differ from the master – review before generating');return}
+   sDiff=null;const iss=[];let n=0;
+   for(const s of SRP){let {p,x}=X[s.k],r;
     if(s.k==='gfe'){const[y,mo,d]=sCut.split('-').map(Number);[x]=sPut(x,'D1',a=>`<c r="__"${a}><f>DATE(${y},${mo},${d})</f><v>${sSer(sCut)}</v></c>`,{formula:true});[x]=sPut(x,'E1',sStr('(W'+W0+')'))}
     for(const[row] of s.rows){const id=s.k+row,f=sFinal(id),st=sSite(id);
      for(let i=0;i<3;i++){[x,r]=sPut(x,SCOL.p[i]+row,sNum(Math.round(f[i]*1000)/1000));r==='set'?n++:iss.push(s.label+' '+SCOL.p[i]+row+' '+r);
@@ -1505,15 +1542,24 @@ async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel too
       const as=L.map(a=>eff(a).as).filter(Boolean).sort()[0],af=f[i]>=1?L.map(a=>eff(a).af).filter(Boolean).sort().pop():null;
       if(f[i]>0&&as)[x]=sPut(x,SCOL.s[i]+row,sNum(sSer(as)),{ifEmpty:true,s:ds});if(af)[x]=sPut(x,SCOL.f[i]+row,sNum(sSer(af)),{ifEmpty:true,s:ds})}}
     zip.file(p,x)}
+   if(iss.length){sDiff={type:'err',items:iss};renderSrp();toast('Some cells could not be written – nothing generated');return}
    wb=/<calcPr[^>]*fullCalcOnLoad/.test(wb)?wb:wb.replace(/<calcPr/,'<calcPr fullCalcOnLoad="1"');zip.file('xl/workbook.xml',wb);
    const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'}),dd=new Date(sCut+'T00:00'),fn=`PMX Daily SRP_${dd.getDate()} ${dd.toLocaleString('en-GB',{month:'short'})} ${dd.getFullYear()}.xlsx`;
-   const snap={w:W0,cut:sCut,v:Object.fromEntries(SIDS.map(id=>[id,sFinal(id)])),at:Date.now(),by:me||''};SG[W0]=snap;sMerge();if(db)try{await db.doc('srpg/'+sWid(W0)).set(snap)}catch(e){iss.push('history not saved')}
-   if(dl)await dl.save({filename:fn,data:blob});renderSrp();toast(`SRP ready · ${n} cells${iss.length?' · '+iss.length+' issue(s)':''}`);if(iss.length)console.warn(iss)}
-  catch(e){toast('Generate failed: '+(e.message||e.code||e))}}
+   if(dl)await dl.save({filename:fn,data:blob});
+   // 3. history only after a valid file; keep every previous submission of this week
+   const old=SG[W0]||null,snap={w:W0,cut:sCut,v:Object.fromEntries(SIDS.map(id=>[id,sFinal(id)])),at:Date.now(),by:me||'',rev:[...(old?.rev||[]),...(old?[{v:old.v,at:old.at,by:old.by,cut:old.cut}]:[])]};
+   let hok=true;if(db)try{await db.doc('srpg/'+sWid(W0)).set(snap)}catch(e){hok=false}
+   if(hok){SG[W0]=snap;sMerge()}renderSrp();toast(hok?`SRP W${W0} generated · ${n} cells${old?' · previous version kept':''}`:'File downloaded but history NOT saved – generate again')}
+  catch(e){sDiff={type:'err',items:[e.message||String(e)]};renderSrp();toast('Master not compatible – nothing generated')}}
+function sDiffHTML(){if(!sDiff)return'';const d=sDiff;if(d.type==='err')return`<div class="blk srpb sdf er"><div class="bh"><h2>Cannot generate</h2><button class="ix" data-sdx>×</button></div><p class="sinf">Nothing was written and history is unchanged. Fix the master or upload the right file:</p><ul>${d.items.slice(0,12).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
+ return`<div class="blk srpb sdf"><div class="bh"><h2>Master differs · ${d.items.length} cell${d.items.length>1?'s':''}</h2><button class="ix" data-sdx>×</button></div><p class="sinf">The uploaded master and the app's W${d.W0} values disagree. Choose which to keep before generating.</p>
+ <div class="sdt"><div class="sdh"><span>Cell</span><b>Master</b><b>App</b></div>${d.items.map(x=>`<div><span>${esc(x.sh)}!${x.ref}<small>${esc(x.area)} · ${FIXN[x.i]}</small></span><b>${Math.round(x.mv*1000)/10}%</b><b class="${x.av<x.mv?'dn':'up'}">${Math.round(x.av*1000)/10}%</b></div>`).join('')}</div>
+ <div class="qrow"><button class="qb" data-sdm>Use master values</button><button class="qb pri" data-sdw>Write app values</button></div></div>`}
 
 /* ---------- boot ---------- */
 async function boot(){
   try{const r=await fetch('baseline.json');setBase({...(await r.json()),at:0})}catch(e){}
+  try{B1=await (await fetch('b1.json')).json()}catch(e){B1=null}
   renderHome(true);setTimeout(()=>{if(!seen('t1'))startTour(TOUR1,'t1')},900);
   const W=window.claude;if(!W?.use){noteMsg='Preview – updates are not saved. Open the published app on your phone.';renderHome(false);return}
   [db,user,assets,dl,sampleFn]=await Promise.all(['db','user','assets','downloads','sample'].map(n=>W.use(n).catch(()=>null)));$('#aiBtn').hidden=!sampleFn;
