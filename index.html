@@ -38,8 +38,8 @@ button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;
 .pill{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.14)}
 .pill.l{background:rgba(242,154,46,.25);color:#ffd29a}.pill.b{background:rgba(210,58,70,.3);color:#ffc2c7}
 /* romp switch */
-.sw{margin:-30px 16px 0;position:relative;z-index:2;background:var(--card);border-radius:20px;padding:6px;display:grid;grid-template-columns:1fr 1fr;box-shadow:var(--sh)}
-.sw i{position:absolute;top:6px;bottom:6px;left:6px;width:calc(50% - 6px);border-radius:15px;background:var(--c);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s}
+.sw{margin:-30px 16px 0;position:relative;z-index:2;background:var(--card);border-radius:20px;padding:6px;display:grid;grid-template-columns:1fr 1fr 1fr;box-shadow:var(--sh)}
+.sw i{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/3);border-radius:15px;background:var(--c);transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s}
 .sw button{position:relative;z-index:1;height:48px;font-weight:800;font-size:15px;color:var(--mute);transition:color .3s}
 .sw button[aria-pressed=true]{color:#fff}.sw small{display:block;font-size:11.5px;font-weight:600;opacity:.85;margin-top:-2px}
 .sec{display:flex;justify-content:space-between;align-items:baseline;margin:22px 20px 10px}.sec h2{font-size:17px;font-weight:800;margin:0}.sec span{font-size:13px;color:var(--mute)}
@@ -230,7 +230,7 @@ body.walking .aib-btn{bottom:calc(200px + env(safe-area-inset-bottom));right:12p
 .ith{display:grid;grid-template-columns:42px minmax(0,1fr) 22px;gap:10px;align-items:center;width:100%;text-align:left;padding:10px 6px}
 .ir{position:relative;width:42px;height:42px}.ir b{position:absolute;inset:0;display:grid;place-items:center;font-size:11.5px;font-weight:800}
 .itx b{display:block;font-size:14.5px;font-weight:700;line-height:1.3}.itx small{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;font-size:12px;color:var(--mute);margin-top:3px}.itx em{font-style:normal;color:var(--late);font-weight:800}.itx .bk{font-style:normal;color:var(--r4);font-weight:700}
-.dtag{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:999px;background:var(--soft);color:light-dark(#18489c,#9cc2ff)}.dtag.m{background:color-mix(in srgb,var(--r4) 14%,transparent);color:light-dark(#a3222c,#ffa3aa)}
+.dtag{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:999px;background:var(--soft);color:light-dark(#18489c,#9cc2ff)}.dtag.f{background:color-mix(in srgb,#c2410c 14%,transparent);color:#c2410c}.dtag.m{background:color-mix(in srgb,var(--r4) 14%,transparent);color:light-dark(#a3222c,#ffa3aa)}
 .ist{color:var(--mute);font-size:18px;text-align:center}.it.ck .ist{color:var(--ok)}.ist svg{width:18px;height:18px}.it.ck .itx b{color:var(--mute)}
 .itb{padding:2px 8px 12px;animation:pop .25s}
 .ql{font-size:12px;font-weight:800;color:var(--mute);margin:6px 0 8px;display:flex;justify-content:space-between}.ql span{font-weight:600}
@@ -401,6 +401,10 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .srt{font-size:11px;font-weight:800;color:var(--mute);text-align:center;padding:4px 0}.srt span:first-child{text-align:left}
 .srr{padding:7px 0;border-top:1px solid var(--line)}.srr>b{font-size:13.5px;font-weight:700;line-height:1.25}.srr .mo{font-style:normal;font-size:10px;color:var(--late);font-weight:800}
 .src{height:48px;border-radius:12px;background:var(--card2);display:grid;place-items:center;align-content:center;line-height:1.1}.src b{font-size:15px;font-weight:800}.src small{font-size:9.5px;color:var(--mute);font-weight:700}
+.src.sg{background:color-mix(in srgb,var(--late) 14%,var(--card2));box-shadow:inset 0 0 0 1.5px var(--late)}.src.sg small{color:var(--late);font-weight:800}
+.sgb{display:flex;gap:12px;align-items:center;margin:14px 16px 0;padding:12px 14px;border-radius:18px;background:color-mix(in srgb,var(--late) 12%,var(--card));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--late) 50%,transparent)}.sgb div{flex:1;min-width:0}.sgb b{display:block;font-size:14px}.sgb span{font-size:12px;color:var(--mute)}.sgb button{flex:none;height:42px;padding:0 14px;border-radius:12px;background:var(--late);color:#fff;font-weight:800;font-size:13px}
+.sgu{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:60px;margin:12px 0 4px;border-radius:16px;background:var(--late);color:#fff;font-weight:800;font-size:16px}.sgu small{font-size:11.5px;font-weight:700;opacity:.9}
+.srl div{display:grid!important;grid-template-columns:minmax(0,1fr) 40px 96px}.srl div b{text-align:right}.srl .mu{color:var(--mute);font-weight:600}.srl small{display:block;font-size:10.5px;color:var(--mute)}.srl .srh{font-size:10.5px;font-weight:800;color:var(--mute)}.srl .tg{font-style:normal;font-size:9.5px;font-weight:800;padding:1px 5px;border-radius:5px;background:color-mix(in srgb,var(--navy) 12%,transparent);color:var(--navy2)}.srl .tg.l{background:var(--soft);color:var(--mute)}
 .src.ss{background:color-mix(in srgb,var(--navy) 10%,var(--card2));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--navy) 35%,transparent)}
 .srp2{text-align:right;font-weight:800;font-size:14px;line-height:1.15}.srp2 small{display:block;font-size:10.5px}
 .srbig{text-align:center;font-size:54px;font-weight:800;margin:14px 0 6px}.srpad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.srpad button{height:50px;border-radius:14px;background:var(--card2);font-weight:800;font-size:16px}
@@ -435,7 +439,7 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .xls{display:flex;flex-direction:column}.xr{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);text-align:left;width:100%}.xls .xr:first-child{border-top:0}
 .xg{width:40px;height:40px}.xg text{font-size:10.5px;font-weight:800;fill:var(--ink,currentColor)}
 .xm{min-width:0}.xm>b{display:block;font-size:13.5px;font-weight:700;line-height:1.3}.xt{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}.xt i{font-style:normal;font-size:10.5px;font-weight:700;color:var(--mute);background:var(--card2);padding:2px 7px;border-radius:6px}
-.xt i.e{color:#2f6fd8;background:color-mix(in srgb,#2f6fd8 12%,transparent)}.xt i.m{color:#0e9f8a;background:color-mix(in srgb,#0e9f8a 12%,transparent)}
+.xt i.e{color:#2f6fd8;background:color-mix(in srgb,#2f6fd8 12%,transparent)}.xt i.m{color:#0e9f8a;background:color-mix(in srgb,#0e9f8a 12%,transparent)}.xt i.f{color:#c2410c;background:color-mix(in srgb,#c2410c 12%,transparent)}
 .xi{display:block;margin-top:5px;font-size:11.5px;font-weight:700;color:var(--r4)}
 .xp{font-size:11px;font-weight:800;padding:5px 9px;border-radius:99px;white-space:nowrap}.xp.r{background:color-mix(in srgb,var(--r4) 13%,transparent);color:var(--r4)}.xp.a{background:color-mix(in srgb,var(--late) 16%,transparent);color:var(--late)}.xp.b{background:color-mix(in srgb,var(--navy) 10%,transparent);color:var(--navy)}
 .xmore summary{list-style:none;display:flex;justify-content:center;align-items:center;gap:8px;height:44px;margin-top:6px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy);cursor:pointer}.xmore summary::-webkit-details-marker{display:none}.xmore[open] summary .hchev{transform:rotate(180deg)}
@@ -554,8 +558,10 @@ details.gl summary{list-style:none;display:flex;justify-content:space-between;al
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ROOMS={'ELECTRICAL 2.2 (ROMP3)':['R3','E2.2','Electrical room'],'DAHU 05':['R3','DAHU 05','AHU room'],'DAHU 06':['R3','DAHU 06','AHU room'],'DATA HALL ROMP 3':['R3','Data Hall','White space'],'FIRST FLOOR MEZZANINE':['R3','FF Mezz','Mezzanine'],
-  'ELECTRICAL 1.2 (ROMP4)':['R4','E1.2','Electrical room'],'DAHU 07':['R4','DAHU 07','AHU room'],'DAHU 08':['R4','DAHU 08','AHU room'],'DATA HALL ROMP 4':['R4','Data Hall','White space'],'GROUND FLOOR MEZZANINE':['R4','GF Mezz','Mezzanine']};
-const RN={R3:'Romp 3',R4:'Romp 4'},RC={R3:'#2f8fd8',R4:'#d23a46'},FL={R3:'First floor',R4:'Ground floor'};
+  'ELECTRICAL 1.2 (ROMP4)':['R4','E1.2','Electrical room'],'DAHU 07':['R4','DAHU 07','AHU room'],'DAHU 08':['R4','DAHU 08','AHU room'],'DATA HALL ROMP 4':['R4','Data Hall','White space'],'GROUND FLOOR MEZZANINE':['R4','GF Mezz','Mezzanine'],
+  'CHILLER PLANT ROOM':['R4','Chiller','Plant room'],'GENSET YARD':['R4','Genset','Yard'],'ROOF FLOOR':['RF','Roof','Roof']};
+const RN={R3:'Romp 3',R4:'Romp 4',RF:'Plant'},RC={R3:'#2f8fd8',R4:'#d23a46',RF:'#18489c'},FL={R3:'First floor',R4:'Ground floor',RF:'Roof'},FS={R3:'1F',R4:'GF',RF:'RF'},FLRS=['R4','R3','RF'];
+const dcl=D=>D==='ELE'?'e':D==='FIRE'?'f':'m';
 const SYS={Elec:'Electrical',Mech:'ACMV',FS:'Sprinkler',Vesda:'VESDA',BMS:'BMS','':'General'};
 const STN={N:'Not started',A:'In progress',C:'Complete'},P6ST={N:'Not Started',A:'In Progress',C:'Completed'};
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -595,7 +601,7 @@ function parseXER(txt){
       as:d(x.act_start_date),af:d(x.act_end_date),ps:d(x.target_start_date),pf:d(x.target_end_date),ef:d(x.early_end_date),od:+od.toFixed(2),rd:+rd.toFixed(2)})}
   const P=T.PROJECT?.r?.[0]||{};return {dd:(P.last_recalc_date||'').slice(0,10),proj:P.proj_short_name||'',acts};
 }
-const disc=a=>a.scope==='KJM'?'':a.sys==='Mech'?'MECH':(a.sys==='Elec'||a.sys==='BMS'||(!a.sys&&a.trade==='Ele'))?'ELE':'';
+const disc=a=>a.scope==='KJM'?'':(a.sys==='Mech'||a.sys==='Diesel')?'MECH':(a.sys==='Elec'||a.sys==='BMS'||(!a.sys&&(a.trade==='Ele'||a.trade==='Diesel')))?'ELE':(['FP','FS','Vesda'].includes(a.sys)||(!a.sys&&a.trade==='FP'))?'FIRE':'';
 const dn=s=>s?Math.round(Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10))/864e5):0;
 function setBase(b){B=b;A=b.acts.filter(a=>ROOMS[a.area]&&disc(a)).map(a=>({...a,R:ROOMS[a.area][0],rm:ROOMS[a.area][1],D:disc(a)}))}
 
@@ -611,7 +617,7 @@ function countUp(el){const to=+el.dataset.n,dc=+(el.dataset.dec||0),t0=performan
   const f=t=>{const k=Math.min(1,(t-t0)/dur);el.textContent=(to*(1-Math.pow(1-k,3))).toFixed(dc);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 
 /* ---------- site walk ---------- */
-const ORDER={R3:['ELECTRICAL 2.2 (ROMP3)','DAHU 05','DAHU 06','DATA HALL ROMP 3','FIRST FLOOR MEZZANINE'],R4:['ELECTRICAL 1.2 (ROMP4)','DAHU 07','DAHU 08','DATA HALL ROMP 4','GROUND FLOOR MEZZANINE']};
+const ORDER={R3:['ELECTRICAL 2.2 (ROMP3)','DAHU 05','DAHU 06','DATA HALL ROMP 3','FIRST FLOOR MEZZANINE'],R4:['ELECTRICAL 1.2 (ROMP4)','DAHU 07','DAHU 08','DATA HALL ROMP 4','GROUND FLOOR MEZZANINE','CHILLER PLANT ROOM','GENSET YARD'],RF:['ROOF FLOOR']};
 let wRoom=null,wList=[],wIdx=0,wMode='item',wPanel='',wPick=null;
 const tday=ms=>ms&&ymd(new Date(ms))===today();
 const checked=a=>{const u=U[sid(a.id)];return!!u&&(u.wd?u.wd===wDate:(wDate===today()&&(tday(u.chk)||tday(u.pat))))};
@@ -625,7 +631,7 @@ const WI={same:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 const REASONS=['No access / area not ready','Material not on site','Waiting other trade','Drawing / RFI pending','Manpower shortage','Testing / inspection pending'];
 const OWNERS=['Kajima','PMX','Supplier','Subcon','Client'];
 let wEv='V',wR='',wO='',wDate=today();
-const FLI=r=>`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="${r==='R4'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><rect x="9" y="8" width="22" height="11" rx="2" fill="${r==='R3'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><text x="20" y="${r==='R3'?17:30}" text-anchor="middle" font-size="8" font-weight="800" fill="${'var(--fc)'}">${r==='R3'?'1F':'GF'}</text></svg>`;
+const FLI=r=>r==='RF'?`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M7 19L20 7l13 12z" fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><text x="20" y="17" text-anchor="middle" font-size="7" font-weight="800" fill="var(--fc)">RF</text></svg>`:`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="${r==='R4'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><rect x="9" y="8" width="22" height="11" rx="2" fill="${r==='R3'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><text x="20" y="${r==='R3'?17:30}" text-anchor="middle" font-size="8" font-weight="800" fill="${'var(--fc)'}">${r==='R3'?'1F':'GF'}</text></svg>`;
 let oRoom=null,oItem=null,qPanel='',qVal=null;
 const roomItems=k=>roomOpen(k).sort((x,y)=>(checked(x)-checked(y))||(late(y)-late(x))||(x.pf<y.pf?-1:1));
 function startRoom(k){romp=ROOMS[k][0];if(tab!=='home')goTab('home');oRoom=k;const l=roomItems(k);oItem=(l.find(a=>!checked(a))||{}).id||null;qPanel='';renderHome(false);
@@ -653,7 +659,7 @@ async function askHint(a){if(!sampleFn)return;aiHint[a.id]={t:'Thinking…',busy
   const prompt=`You are an experienced MEP site supervisor on a hyperscale data centre fit-out in Malaysia (PMX, KUL071). An engineer is standing at this activity during a site walk:
 Activity: ${a.sn} (${a.id})
 Room: ${RN[a.R]} ${a.rm} (${FL[a.R]})
-Discipline: ${a.D==='MECH'?'Mechanical / ACMV':'Electrical'}
+Discipline: ${a.D==='MECH'?'Mechanical / ACMV':a.D==='FIRE'?'Fire protection / VESDA':'Electrical'}
 P6 progress: ${eff(a).pct}%
 Give 5 short bullet points: what to physically check to judge the real % complete, and what photo to take as evidence. Each bullet under 14 words. No intro, no headings, just "- " bullets.`;
   try{const {text}=await sampleFn(prompt,{modelTier:'quick',cache:{gcTime:864e5},onText:({text})=>{aiHint[a.id]={t:text,busy:1};const el=document.getElementById('aih');if(el)el.textContent=text}});aiHint[a.id]={t:text}}
@@ -663,7 +669,7 @@ Give 5 short bullet points: what to physically check to judge the real % complet
 let lastSh=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90].filter(p=>p>e.pct);
   return`<div class="it ${op?'op':''} ${sh?'sh':''} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}">${op?`<div class="nowl">● Now checking</div>`:''}<button class="ith" data-item="${esc(a.id)}">
    <span class="ir">${ring(e.pct,11,e.st==='C'?'var(--ok)':col)}<b>${e.pct}</b></span>
-   <span class="itx"><b>${esc(a.sn)}</b><small><span class="dtag ${a.D==='MECH'?'m':''}">${a.D}</span>${late(a)?`<em>${daysLate(a)}d late</em>`:'Due '+dmy(a.pf)}${u.cons?' · <i class="bk">⛔ '+esc(u.cons.split(' – ')[0])+'</i>':''}</small></span>
+   <span class="itx"><b>${esc(a.sn)}</b><small><span class="dtag ${a.D==='MECH'?'m':a.D==='FIRE'?'f':''}">${a.D}</span>${late(a)?`<em>${daysLate(a)}d late</em>`:'Due '+dmy(a.pf)}${u.cons?' · <i class="bk">⛔ '+esc(u.cons.split(' – ')[0])+'</i>':''}</small></span>
    <span class="ist">${ck?WI.ok:op?'▴':'▾'}</span></button>
   ${op?`<div class="itb">
    <div class="hint2 ${hintOpen?'on':''}"><button class="hbt" data-hint>💡 What to check on site <span>${hintOpen?'▴':'▾'}</span></button>${hintOpen?`<ul>${hintFor(a).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${sampleFn?(aiHint[a.id]?`<div class="aih"><b>✦ AI site tips</b><div id="aih">${esc(aiHint[a.id].t)}</div></div>`:`<button class="aib2" data-aihint="${esc(a.id)}">✦ Ask AI for more detail</button>`):''}`:''}</div>
@@ -675,7 +681,7 @@ let lastSh=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked
    :`<div class="ql">Progress now <span>tap to save</span></div><div class="qp">${opts.map(p=>`<button data-qp="${p}">${p}%</button>`).join('')}<button class="qd" data-q="done">${WI.ok} Done</button></div>
      <div class="qrow"><button class="qb" data-q="same">${WI.same} No change</button><button class="qb red" data-q="blk">${WI.blk} Blocked</button></div><div class="ql" style="margin-top:12px">Fine-tune <span>±1%</span></div><div class="qrow1"><span class="stp"><button data-qs="-1" aria-label="Minus 1%">−</button><b>${qVal??e.pct}%</b><button data-qs="1" aria-label="Plus 1%">+</button></span></div>
      ${qVal!=null&&qVal!==e.pct?`<button class="qsave" data-qsave>Save ${qVal}%</button>`:''}`}
-   <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':'Electrical'}${e.as?' · started '+dmy(e.as):''}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}</div>`}
+   <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${e.as?' · started '+dmy(e.as):''}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}</div>`}
 function renderHome(anim){
   const all=A.filter(a=>isOpen(a)||checked(a)),done=all.filter(checked).length,tot=all.length,pc=Math.round(done/Math.max(1,tot)*100);
   const R=ORDER[romp],next=R.find(k=>toCheck(k).length),started=R.some(k=>roomOpen(k).length&&toCheck(k).length<roomOpen(k).length),left=R.reduce((s,k)=>s+toCheck(k).length,0);
@@ -687,7 +693,7 @@ function renderHome(anim){
   $('#s-home').innerHTML=`<div class="hero"><div class="hrow"><div><div class="hello">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div><div class="proj">Site Walk</div></div><div style="display:flex;gap:8px"><button class="hbtn" data-help aria-label="How it works">?</button><button class="hbtn" data-find aria-label="Find an activity">${IC.search}</button></div></div>
    <div class="hgrid"><div class="hring">${ring(pc,10,'#fff',anim).replace('stroke="var(--soft)"','stroke="rgba(255,255,255,.18)"')}<div><b data-n="${done}">${anim?0:done}</b><span>/${tot}</span></div></div>
    <div><div class="htitle">${done===0?'Ready when you are':done>=tot?'All items checked':'Walk in progress'}</div><div class="hsub">${done>=tot?'Send the changes to P6 from the P6 sync tab.':`${tot-done} items left to check${wDate===today()?' today':' for '+dmy(wDate)}`}</div></div></div></div>
-  <div class="swl">👇 Choose your floor</div><div class="sw" style="--c:${RC[romp]}"><i style="transform:translateX(${romp==='R3'?'100%':'0'})"></i>${['R4','R3'].map(r=>`<button data-romp="${r}" aria-pressed="${romp===r}">${FLI(r)}<span class="flt"><span class="fl">${FL[r]}</span><small>${RN[r]} · ${ORDER[r].reduce((n,k)=>n+toCheck(k).length,0)} left</small></span>${romp===r?'<i class="flck">✓</i>':''}</button>`).join('')}</div>
+  <div class="swl">👇 Choose your floor</div><div class="sw" style="--c:${RC[romp]}"><i style="transform:translateX(${FLRS.indexOf(romp)*100}%)"></i>${FLRS.map(r=>`<button data-romp="${r}" aria-pressed="${romp===r}">${FLI(r)}<span class="flt"><span class="fl">${FL[r]}</span><small>${r==='RF'?'':RN[r]+' · '}${ORDER[r].reduce((n,k)=>n+toCheck(k).length,0)} left</small></span>${romp===r?'<i class="flck">✓</i>':''}</button>`).join('')}</div>
   ${noteMsg?`<div class="note">${esc(noteMsg)}</div>`:''}
   <div class="hpills wset"><label class="wsb ${wDate!==today()?'bk':''}"><span class="wsl">Walk date</span><b>📅 ${wDate===today()?'Today, ':''}${new Date(wDate+'T00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})} ▾</b><input type="date" id="wDate" value="${wDate}" max="${today()}"></label><button class="wsb ${wEv==='V'?'':'rp'}" data-evt><span class="wsl">Evidence</span><b>${wEv==='V'?'👁 Seen on site':'💬 Reported'} ⇄</b></button></div>
   ${oRoom?'':`<div class="ctaw">${next?`<button class="cta" data-walk="${esc(next)}"><span class="ct">Start walk<small>${esc(ROOMS[next][1])} · ${left} item${left===1?'':'s'} on ${FL[romp].toLowerCase()}</small></span><span class="ca">→</span></button>`:`<button class="cta ok" data-tab="sync"><span class="ct">${RN[romp]} checked<small>Review and export to P6</small></span><span class="ca">→</span></button>`}</div>`}
@@ -777,7 +783,7 @@ function toast(m,u){$('#tmsg').textContent=m;$('#tundo').hidden=!u;$('#toast').c
 
 /* ---------- dashboard ---------- */
 const xRow=(a,f)=>{const p=eff(a).pct,x=f(a),r=15.5,c=2*Math.PI*r;return`<button class="xr" data-open="${esc(a.id)}"><svg class="xg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="${r}" fill="none" stroke="var(--soft)" stroke-width="3.5"/><circle cx="18" cy="18" r="${r}" fill="none" stroke="${p>=100?'var(--ok)':'var(--navy)'}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 18 18)"/><text x="18" y="21.5" text-anchor="middle">${p}</text></svg>
- <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${a.R==='R3'?'1F':'GF'} · ${esc(a.rm)}</i><i class="${a.D==='ELE'?'e':'m'}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i></span>${x.sub}</span>${x.tag}</button>`};
+ <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${FS[a.R]} · ${esc(a.rm)}</i><i class="${dcl(a.D)}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i></span>${x.sub}</span>${x.tag}</button>`};
 const xList=(l,f)=>`<div class="xls">${l.slice(0,5).map(a=>xRow(a,f)).join('')}</div>${l.length>5?`<details class="xmore"><summary>Show all ${l.length}<span class="hchev">▾</span></summary><div class="xls">${l.slice(5).map(a=>xRow(a,f)).join('')}</div></details>`:''}`;
 let exF='all',exAll=0,laDay='',laAll=0,glK='Progress';
 const GL=[['Progress','Weighted % complete: sum of (P6 original duration × % complete) ÷ sum of original durations. Site walk updates after the last XER load override P6.',()=>''],
@@ -785,7 +791,7 @@ const GL=[['Progress','Weighted % complete: sum of (P6 original duration × % co
  ['Blocked','Blocker recorded on the site walk and not yet cleared.',()=>A.filter(blk).length+' blocked now'],
  ['At risk','Due within 3 days and under 50% done.',()=>''],
  ['Forecast','Linear from today to each open activity\'s P6 early finish.',()=>''],
- ['Scope','PMX scope, ELE or MECH (incl. BMS/EPMS), Romp 3 & 4 rooms only. Chiller plant, genset yard and roof excluded.',()=>A.length+' activities']];
+ ['Scope','PMX construction scope in P6: ELE (incl. BMS/EPMS), MECH (incl. diesel), FIRE (FP, sprinkler, VESDA). All areas incl. Chiller plant, Genset yard and Roof. Kajima items excluded. SRP counts GF/FF ELE & MECH only.',()=>A.length+' activities']];
 function glDraw(){let p=$('#glp');if(!p){p=document.createElement('div');p.id='glp';p.setAttribute('role','dialog');p.setAttribute('aria-label','Definitions');document.body.appendChild(p)}
  const g=GL.find(x=>x[0]===glK)||GL[0],n=g[2]();
  p.innerHTML=`<div class="glh"><b>Definitions</b><button class="glx" data-glx aria-label="Close">✕</button></div><div class="glc">${GL.map(([t])=>`<button data-glk="${t}" aria-pressed="${t===glK}">${t}</button>`).join('')}</div><div class="gld"><h4>${g[0]}</h4><p>${g[1]}</p>${n?`<span class="gln">${n}</span>`:''}</div>`}
@@ -797,7 +803,7 @@ function excHTML(l,bl,lt){const f=exF==='blk'?l.filter(blk):exF==='late'?l.filte
  const worst=lt.reduce((m,a)=>Math.max(m,daysLate(a)),0);
  const row=a=>{const u=U[sid(a.id)]||{},b=blk(a),lz=late(a),dl=lz?daysLate(a):0,p=eff(a).pct;
   return`<button class="er ${b?'eb':'el'}" data-open="${esc(a.id)}"><span class="ebar"></span><span class="em"><span class="et"><b>${esc(a.sn)}</b>${lz?`<span class="edl"><b>${dl}</b>d late</span>`:''}</span>
-  <span class="xt"><i>${a.R==='R3'?'1F':'GF'} · ${esc(a.rm)}</i><i class="${a.D==='ELE'?'e':'m'}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i><i>${p}%</i></span>
+  <span class="xt"><i>${FS[a.R]} · ${esc(a.rm)}</i><i class="${dcl(a.D)}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i><i>${p}%</i></span>
   ${u.cons?`<span class="eblk"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg><span>${esc(u.cons)}${u.cown?`<em>${esc(u.cown)}</em>`:''}</span></span>`:''}
   <span class="epb"><i style="width:${p}%"></i></span></span></button>`};
  return`<section class="blk exb"><div class="bh"><h2>Exceptions</h2><span>${l.length?`oldest ${worst}d late`:''}</span></div>
@@ -808,7 +814,7 @@ function laHTML(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{con
  const wd=k=>new Date(k).toLocaleDateString('en-GB',{weekday:'short'}),lab=k=>{const d=dn(k)-t0;return d===0?'Today':d===1?'Tomorrow':new Date(k).toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short'})};
  const groups=[];sh.forEach(a=>{let g=groups.find(g=>g.k===a.pf);if(!g)groups.push(g={k:a.pf,l:[]});g.l.push(a)});
  const row=a=>{const p=eff(a).pct,rk=riskA(a),c=2*Math.PI*15.5;return`<button class="lr${rk?' rk':''}" data-open="${esc(a.id)}"><svg class="xg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--soft)" stroke-width="3.5"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="${rk?'var(--late)':'var(--navy2)'}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 18 18)"/><text x="18" y="21.5" text-anchor="middle">${p}</text></svg>
-  <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${a.R==='R3'?'1F':'GF'} · ${esc(a.rm)}</i><i class="${a.D==='ELE'?'e':'m'}">${a.D}</i>${rk?'<i class="rk">At risk</i>':''}</span></span></button>`};
+  <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${FS[a.R]} · ${esc(a.rm)}</i><i class="${dcl(a.D)}">${a.D}</i>${rk?'<i class="rk">At risk</i>':''}</span></span></button>`};
  return`<section class="blk lab"><div class="bh"><h2>Two-week look-ahead</h2><span>${la.length} due${risk?` · <b class="lrk">${risk} at risk</b>`:''}</span></div>
  <div class="lst" role="tablist">${days.map(d=>`<button class="ld${d.i===0?' tdy':''}${d.n?'':' z'}" data-lad="${d.k}" aria-pressed="${laDay===d.k}"${d.n?'':' disabled'}><span>${wd(d.k).slice(0,2)}</span><b>${+d.k.slice(8)}</b><i style="height:${d.n?8+d.n/mx*22:3}px"${d.r?' class="r"':''}></i><em>${d.n||''}</em></button>`).join('')}</div>
  ${laDay?`<button class="lclr" data-lad="">Filtered to 1 day <span>✕ All days</span></button>`:''}
@@ -823,16 +829,16 @@ function renderDash(){
   const f1=v=>v.toFixed(1),bar=p=>`<span class="ibar"><i style="width:${p}%"></i></span>`;
   const line=(lab,l,cls='')=>{const c=l.filter(a=>!isOpen(a)).length,ip=l.filter(a=>eff(a).st==='A').length,ns=l.length-c-ip,p=wpc(l);
     return`<tr class="${cls}"><th>${lab}</th><td class="n">${l.length}</td><td class="n">${c}</td><td class="n">${ip}</td><td class="n">${ns}</td><td class="n pcol">${f1(p)}${bar(p)}</td><td class="n ${l.filter(late).length?'w':''}">${l.filter(late).length||'–'}</td><td class="n ${l.filter(blk).length?'x':''}">${l.filter(blk).length||'–'}</td></tr>`};
-  const floors=['R4','R3'].filter(r=>!dR||r===dR);
+  const floors=FLRS.filter(r=>!dR||r===dR);
   const areaRows=floors.map(r=>{const lf=L.filter(a=>a.R===r);return`<tr class="grp"><th colspan="8">${FL[r]} · ${RN[r]}</th></tr>`+ORDER[r].map(k=>{const l=lf.filter(a=>a.area===k);return l.length?line(ROOMS[k][1],l,'arow" data-room="'+esc(k)):''}).join('')+line('Subtotal',lf,'sub')}).join('')+line('Total',L,'tot');
   const exc=[...bl.map(a=>({a,b:1})),...lt.filter(a=>!blk(a)).map(a=>({a,b:0}))].sort((x,y)=>(y.b-x.b)||(daysLate(y.a)-daysLate(x.a)));
   const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
-  <div class="hero dh2"><div class="hrow"><div><div class="hello">Romp 3 &amp; 4 · ELE &amp; MECH</div><div class="proj">Dashboard</div></div><button class="hbtn" data-gl aria-label="Definitions">i</button></div>
+  <div class="hero dh2"><div class="hrow"><div><div class="hello">KUL071 · PMX construction</div><div class="proj">Dashboard</div></div><button class="hbtn" data-gl aria-label="Definitions">i</button></div>
    <div class="dk"><div class="dkr">${ring(act,10,'#fff',true).replace('stroke="var(--soft)"','stroke="rgba(255,255,255,.18)"')}<div><b data-n="${f1(act)}" data-dec="1">0</b><span>% done</span></div></div>
     <div class="dkt"><div class="htitle">${gain>0?'+'+f1(gain)+' pts this week':'No movement this week'}</div><div class="hsub">P6 ${dmy(B.dd)} + site walk · forecast finish ${ffin?dmy(ffin):'–'}</div></div></div>
    <div class="dks"><div><b data-n="${open.length}">0</b><span>Open</span></div><div><b class="lt" data-n="${lt.length}">0</b><span>Late</span></div><div><b class="bk" data-n="${bl.length}">0</b><span>Blocked</span></div><div><b class="ok" data-n="${dn7}">0</b><span>Done 7d</span></div></div></div>
-  <div class="dfl"><div class="seg3">${[['','All'],['R4','Ground floor'],['R3','First floor']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','ELE + MECH'],['ELE','ELE'],['MECH','MECH']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
+  <div class="dfl"><div class="seg3">${[['','All'],['R4','GF'],['R3','1F'],['RF','Roof']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','All'],['ELE','ELE'],['MECH','MECH'],['FIRE','FIRE']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
 <section class="blk"><div class="bh"><h2>Cumulative progress</h2><div class="seg2 sm">${[['all','All'],['6m','6M'],['3m','3M']].map(([k,l])=>`<button data-scr="${k}" aria-pressed="${scR===k}">${l}</button>`).join('')}</div></div>
    <div class="fig" id="sc"><svg id="scs"></svg><div class="tip" id="tip" hidden></div></div>
    <div class="lg"><span><i class="l1"></i>Actual</span><span><i class="l2"></i>Forecast</span><span><i class="l3"></i>Data date</span><span style="margin-left:auto">Drag across the chart</span></div></section>
@@ -874,7 +880,7 @@ function chartAreas(L){const box=$('#arb');if(!box)return;const W=a=>Math.max(1,
   let rows=[...ORDER.R4,...ORDER.R3].filter(k=>(!dR||ROOMS[k][0]===dR)).map(k=>{const l=L.filter(a=>a.area===k),w=l.reduce((s,a)=>s+W(a),0);return{k,l,n:l.length,c:l.filter(a=>!isOpen(a)).length,ip:l.filter(a=>eff(a).st==='A').length,lt:l.filter(late).length,bk:l.filter(blk).length,p:w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0}}).filter(r=>r.n);
   if(arSort==='pct')rows.sort((a,b)=>a.p-b.p);else if(arSort==='late')rows.sort((a,b)=>b.lt-a.lt||a.p-b.p);
   box.innerHTML=rows.map(r=>{const v=ROOMS[r.k],ns=r.n-r.c-r.ip,on=arSel===r.k;
-    return`<div class="arw ${on?'on':''}"><button class="arr" data-ar="${esc(r.k)}"><span class="arl"><b>${esc(v[1])}</b><small>${v[0]==='R3'?'1F':'GF'}</small></span>
+    return`<div class="arw ${on?'on':''}"><button class="arr" data-ar="${esc(r.k)}"><span class="arl"><b>${esc(v[1])}</b><small>${FS[v[0]]}</small></span>
      <span class="art" style="--rc:${RC[v[0]]}"><i class="g1" style="width:0" data-w="${r.c/r.n*100}%"></i><i class="g2" style="width:0" data-w="${r.ip/r.n*100}%"></i><i class="g3" style="width:${ns/r.n*100}%"></i></span>
      <span class="arp">${r.p.toFixed(0)}%${r.lt?`<em>${r.lt}</em>`:''}</span></button>
      ${on?`<div class="ard"><div><b>${r.c}</b><span>Done</span></div><div><b>${r.ip}</b><span>In prog.</span></div><div><b>${ns}</b><span>Not st.</span></div><div><b class="w">${r.lt}</b><span>Late</span></div><div><b class="x">${r.bk}</b><span>Blkd</span></div><button data-walkarea="${esc(r.k)}">Walk ${esc(v[1])} →</button></div>`:''}</div>`}).join('');
@@ -888,7 +894,7 @@ function chartDonut(L){const s=$('#dns');if(!s)return;const segs=[['Done',L.filt
   s.innerHTML=g+`<text x="80" y="76" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)" font-family="Inter Tight,Inter">${sv?sv[1]:L.length}</text><text x="80" y="94" text-anchor="middle" font-size="10" fill="var(--mute)">${sv?sv[0]+' · '+Math.round(sv[1]/tot*100)+'%':'activities'}</text>`;
   $('#dnl').innerHTML=segs.map(([l,v,col],i)=>`<button data-dn="${i}" aria-pressed="${dnSel===i}"><i style="background:${col}"></i>${l}<b>${v}</b></button>`).join('')}
 function chartAging(L){const box=$('#agb');if(!box)return;const lt=L.filter(late),B=[['1–7 days',1,7],['8–30 days',8,30],['31–60 days',31,60],['Over 60 days',61,1e9]].map(([l,a,b])=>({l,items:lt.filter(x=>{const d=daysLate(x);return d>=a&&d<=b})})),mx=Math.max(1,...B.map(b=>b.items.length));
-  box.innerHTML=B.map((b,i)=>`<details class="ag"><summary><span>${b.l}</span><span class="agt"><i style="width:0;opacity:${.45+i*.18}" data-w="${b.items.length/mx*100}%"></i></span><b>${b.items.length}</b></summary>${b.items.map(a=>`<button class="agi" data-open="${esc(a.id)}">${esc(a.sn)}<small>${a.R==='R3'?'1F':'GF'} ${esc(a.rm)} · ${daysLate(a)}d</small></button>`).join('')||'<p class="none">None</p>'}</details>`).join('');animate(box)}
+  box.innerHTML=B.map((b,i)=>`<details class="ag"><summary><span>${b.l}</span><span class="agt"><i style="width:0;opacity:${.45+i*.18}" data-w="${b.items.length/mx*100}%"></i></span><b>${b.items.length}</b></summary>${b.items.map(a=>`<button class="agi" data-open="${esc(a.id)}">${esc(a.sn)}<small>${FS[a.R]} ${esc(a.rm)} · ${daysLate(a)}d</small></button>`).join('')||'<p class="none">None</p>'}</details>`).join('');animate(box)}
 
 function planAt(a,t){const s=dn(a.ps),f=dn(a.pf);if(!a.ps||!a.pf)return 0;if(t<=s)return 0;if(t>=f)return 100;return 100*(t-s)/Math.max(1,f-s)}
 function actAt(a,t){const e=eff(a);if(!e.as||t<dn(e.as))return 0;const s=dn(e.as),end=e.st==='C'?dn(e.af):dn(today()),tg=e.st==='C'?100:e.pct;if(t>=end)return tg;return tg*(t-s)/Math.max(1,end-s)}
@@ -937,7 +943,7 @@ function floorMap(L){const T=dn(today()),W=a=>Math.max(1,a.od||1);
   <svg class="fmap" viewBox="0 0 320 366">${fl}</svg>
   <div class="fleg"><span class="grad"></span><span>0%</span><span style="margin-left:auto">100% complete</span></div>
   <div class="leg"><span><b class="bd">3</b>late items</span></div></div>`}
-function statusMix(L){const rows=['ELE','MECH'].filter(d=>!dD||d===dD).map(d=>{const l=L.filter(a=>a.D===d),n=l.length||1,c=l.filter(a=>!isOpen(a)).length,b=l.filter(blk).length,p=l.filter(a=>eff(a).st==='A'&&!blk(a)).length,ns=l.length-c-b-p;
+function statusMix(L){const rows=['ELE','MECH','FIRE'].filter(d=>!dD||d===dD).map(d=>{const l=L.filter(a=>a.D===d),n=l.length||1,c=l.filter(a=>!isOpen(a)).length,b=l.filter(blk).length,p=l.filter(a=>eff(a).st==='A'&&!blk(a)).length,ns=l.length-c-b-p;
     return`<div class="mx"><div class="mxh"><b>${d==='ELE'?'Electrical':'Mechanical (ACMV)'}</b><span>${l.length} activities</span></div><div class="mxb">${[[c,'var(--ok)'],[p,'var(--navy2)'],[b,'var(--r4)'],[ns,'var(--soft)']].map(([v,col])=>v?`<i style="width:0;background:${col}" data-w="${v/n*100}%">${v/n>.08?v:''}</i>`:'').join('')}</div></div>`}).join('');
   return`<div class="panel"><div class="ph2"><h3>Status mix</h3><span>number of activities</span></div>${rows}<div class="leg"><span><i style="background:var(--ok)"></i>Complete</span><span><i style="background:var(--navy2)"></i>In progress</span><span><i style="background:var(--r4)"></i>Blocked</span><span><i style="background:var(--soft)"></i>Not started</span></div></div>`}
 function glossary(){const g=[['% Plan','Where P6 says we should be today, from the baseline/planned dates.'],['% Complete','Where we actually are. P6 table: from P6. Site progress: from P6 + today\'s site updates, weighted by activity duration.'],['Variance','% Complete minus % Plan. Green = ahead, amber = slightly behind, red = more than 5 pp behind.'],['SPI','Schedule Performance Index = actual ÷ plan. Above 1.00 is ahead, below 1.00 is behind.'],['Late','Not finished and its planned finish date has passed.'],['Blocked','Someone on site logged a blocker (access, material, other trade).'],['Finish slip','Forecast finish of the last open activity minus its planned finish. + means later than plan.'],['S-curve','Cumulative % over time. Grey dashed = plan, blue = actual, orange dotted = forecast to finish.']];
@@ -1049,7 +1055,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('psedit' in d){psSheet();return}
   if('pssave' in d){psSave();return}
   if('dd' in d){dD=d.dd;renderDash();return}
-  if(d.romp){romp=d.romp;const s=$('.sw');s.style.setProperty('--c',RC[romp]);$('.sw i').style.transform=`translateX(${romp==='R3'?'100%':'0'})`;document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.romp===romp));vib(6);setTimeout(()=>renderHome(true),200);return}
+  if(d.romp){romp=d.romp;const s=$('.sw');s.style.setProperty('--c',RC[romp]);$('.sw i').style.transform=`translateX(${FLRS.indexOf(romp)*100}%)`;document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.romp===romp));vib(6);setTimeout(()=>renderHome(true),200);return}
   if(d.walk){startRoom(d.walk);return}
   if('exit' in d){back();return}
   if('redo' in d){startRoom(wRoom);wIdx=0;wMode=wList.length?'item':'roomdone';renderRoom(true);return}
@@ -1061,8 +1067,10 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('hcancel' in d){hOpen=null;hDraft=null;renderSrp();return}
   if('hsave' in d){hSave();return}
   if(d.scell){const[id,k]=d.scell.split('|');sOpen(id,+k);return}
-  if(d.sd&&sTmp){sTmp.v=Math.max(0,Math.min(1,Math.round(sTmp.v*100+ +d.sd)/100));$('#sv').textContent=Math.round(sTmp.v*100)+'%';vib(4);return}
-  if('ssave' in d){sSaveCell();return}
+  if(d.sd&&sTmp){sTmp.v=Math.max(0,Math.min(1,Math.round(sTmp.v*100+ +d.sd)/100));$('#sv').textContent=Math.round(sTmp.v*100)+'%';const sb=$('.save[data-ssave]');if(sb)sb.textContent=sb.textContent.replace(/\d+%/,Math.round(sTmp.v*100)+'%');vib(4);return}
+  if('ssave' in d){if(t.classList.contains('ghost'))sTmp.v=sFinal(sTmp.id)[sTmp.k];sSaveCell();return}
+  if('suse' in d){sTmp.v=sTmp.sg;sSaveCell();return}
+  if('sacc' in d){sAcceptAll();return}
   if('sreset' in d){sReset(sTmp.id);return}
   if('smaster' in d){$('#srpIn').click();return}
   if('sgen' in d){sGenerate();return}
@@ -1165,7 +1173,7 @@ function aiContext(){const open=A.filter(isOpen);
   const rows=open.map(a=>{const e=eff(a),u=U[sid(a.id)]||{};return[a.id,a.sn,RN[a.R]+' '+a.rm,a.D,e.pct+'%','due '+a.pf,late(a)?daysLate(a)+'d late':'',u.cons?'BLOCKED: '+u.cons+(u.cown?' ('+u.cown+')':''):'',checked(a)?'checked today':''].filter(Boolean).join(' | ')}).join('\n');
   const ps=P6S[psRows()[0]];
   const cur=oItem?A.find(x=>x.id===oItem):null;
-  return`You are the planner's assistant inside the KUL071 Site Tracker app (PMX Malaysia, data centre, Romp 3 = First floor, Romp 4 = Ground floor, PMX ELE & MECH scope only). Be brief and practical: short sentences or a few bullets, no preamble. Use only the data below; if something is not in it, say so. Today is ${today()}. P6 data date ${B.dd}.
+  return`You are the planner's assistant inside the KUL071 Site Tracker app (PMX Malaysia, data centre, Romp 3 = First floor, Romp 4 = Ground floor, plus Chiller plant, Genset yard and Roof; PMX construction scope: ELE, MECH, FIRE; the SRP covers GF/FF ELE & MECH only). Be brief and practical: short sentences or a few bullets, no preamble. Use only the data below; if something is not in it, say so. Today is ${today()}. P6 data date ${B.dd}.
 
 HOW THE APP WORKS
 - Site Walk tab: pick floor (Romp 3/4), tap Start walk, rooms in route order. Each activity: No change / Progress (tap new %) / Blocked (reason + who) / Done. It auto-advances. Evidence toggle top-right: On site (seen) or Reported (PIC told). Undo on the toast, ‹ Back to previous item.
@@ -1270,9 +1278,12 @@ const sWeek=s=>74+Math.round((Date.parse(s)-Date.parse('2026-11-18'))/6048e5);
 const sWid=w=>'W'+String(w).padStart(3,'0');
 const nextWed2=()=>{const d=new Date();d.setDate(d.getDate()+((3-d.getDay()+7)%7));return ymd(d)};
 const sActs=id=>A.filter(a=>SMAP[a.area]?.[a.D]===id);
-function sSite(id){const L=sActs(id),W=a=>Math.max(1,a.od||1);return[0,1,2].map(k=>{const l=L.filter(a=>fixOf(a)===k);if(!l.length||!l.some(a=>eff(a).src==='site'))return null;const w=l.reduce((s,a)=>s+W(a),0);return{v:Math.max(sLast(id)[k],l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w/100),n:l.length,l}})}
+function sSite(id){const L=sActs(id),W=a=>Math.max(1,a.od||1),lv=sLast(id);return[0,1,2].map(k=>{const l=L.filter(a=>fixOf(a)===k);if(!l.length||!l.some(a=>eff(a).src==='site'))return null;const w=l.reduce((s,a)=>s+W(a),0);
+  const use=a=>eff(a).src==='site'?eff(a).pct/100:lv[k];return{v:Math.max(lv[k],l.reduce((s,a)=>s+W(a)*use(a),0)/w),n:l.length,l,last:lv[k]}})}
+const sPend=(id,k,st=sSite(id))=>{const s=st[k];if(!s)return false;const f=sFinal(id),o=SO[id];if(Math.abs(s.v-f[k])<.005)return false;return!(o&&o.w===sWeek(sCut)&&o.sg&&o.sg[k]!=null&&Math.abs(o.sg[k]-s.v)<.005)};
+const sPendAll=()=>SIDS.flatMap(id=>{const st=sSite(id);return[0,1,2].filter(k=>sPend(id,k,st)).map(k=>[id,k,st[k].v])});
 function sLast(id){const ws=Object.values(SWK).filter(x=>x.w<sWeek(sCut)).sort((a,b)=>a.w-b.w),x=ws[ws.length-1];return x?.v?.[id]||SITEM[id].base}
-function sFinal(id){const o=SO[id];if(o&&Array.isArray(o.v))return o.v;const s=sSite(id),l=sLast(id);return[0,1,2].map(k=>s[k]?s[k].v:l[k])}
+function sFinal(id){const o=SO[id];if(o&&Array.isArray(o.v)&&(!o.w||o.w===sWeek(sCut)))return o.v;return sLast(id)}
 const sPh=v=>v[0]*SW[0]+v[1]*SW[1]+v[2]*SW[2];
 const sPlanFix=([s,f],d)=>{const c=Date.parse(d),a=Date.parse(s),b=Date.parse(f);return c>b?1:c<a?0:(c-a)/(b-a)};
 const sPlan=(id,d)=>SITEM[id].plan.reduce((t,p,i)=>t+sPlanFix(p,d)*SW[i],0);
@@ -1304,7 +1315,7 @@ function hEdit(x){if(!window.__EDIT)return`<div class="hpw"><span>🔒 Enter pas
 async function hUnlock(){const v=$('#hpw')?.value||'';if(await sha(v)===EH){window.__EDIT=v;renderSrp();toast('Editing unlocked')}else{$('#hpe').textContent='Wrong password';vib(20)}}
 async function hSave(){const x=SWK[hDraft.w],doc={...x,v:hDraft.v,at:Date.now(),by:me||'',edited:true};delete doc.src;
  try{await db.doc('srpw/'+sWid(x.w)).set(doc);SE[x.w]=doc;sMerge();hOpen=null;hDraft=null;renderSrp();toast('W'+x.w+' saved')}catch(e){toast(e.message==='Not allowed'?'Password rejected':'Not saved')}}
-function sInfoBox(){return`<div class="blk srpb"><div class="bh"><h2>How the SRP works</h2><button class="ix" data-sinfo>×</button></div><p class="sinf">A fix only moves when you update its activities in Site Walk (duration-weighted, never below last SRP). Otherwise it keeps last week's SRP value — P6 % is not used. Tap a cell to adjust, then Generate SRP. Physical = 1st×50% + 2nd×30% + 3rd×20%.</p>
+function sInfoBox(){return`<div class="blk srpb"><div class="bh"><h2>How the SRP works</h2><button class="ix" data-sinfo>×</button></div><p class="sinf">Every cell starts at last week's SRP. Site Walk updates only create a suggestion (→) – nothing changes until you accept or set the value. Suggestion = duration-weighted: updated activities use their site %, the rest use last SRP. Never below last SRP; P6 % is shown for reference only. Only GF/FF ELE & MECH count. Tap a cell to adjust, then Generate SRP. Physical = 1st×50% + 2nd×30% + 3rd×20%.</p>
    ${[['ACMV',['Pipe · duct · drain','Equipment','Connection']],['ELE',['Containment · trunking','Cable · busduct · equip.','Final fix · termination']]].map(([t,f])=>`<div class="smp"><b>${t}</b>${f.map((x,i)=>`<span><i>${i+1}${['st','nd','rd'][i]}</i>${x}</span>`).join('')}</div>`).join('')}
    <div class="smn">GF / FF Mezzanine are not in the SRP.</div></div>`}
 function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
@@ -1316,22 +1327,25 @@ function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
     <div class="dkt"><div class="htitle">${act-last>=0?'+':''}${p1(act-last)} pts vs ${lw?'W'+lw.w:'last SRP'}</div><div class="hsub">Plan ${p1(pl)}% · ${act-pl>=0?'ahead':'behind'} ${p1(Math.abs(act-pl))} pts · cut-off ${dmy(sCut)}</div></div></div></div>
   <div class="wset hpills"><label class="wsb"><span class="wsl">SRP cut-off (Wed)</span><b>📅 ${dmy(sCut)} · W${W0} ▾</b><input type="date" id="sCut" value="${sCut}"></label><button class="wsb" data-smaster><span class="wsl">Master SRP file</span><b>${SM.name?esc(SM.name.slice(0,18)):'Upload ▸'}</b></button></div>
   ${sInfo?sInfoBox():''}
+  ${(()=>{const P=sPendAll();return P.length?`<div class="sgb"><div><b>${P.length} suggestion${P.length>1?'s':''} from site walk</b><span>Cells marked → are waiting for you. Tap one to review the numbers.</span></div><button data-sacc>Accept all</button></div>`:''})()}
   ${SRP.map(s=>{const ii=s.rows.map(([r])=>s.k+r);return`<div class="blk srpb"><div class="bh"><h2>${s.label}</h2><span>${p1(avg(ii.map(id=>sPh(sFinal(id)))))}% phys.</span></div>
    <div class="srt"><span></span><span>1st</span><span>2nd</span><span>3rd</span><span>Phys</span></div>
-   ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=SO[id];return`<div class="srr"><b>${esc(SITEM[id].area)}${o?' <i class="mo">edited</i>':''}</b>${[0,1,2].map(k=>`<button class="src ${st[k]?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${st[k]?'site':'last'} ${f[k]>l[k]+.004?'▲':''}</small></button>`).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}</small></span></div>`}).join('')}</div>`}).join('')}
-  <div class="ctaw"><button class="cta" data-sgen><span class="ct">Generate SRP · W${W0}<small>Fills your master Excel and saves this week</small></span><span class="ca">↓</span></button></div>
+   ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=SO[id],ed=o&&(!o.w||o.w===W0)&&f.some((v,k)=>Math.abs(v-l[k])>.004);return`<div class="srr"><b>${esc(SITEM[id].area)}${ed?' <i class="mo">set</i>':''}</b>${[0,1,2].map(k=>{const pd=sPend(id,k,st);return`<button class="src ${pd?'sg':f[k]>l[k]+.004?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${pd?'→ '+Math.round(st[k].v*100)+'?':f[k]>l[k]+.004?'▲ set':'last'}</small></button>`}).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}</small></span></div>`}).join('')}</div>`}).join('')}
+  <div class="ctaw"><button class="cta" data-sgen><span class="ct">Generate SRP · W${W0}<small>${sPendAll().length?sPendAll().length+' suggestions not reviewed – they won\'t be included':'Fills your master Excel and saves this week'}</small></span><span class="ca">↓</span></button></div>
   ${sHist()}
   `;
   animate($('#s-srp'))}
-function sOpen(id,k){const f=sFinal(id),st=sSite(id),l=sLast(id);sTmp={id,k,v:f[k]};
+function sOpen(id,k){const f=sFinal(id),st=sSite(id),l=sLast(id),pd=sPend(id,k,st);sTmp={id,k,v:f[k],sg:st[k]?st[k].v:null};
   $('#sheet').innerHTML=`<div class="grab"></div><h3>${esc(SITEM[id].area)} · ${FIXN[k]}</h3><div class="sub">${SITEM[id].sh.label} · last SRP ${Math.round(l[k]*100)}% · weight ${SW[k]*100}%</div>
   <div class="srbig" id="sv">${Math.round(sTmp.v*100)}%</div>
   <div class="srpad">${[-5,-1,1,5].map(d=>`<button data-sd="${d}">${d>0?'+':''}${d}</button>`).join('')}</div>
-  ${st[k]?`<div class="lb">From site walk · ${st[k].n} activities · ${Math.round(st[k].v*100)}%</div><div class="srl">${st[k].l.map(a=>`<div><span>${esc(a.sn)}</span><b>${eff(a).pct}%</b></div>`).join('')}</div>`:'<div class="lb">No P6 activities mapped to this fix – value carried from last SRP.</div>'}
-  <button class="save" data-ssave>Save ${FIXN[k]}</button>${SO[id]?'<button class="ghost" data-sreset>Back to site-walk values</button>':''}`;
+  ${st[k]?`${pd?`<button class="sgu" data-suse>Use suggestion · ${Math.round(st[k].v*100)}%<small>${st[k].v>=f[k]?'+':''}${Math.round((st[k].v-f[k])*100)} pts vs now</small></button>`:''}<div class="lb">Site walk suggestion ${Math.round(st[k].v*100)}% · duration-weighted, never below last SRP</div><div class="srl"><div class="srh"><span>Activity</span><b>P6</b><b>Used</b></div>${st[k].l.map(a=>{const e=eff(a),si=e.src==='site';return`<div><span>${esc(a.sn)}<small>${a.od}d</small></span><b class="mu">${a.pct}%</b><b>${si?e.pct+'% <i class="tg">site</i>':Math.round(st[k].last*100)+'% <i class="tg l">last SRP</i>'}</b></div>`}).join('')}</div>`:'<div class="lb">No site walk update for this fix since the last XER – value carried from last SRP.</div>'}
+  <button class="save" data-ssave>Save ${Math.round(sTmp.v*100)}% for ${FIXN[k]}</button>${pd?`<button class="ghost" data-ssave>Keep ${Math.round(f[k]*100)}% (dismiss suggestion)</button>`:''}${SO[id]&&(!SO[id].w||SO[id].w===sWeek(sCut))?'<button class="ghost" data-sreset>Clear my values (back to last SRP)</button>':''}`;
   $('#sheet').classList.add('on');$('#dim').classList.add('on')}
-async function sSaveCell(){const {id,k,v}=sTmp,f=sFinal(id).slice();f[k]=Math.max(0,Math.min(1,v));const doc={v:f,at:Date.now(),by:me||''};SO[id]=doc;closeSheet();renderSrp();
+async function sSaveCell(){const {id,k,v}=sTmp,f=sFinal(id).slice(),o=SO[id],W0=sWeek(sCut);f[k]=Math.max(0,Math.min(1,v));const sg=(o&&o.w===W0&&o.sg)?o.sg.slice():[null,null,null];sg[k]=sTmp.sg;const doc={v:f,sg,w:W0,at:Date.now(),by:me||''};SO[id]=doc;closeSheet();renderSrp();
   if(db)try{await db.doc('srpo/'+id).set(doc);toast('SRP updated')}catch(e){toast('Not saved')}}
+async function sAcceptAll(){const P=sPendAll(),W0=sWeek(sCut),by={};P.forEach(([id,k,v])=>{const o=SO[id],b=by[id]??={v:sFinal(id).slice(),sg:(o&&o.w===W0&&o.sg)?o.sg.slice():[null,null,null]};b.v[k]=v;b.sg[k]=v});
+  const ids=Object.keys(by);ids.forEach(id=>SO[id]={...by[id],w:W0,at:Date.now(),by:me||''});renderSrp();toast(P.length+' suggestions accepted');if(db)try{await Promise.all(ids.map(id=>db.doc('srpo/'+id).set(SO[id])))}catch(e){toast('Not saved')}}
 async function sReset(id){delete SO[id];closeSheet();renderSrp();if(db)try{await db.doc('srpo/'+id).delete()}catch(e){}}
 async function sUploadMaster(f){if(!assets){toast('Upload not available');return}try{toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now()};if(db)await db.doc('srpm/master').set(SM);renderSrp();toast('Master SRP saved')}catch(e){toast('Upload failed')}}
 const sColN=c=>[...c].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0),sXe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
