@@ -540,6 +540,9 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .hxr .ok b{color:#9ff0c5}.hxr .go{background:linear-gradient(160deg,rgba(255,182,72,.28),rgba(255,182,72,.08));border-color:rgba(255,182,72,.55);animation:hxglow 2.4s ease-in-out infinite}.hxr .go b{color:#ffd08a}.hxr .go span{color:#fff}
 @keyframes hxglow{50%{box-shadow:0 0 18px rgba(255,182,72,.35)}}@media (prefers-reduced-motion:reduce){.hxr .go{animation:none}}
 .cta{background:linear-gradient(135deg,#13285a,#0b1a3d)!important;box-shadow:0 12px 28px rgba(8,22,49,.32)!important}.cta .ca{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#5ef0a8,#2fbf7a);color:#06301f;font-size:20px;font-weight:800;flex:none}
+.it.navf>.ith,.it.navf>.itb{animation:walkIn .6s cubic-bezier(.25,.8,.3,1) both}.it.navb>.ith,.it.navb>.itb{animation:walkBack .6s cubic-bezier(.25,.8,.3,1) both}.it.navf>.itb,.it.navb>.itb{animation-delay:.06s}
+@keyframes walkIn{from{transform:translateX(-44px);opacity:0}to{transform:none;opacity:1}}@keyframes walkBack{from{transform:translateX(44px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.it.navf>*,.it.navb>*{animation:none!important}}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -794,9 +797,9 @@ Give 5 short bullet points: what to physically check to judge the real % complet
 
 function navBar(a){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===a.id),R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);
   return`<div class="inav"><button data-inav="-1" ${i<=0?'disabled':''}>‹ Back</button><span>${i+1} / ${l.length}</span><button data-inav="1" ${i>=l.length-1&&!nr?'disabled':''}>${i>=l.length-1&&nr?'Next room ›':'Next ›'}</button><button class="imin" data-imin aria-label="Minimise">▾ Hide</button></div>`}
-function goItem(id){qDet=false;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
-let lastSh=null,qDet=false,phFor=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90,100].filter(p=>p>e.pct);
-  return`<div class="it ${op?'op':''} ${sh?'sh':''} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}"><button class="ith" data-item="${esc(a.id)}">
+function goItem(id,dir=0){qDet=false;navDir=dir;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
+let lastSh=null,qDet=false,phFor=null,navDir=0;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90,100].filter(p=>p>e.pct);
+  const nv=op&&navDir?(navDir>0?' navf':' navb'):'';if(op&&navDir)setTimeout(()=>navDir=0);return`<div class="it ${op?'op':''} ${sh&&!nv?'sh':''}${nv} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}"><button class="ith" data-item="${esc(a.id)}">
    <span class="ir">${ring(e.pct,11,e.st==='C'?'var(--ok)':col)}<b>${e.pct}</b></span>
    <span class="itx"><b>${esc(a.sn)}</b><small><span class="dtag ${a.D==='MECH'?'m':a.D==='FIRE'?'f':''}">${a.D}</span>${late(a)?`<em>${daysLate(a)}d late</em>`:'Due '+dmy(a.pf)}${u.cons?' · <i class="bk">⛔ '+esc(u.cons.split(' – ')[0])+'</i>':''}</small></span>
    <span class="ist">${ck?WI.ok:op?'▴':'▾'}</span></button>
@@ -847,7 +850,7 @@ function renderHome(anim){try{sessionStorage.setItem('kwalk',JSON.stringify({d:t
   if(anim)animate($('#s-home'));
 }
 function advance(prevId){const k=oRoom,l=roomItems(k),i=l.findIndex(a=>a.id===prevId),nx=[...l.slice(i+1),...l.slice(0,Math.max(0,i))].find(a=>!checked(a)&&a.id!==prevId);qPanel='';qVal=null;wR='';wO='';
-  if(nx){oItem=nx.id;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(nx.id))?.scrollIntoView({behavior:'smooth',block:'center'}));return}
+  if(nx){oItem=nx.id;navDir=l.indexOf(nx)>i?1:-1;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(nx.id))?.scrollIntoView({behavior:'smooth',block:'center'}));return}
   const R=ORDER[ROOMS[k][0]],nr=R.slice(R.indexOf(k)+1).find(r=>toCheck(r).length)||R.find(r=>toCheck(r).length);
   if(nr){toast(`${ROOMS[k][1]} done ✓ → ${ROOMS[nr][1]}`);startRoom(nr)}else{oRoom=null;oItem=null;renderHome(false);confetti();toast(`${RN[ROOMS[k][0]]} walk complete ✓`)}}
 async function qAct(k){const a=A.find(x=>x.id===oItem);if(!a)return;const e=eff(a);
@@ -1314,7 +1317,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.qrst){if(d.qrst==='ask'){qPanel='rst';renderHome(false);return}if(d.qrst==='0'){qPanel='';renderHome(false);return}
     const id=oItem,key=sid(id),old=U[key];if(!old)return;delete U[key];qPanel='';renderHome(false);
     try{if(db)await db.doc('upd/'+key).delete();undo=()=>{U[key]=old;db&&db.doc('upd/'+key).set(old);rerender()};const nr=await srpRevertOrphans();toast('Reset to P6'+(nr?` · SRP reverted (${nr})`:''),true)}catch(e){U[key]=old;renderHome(false);toast('Not reset – check signal')}return}
-  if(d.inav){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===oItem),j=i+ +d.inav;if(l[j]){goItem(l[j].id);vib(4)}else if(j>=l.length){const R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);if(nr)startRoom(nr)}return}
+  if(d.inav){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===oItem),j=i+ +d.inav;if(l[j]){goItem(l[j].id,+d.inav);vib(4)}else if(j>=l.length){const R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);if(nr)startRoom(nr)}return}
   if('imin' in d){const id=oItem;oItem=null;qPanel='';qVal=null;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({block:'nearest'}));return}
   if(d.item)qDet=false;
   if(d.item){oItem=oItem===d.item?null:d.item;qPanel='';qVal=null;renderHome(false);if(oItem)requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem))?.scrollIntoView({behavior:'smooth',block:'nearest'}));return}
