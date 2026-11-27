@@ -873,7 +873,9 @@ let lastSh=null,qDet=false,phFor=null,navDir=0;function itemRow(a){const e=eff(a
       <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}
     </div>`}
    ${navBar(a)}</div>`:''}</div>`}
-function renderHome(anim){$('#s-home').classList.toggle('anim',!!anim);try{sessionStorage.setItem('kwalk',JSON.stringify({d:today(),oRoom,oItem,romp}))}catch(e){}
+let flDone=null;function checkFloors(){const st={};FLRS.forEach(f=>{const tt=ORDER[f].reduce((n,k)=>n+roomOpen(k).length,0),lf=ORDER[f].reduce((n,k)=>n+toCheck(k).length,0);st[f]=tt>0&&lf===0});
+  if(flDone){const nd=FLRS.find(f=>st[f]&&!flDone[f]);if(nd&&!$('#wres')?.classList.contains('on')){flDone=st;setTimeout(()=>showWalkResult(nd),900);return}}flDone=st}
+function renderHome(anim){if(B.acts.length)setTimeout(checkFloors,0);$('#s-home').classList.toggle('anim',!!anim);try{sessionStorage.setItem('kwalk',JSON.stringify({d:today(),oRoom,oItem,romp}))}catch(e){}
   const all=A.filter(a=>isOpen(a)||checked(a)),done=all.filter(checked).length,tot=all.length,pc=Math.round(done/Math.max(1,tot)*100);
   const R=ORDER[romp],next=R.find(k=>toCheck(k).length),started=R.some(k=>roomOpen(k).length&&toCheck(k).length<roomOpen(k).length),left=R.reduce((s,k)=>s+toCheck(k).length,0);
   const rooms=R.map((k,i)=>{const v=ROOMS[k],l=roomItems(k),lf=toCheck(k).length,ck=l.length-lf,lt=l.filter(late).length,st=!l.length?'none':lf===0?'done':ck?'part':'todo',op=oRoom===k;
@@ -902,7 +904,7 @@ function renderHome(anim){$('#s-home').classList.toggle('anim',!!anim);try{sessi
 function advance(prevId){const k=oRoom,l=roomItems(k),i=l.findIndex(a=>a.id===prevId),nx=[...l.slice(i+1),...l.slice(0,Math.max(0,i))].find(a=>!checked(a)&&a.id!==prevId);qPanel='';qVal=null;wR='';wO='';
   if(nx){navTo(nx.id,l.indexOf(nx)>i?1:-1);return}
   const R=ORDER[ROOMS[k][0]],nr=R.slice(R.indexOf(k)+1).find(r=>toCheck(r).length)||R.find(r=>toCheck(r).length);
-  if(nr){toast(`${ROOMS[k][1]} done ✓ → ${ROOMS[nr][1]}`);startRoom(nr)}else{oRoom=null;oItem=null;renderHome(false);confetti();setTimeout(()=>showWalkResult(ROOMS[k][0]),1100)}}
+  if(nr){toast(`${ROOMS[k][1]} done ✓ → ${ROOMS[nr][1]}`);startRoom(nr)}else{oRoom=null;oItem=null;renderHome(false);confetti()}}
 async function qAct(k){const a=A.find(x=>x.id===oItem);if(!a)return;const e=eff(a);
   if(k==='same'){if(await saveMeta(a,{chk:Date.now(),wd:wDate,ev:wEv})){toast('No change',true);advance(a.id)}return}
   if(k==='done'){const f={...e,...pick(U[sid(a.id)])};f.st='C';f.pct=100;f.as=e.as&&e.as<=wDate?e.as:wDate;f.af=wDate;f.ev=wEv;if(await save(a,f,true))advance(a.id);return}
