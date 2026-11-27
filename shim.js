@@ -2,7 +2,7 @@
 (()=>{
 const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 let name=LS.get('kt_name'),pin=LS.get('kt_pin'),role=null;
-const H=()=>({'x-pin':pin||'','x-user':encodeURIComponent(name||'')});
+const H=()=>({'x-pin':pin||'','x-edit':window.__EDIT||'','x-user':encodeURIComponent(name||'')});
 async function api(url,opt={}){const r=await fetch(url,{...opt,headers:{...(opt.headers||{}),...H()}});if(r.status===401){LS.set('kt_pin','');location.reload();throw{code:'revoked'}}if(r.status===403)throw{code:'invalid_argument',message:'Not allowed'};if(!r.ok)throw{code:'unavailable',message:await r.text()};return r}
 async function gate(){if(name&&(pin!==null))return;
  let open=false,openRole='';try{const r=await fetch('/api/whoami',{headers:{'x-pin':''}});if(r.ok){open=true;openRole=(await r.json()).role}}catch(e){}
