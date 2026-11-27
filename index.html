@@ -1282,7 +1282,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('tskip' in d){endTour();return}
   if('help' in d){openHelp();return}
   if('closehelp' in d){closeHelp();return}
-  if('tour' in d){closeHelp();if(tab!=='home')goTab('home');setTimeout(()=>startTour(TOUR1,'t1'),400);return}
+  if('tour' in d){closeHelp();if(tab!=='home')goTab('home');setTimeout(()=>startTour(TOUR1,'t2'),400);return}
   if('onbshow' in d){closeHelp();showOnb();return}
   if('hask' in d){closeHelp();aiOpen();return}
   if(d.hact){closeHelp();if(d.hact==='xer'){goTab('sync');if(canAdmin)setTimeout(()=>$('#xerIn').click(),300)}else if(d.hact==='walk'){goTab('home')}else goTab('sync');return}
@@ -1377,17 +1377,20 @@ $('#phIn').addEventListener('change',async e=>{let f=e.target.files[0];e.target.
 
 /* ---------- interactive guide ---------- */
 const TOUR1=[
- {s:'.cta',pre:()=>{oRoom=null;oItem=null;renderHome(false)},t:'Start here 👆',d:'Tap Start walk. The next room opens on this page with its activities.'},
- {s:'.wset .wsb',t:'Walk date',d:'Today by default. Tap to pick an earlier day if you are updating yesterday\'s walk.'},
- {s:'[data-evt]',t:'Evidence',d:'Seen on site = you saw it. Tap to switch to Reported when the PIC told you.'},
- {s:'.sw',t:'Choose your floor',d:'Ground floor (Romp 4) or First floor (Romp 3). The route below changes to that floor.'},
- {s:'.it.op .qp',pre:()=>{const k=ORDER[romp].find(r=>toCheck(r).length);if(k)startRoom(k)},t:'Tap the new % or Done',d:'It saves straight away and opens the next activity.'},
- {s:'.it.op .qrow',t:'No change / Blocked',d:'Nothing moved? Tap No change. Something stopping work? Tap Blocked and pick the reason.'},
- {s:'.it.op .stp',t:'Fine-tune',d:'Use − / + to set an exact %, then tap Save.'},
- {s:'.tabs [data-tab="sync"]',pre:()=>{oRoom=null;oItem=null;renderHome(false)},t:'After the walk',d:'P6 sync: export the P6 update file and import it into P6.'},
- {s:'.tabs [data-tab="dash"]',t:'Dashboard',d:'Live progress, floor map, what needs attention.'},
- {s:'[data-help]',t:'Help',d:'Full guide and quick answers. Tap it any time.'},
- {s:'#aiBtn',t:'Assistant',d:'Ask anything: "what is late?", "take me to E1.2".'}];
+ {s:'.cta',pre:()=>{oRoom=null;oItem=null;renderHome(false)},t:'Start here',d:'Tap Start walk. The next room opens with its activities.'},
+ {s:'.wset .wsb',t:'Walk date',d:'Today by default. Tap to pick an earlier day.'},
+ {s:'[data-evt]',t:'Evidence',d:'Seen on site, or Reported when the PIC told you. Tap to switch.'},
+ {s:'.sw',t:'Choose floor',d:'Ground floor, First floor or Roof. A floor turns green when everything is checked.'},
+ {s:'.it.op .qbig',pre:()=>{const k=ORDER[romp].find(r=>toCheck(r).length);if(k)startRoom(k)},t:'Set the progress',d:'Use − / + or tap 75% · 90% · 100%.'},
+ {s:'.it.op .qmain',t:'Save',d:'Tap Save to lock the %. At 100% it becomes Done.'},
+ {s:'.it.op .qse',t:'Started / Finished',d:'Tick to set the actual dates. Tap the date to change it.'},
+ {s:'.it.op .qacts',t:'Quick actions',d:'No change, Blocked, Photo (stamped with PMX logo and time) or Note.'},
+ {s:'.it.op .inav',t:'Move around',d:'Back and Next go through the room. Hide closes the activity.'},
+ {s:'.rm .rmh',pre:()=>{oRoom=null;oItem=null;renderHome(false)},t:'Swipe a room left',d:'No change for all its activities, or Reset that room.'},
+ {s:'.tabs [data-tab="srp"]',t:'SRP',d:'Site walk updates become suggestions here. A red number shows how many wait for you.'},
+ {s:'.tabs [data-tab="sync"]',t:'After the walk',d:'Export the P6 update file and import it into P6.'},
+ {s:'.tabs [data-tab="dash"]',t:'Dashboard',d:'Progress vs baseline, late items and the two-week look-ahead.'},
+ {s:'[data-help]',t:'Help',d:'Full guide. Replay this tour from here any time.'}];
 const TOUR2=[];
 let tour=null,ti=0;
 const MEM={};const seen=k=>{if(MEM[k])return true;try{return localStorage.getItem('kul071_v3_'+k)==='1'}catch(e){return false}},mark=k=>{MEM[k]=1;try{localStorage.setItem('kul071_v3_'+k,'1')}catch(e){}};
@@ -1454,7 +1457,7 @@ function showOnb(){si=0;$('#onb').classList.add('on');drawOnb()}
 function drawOnb(){const s=SLIDES[si],art=s.art.includes('${')?Function('return `'+s.art+'`')():s.art;
   $('#onb').innerHTML=`<button class="onbx" data-onbskip>Skip</button><div class="onbart" key="${si}">${art}</div><div class="onbt"><h2>${s.t}</h2><p>${s.d}</p></div>
   <div class="onbf"><div class="onbd">${SLIDES.map((_,i)=>`<i class="${i===si?'on':''}"></i>`).join('')}</div><div class="onbb">${si?'<button class="ob2" data-onbprev>Back</button>':''}<button class="ob1" data-onbnext>${si===SLIDES.length-1?'Start using the app':'Next'}</button></div></div>`}
-function endOnb(tourAfter){$('#onb').classList.remove('on');mark('onb');if(tourAfter&&!seen('t1'))setTimeout(()=>startTour(TOUR1,'t1'),350)}
+function endOnb(tourAfter){$('#onb').classList.remove('on');mark('onb');if(tourAfter&&!seen('t2'))setTimeout(()=>startTour(TOUR1,'t2'),350)}
 function helpSteps(){const loaded=B.at>0,walked=A.some(checked)||Object.keys(U).length>0,pendN=A.filter(pend).length;
   const plan=[['Share access with your team','Share menu on the app page › site team as Contributor, backup planner as Editor.',null,null],
    ['Load this week\'s XER',loaded?'Loaded · data date '+dmy(B.dd):'P6 sync › Load new XER. Using the bundled 25/11 data until you do.',loaded,'xer'],
@@ -1667,7 +1670,7 @@ function sDiffHTML(){if(!sDiff)return'';const d=sDiff;if(d.type==='err')return`<
 async function boot(){
   try{const r=await fetch('baseline.json');setBase({...(await r.json()),at:0})}catch(e){}
   try{B1=await (await fetch('b1.json')).json()}catch(e){B1=null}
-  renderHome(true);setTimeout(()=>{if(!seen('t1'))startTour(TOUR1,'t1')},900);
+  renderHome(true);setTimeout(()=>{if(!seen('t2'))startTour(TOUR1,'t2')},900);
   const W=window.claude;if(!W?.use){noteMsg='Preview – updates are not saved. Open the published app on your phone.';renderHome(false);return}
   [db,user,assets,dl,sampleFn]=await Promise.all(['db','user','assets','downloads','sample'].map(n=>W.use(n).catch(()=>null)));$('#aiBtn').hidden=!sampleFn;
   if(user){me=await user.id().catch(()=>null);canAdmin=!!(await user.canEdit().catch(()=>false));if((await user.can('data.write').catch(()=>null))===false){canWrite=false;noteMsg='View-only access. Ask the owner for Contributor access.'}
