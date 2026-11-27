@@ -851,9 +851,13 @@ function navBar(a){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===a.id),R=ORDE
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
 // slide to another activity: current one leaves, next one enters from the right (Back: from the left); page does not jump
 async function navTo(id,dir){const sc=curScr(),old=document.querySelector('.it.op'),y0=old?old.getBoundingClientRect().top:null;
-  if(old&&dir&&!RM.matches){const k=[{transform:'translateX(0)',opacity:1},{transform:`translateX(${-dir*48}px)`,opacity:0}];old.querySelectorAll('.ith,.itb').forEach(e=>e.animate(k,{duration:320,easing:'cubic-bezier(.4,0,.7,1)',fill:'forwards'}));await new Promise(r=>setTimeout(r,310))}
-  qDet=false;navDir=dir;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);
-  const nw=document.getElementById('it-'+sid(id));if(nw&&sc){const d=nw.getBoundingClientRect().top-ITOP;if(Math.abs(d)>1)sc.scrollTo({top:sc.scrollTop+d,behavior:'instant'})}}
+  const fl=old&&dir&&!RM.matches,H=innerHeight,P={};if(fl)document.querySelectorAll('#s-home .it').forEach(e=>{const t=e.getBoundingClientRect().top;if(t>-H&&t<2*H)P[e.id]=t});
+  qDet=false;navDir=fl?0:dir;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);
+  const nw=document.getElementById('it-'+sid(id));if(nw&&sc){const d=nw.getBoundingClientRect().top-ITOP;if(Math.abs(d)>1)sc.scrollTo({top:sc.scrollTop+d,behavior:'instant'})}
+  if(fl){const E='cubic-bezier(.22,.61,.36,1)',D=700;document.querySelectorAll('#s-home .it').forEach(e=>{const t=e.getBoundingClientRect().top;if(t<-H||t>2*H)return;const f=P[e.id];
+    const dy=f==null?(dir>0?60:-60):f-t;if(Math.abs(dy)<1&&!e.classList.contains('op'))return;
+    e.animate([{transform:`translateY(${dy}px)`,opacity:f==null?0:1},{transform:e.classList.contains('op')?'translateY(-2px)':'none',opacity:1}],{duration:D,easing:E});
+    if(e.classList.contains('op'))e.querySelectorAll('.itb').forEach(b=>b.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1}],{duration:D,easing:E}))})}}
 const ITOP=90;function anchorItem(id,smooth){const sc=curScr(),nw=document.getElementById('it-'+sid(id));if(nw&&sc)sc.scrollTo({top:sc.scrollTop+nw.getBoundingClientRect().top-ITOP,behavior:smooth?'smooth':'instant'})}
 function goItem(id,dir=0){navTo(id,dir)}
 let lastSh=null,qDet=false,phFor=null,navDir=0;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90,100].filter(p=>p>e.pct);
