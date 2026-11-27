@@ -528,6 +528,7 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .qse{display:grid;grid-template-columns:1fr 1fr;gap:6px}.qsb{position:relative;display:flex;align-items:center;gap:8px;height:40px;padding:0 10px;border-radius:12px;background:var(--card2);font-size:13px;font-weight:700;color:var(--ink)}
 .qsb i{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:var(--card)}.qsb i svg{width:12px;height:12px}.qsb.on{background:color-mix(in srgb,var(--ok) 10%,var(--card2))}.qsb.on i{background:var(--ok);border-color:var(--ok);color:#fff}
 .qsb label{position:relative;margin-left:auto;font-size:12px;font-weight:800;color:var(--ok);padding:4px 6px;border-radius:8px;background:var(--card)}.qsb label input{position:absolute;inset:0;opacity:0;width:100%}
+.phw{position:relative;display:inline-block}.phx{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;background:var(--r4);color:#fff;font-size:15px;font-weight:800;line-height:1;box-shadow:0 0 0 2px var(--card)}.qphs{flex-wrap:wrap;padding-top:6px}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -790,7 +791,7 @@ let lastSh=null,qDet=false,phFor=null;function itemRow(a){const e=eff(a),u=U[sid
      ${(()=>{const ch=qVal!=null&&qVal!==e.pct;return`<button class="qmain${ch&&qVal>=100?' dn':''}" data-qsave ${ch?'':'disabled'}>${!ch?'Change the % to save':qVal>=100?WI.ok+' Done · 100%':'Save '+qVal+'%'}</button>`})()}
      <div class="qse"><button class="qsb${e.as?' on':''}" data-qst="s"><i>${e.as?WI.ok:''}</i>Started${e.as?`<label>${dmy(e.as).slice(0,5)}<input type="date" data-qd="s" value="${e.as}" max="${today()}"></label>`:''}</button><button class="qsb${e.st==='C'?' on':''}" data-qst="f"><i>${e.st==='C'?WI.ok:''}</i>Finished${e.st==='C'?`<label>${dmy(e.af).slice(0,5)}<input type="date" data-qd="f" value="${e.af}" max="${today()}"></label>`:''}</button></div>
      <div class="qacts"><button data-q="same">${WI.same}<span>No change</span></button><button class="r" data-q="blk">${WI.blk}<span>Blocked</span></button>${assets&&canWrite?`<button data-qph>${IC.cam}<span>Photo${(u.ph||[]).length?` (${u.ph.length})`:''}</span></button>`:''}<button data-open="${esc(a.id)}"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Note</span></button></div>
-     ${(u.ph||[]).length?`<div class="qphs">${u.ph.slice(-4).map(p=>`<a href="/_blob/${esc(p)}" target="_blank" rel="noopener"><img src="/_blob/${esc(p)}" alt="Site photo" loading="lazy"></a>`).join('')}</div>`:''}
+     ${(u.ph||[]).length?`<div class="qphs">${u.ph.map(p=>`<span class="phw"><a href="/_blob/${esc(p)}" target="_blank" rel="noopener"><img src="/_blob/${esc(p)}" alt="Site photo" loading="lazy"></a>${canWrite?`<button class="phx" data-phdel="${esc(p)}" aria-label="Delete photo">×</button>`:''}</span>`).join('')}</div>`:''}
      <button class="qdet" data-qdet aria-expanded="${qDet}">More <span>what to check · reset</span><em>${qDet?'▴':'▾'}</em></button>
      ${qDet?`<div class="qdb">
    <div class="hint2 ${hintOpen?'on':''}"><button class="hbt" data-hint>What to check <span>${hintOpen?'▴':'▾'}</span></button>${hintOpen?`<ul>${hintFor(a).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${sampleFn?(aiHint[a.id]?`<div class="aih"><b>✦ AI site tips</b><div id="aih">${esc(aiHint[a.id].t)}</div></div>`:`<button class="aib2" data-aihint="${esc(a.id)}">✦ Ask AI for more detail</button>`):''}`:''}</div>
@@ -866,7 +867,7 @@ function drawSheet(){const f=F,a=f.a,ro=canWrite?'':'disabled',col=f.pct===100?'
   <div class="dates"><span id="dtxt">${dtxt()}</span><button data-dates>${f.showD?'Hide':'Edit dates'}</button></div>
   <div class="dd ${f.showD?'on':''}"><input class="in" type="date" id="fAs" value="${esc(f.as)}" aria-label="Actual start" ${ro}><input class="in" type="date" id="fAf" value="${esc(f.af)}" aria-label="Actual finish" ${ro}></div>
   <div class="lb">Evidence</div><div class="tw">${[['V','Seen on site'],['R','Reported']].map(([k,l])=>`<button class="tgl" data-ev="${k}" aria-pressed="${f.ev===k}" ${ro}>${l}</button>`).join('')}</div>
-  <div class="lb">Photo</div><div class="photos">${assets&&canWrite?`<button data-photo aria-label="Take photo">${IC.cam}</button>`:''}${f.ph.map(p=>`<a href="/_blob/${esc(p)}" target="_blank" rel="noopener"><img src="/_blob/${esc(p)}" alt="Site photo"></a>`).join('')}${!assets?'<span class="dhint" style="align-self:center">Photos work in the published app</span>':''}</div>
+  <div class="lb">Photo</div><div class="photos">${assets&&canWrite?`<button data-photo aria-label="Take photo">${IC.cam}</button>`:''}${f.ph.map(p=>`<span class="phw"><a href="/_blob/${esc(p)}" target="_blank" rel="noopener"><img src="/_blob/${esc(p)}" alt="Site photo"></a>${canWrite?`<button class="phx" data-phx="${esc(p)}" aria-label="Remove photo">×</button>`:''}</span>`).join('')}${!assets?'<span class="dhint" style="align-self:center">Photos work in the published app</span>':''}</div>
   <div class="lb">Blocker</div><div class="tw"><input class="in" id="fCn" placeholder="What's stopping it?" value="${esc(f.cons)}" ${ro}><input class="in" id="fCo" placeholder="Owner" value="${esc(f.cown)}" ${ro}></div>
   <div class="lb">Remark</div><textarea class="in" id="fRm" placeholder="Quick note from site" ${ro}>${esc(f.rm)}</textarea>
   <div class="err" id="fErr"></div>
@@ -1314,6 +1315,9 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('dates' in d&&F){readF();F.showD=!F.showD;$('.dd').classList.toggle('on',F.showD);t.textContent=F.showD?'Hide':'Edit dates';return}
   if(d.ev&&F){F.ev=F.ev===d.ev?'':d.ev;document.querySelectorAll('.tgl').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ev===F.ev));vib(5);return}
   if('photo' in d){readF();phFor=null;$('#phIn').click();return}
+  if(d.phx){readF();F.ph=F.ph.filter(x=>x!==d.phx);drawSheet();toast('Photo removed – tap Save');return}
+  if(d.phdel){const a=A.find(x=>x.id===oItem);if(!a)return;const g={...eff(a),...pick(U[sid(a.id)])},old=g.ph.slice();g.ph=g.ph.filter(x=>x!==d.phdel);
+    if(await save(a,g,true)){undo=async()=>{const h={...eff(a),...pick(U[sid(a.id)])};h.ph=old;await save(a,h,true)};toast('Photo deleted',true)}return}
   if('qph' in d){phFor=oItem;$('#phIn').click();return}
   if('qdet' in d){qDet=!qDet;renderHome(false);return}
   if('save' in d&&F){readF();if(F.st==='A'&&(F.pct<=0||F.pct>=100)){$('#fErr').textContent='Pick a % between 5 and 95, or Done.';return}save(F.a,F);return}
@@ -1337,12 +1341,13 @@ let pmxLogo;async function getLogo(){if(pmxLogo!==undefined)return pmxLogo;try{c
 // burn PMX logo, date/time and activity onto the photo before upload
 async function stampPhoto(file,a){try{const bm=await createImageBitmap(file,{imageOrientation:'from-image'}),k=Math.min(1,2048/Math.max(bm.width,bm.height)),W=Math.round(bm.width*k),H=Math.round(bm.height*k);
   const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');g.drawImage(bm,0,0,W,H);
-  const u=Math.max(W,H)/1000,pad=12*u,lh=24*u,t=new Date(file.lastModified&&Date.now()-file.lastModified<36e5*24*7?file.lastModified:Date.now());
+  const u=Math.min(W,H)/750,pad=12*u,lh=24*u,t=new Date(file.lastModified&&Date.now()-file.lastModified<36e5*24*7?file.lastModified:Date.now());
   const lines=[t.toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})+'  ·  KUL071 ROMP 3 & 4  ·  '+FL[a.R]+' '+(ROOMS[a.area]?.[1]||a.area)];
-  const bh=pad*2+lh*lines.length;g.fillStyle='rgba(8,22,49,.72)';g.fillRect(0,H-bh,W,bh);g.fillStyle='#d23a46';g.fillRect(0,H-bh,W,2*u);
-  const logo=await getLogo();let x=pad;if(logo){const lh2=bh-pad*2,lw=logo.width*lh2/logo.height;g.drawImage(logo,pad,H-bh+pad,lw,lh2);x=pad*2+lw}
-  else{g.font=`800 ${26*u}px "Plus Jakarta Sans",Arial,sans-serif`;g.fillStyle='#fff';g.textBaseline='middle';g.fillText('PMX',pad,H-bh/2);x=pad*2+g.measureText('PMX').width}
-  g.textBaseline='top';lines.forEach((l,i)=>{g.font=`700 ${19*u}px Inter,Arial,sans-serif`;g.fillStyle=i?'rgba(255,255,255,.88)':'#fff';g.fillText(l,x,H-bh+pad+i*lh)});
+  const logo=await getLogo(),LH=50*u,bh=LH+pad*1.6,cy=H-bh/2;g.fillStyle='rgba(8,22,49,.72)';g.fillRect(0,H-bh,W,bh);g.fillStyle='#d23a46';g.fillRect(0,H-bh,W,2*u);
+  let x=pad*1.5;if(logo){const lw=logo.width*LH/logo.height;g.drawImage(logo,x,cy-LH/2,lw,LH);x+=lw+pad*1.6}
+  else{g.font=`800 ${26*u}px "Plus Jakarta Sans",Arial,sans-serif`;g.fillStyle='#fff';g.textBaseline='middle';g.fillText('PMX',x,cy);x+=g.measureText('PMX').width+pad*1.6}
+  g.fillStyle='rgba(255,255,255,.35)';g.fillRect(x-pad*.8,cy-LH*.32,1.5*u,LH*.64);
+  let fs=22*u;g.font=`700 ${fs}px Inter,Arial,sans-serif`;while(fs>12*u&&x+g.measureText(lines[0]).width>W-pad*1.5){fs-=u;g.font=`700 ${fs}px Inter,Arial,sans-serif`}g.fillStyle="#fff";g.textBaseline="middle";g.fillText(lines[0],x,cy+1*u);
   const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));return new File([blob],(a.id+'_'+t.toISOString().slice(0,16).replace(/[:T]/g,'')+'.jpg'),{type:'image/jpeg'})}catch(e){return file}}
 $('#phIn').addEventListener('change',async e=>{let f=e.target.files[0];e.target.value='';if(!f||!assets)return;f=await stampPhoto(f,F?F.a:A.find(x=>x.id===phFor)||A[0]);
   if(!F&&phFor){const id=phFor;phFor=null;try{toast('Uploading photo…');const r=await assets.upload(f),a=A.find(x=>x.id===id),g={...eff(a),...pick(U[sid(id)])};g.ph=[...(g.ph||[]),r.id];g.ev=g.ev||wEv;if(await save(a,g,true))toast('Photo saved')}catch(err){toast('Upload failed – check signal')}return}

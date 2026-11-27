@@ -16,7 +16,7 @@ class Store:
   async def handle(s,route):
     q=route.request;u=q.url
     if u.endswith('/') or u.split('?')[0].endswith('/index.html'):return await route.fulfill(body=HTML,content_type='text/html')
-    for f in ['shim.js','baseline.json','b1.json']:
+    for f in ['shim.js','baseline.json','b1.json','pmx-logo.png']:
       if f in u.split('/')[-1]:return await route.fulfill(path=os.path.join(ROOT,f))
     if 'jszip' in u:return await route.fulfill(path=JSZIP,content_type='text/javascript')
     if '/api/whoami' in u:return await route.fulfill(body='{"role":"admin"}',content_type='application/json')
