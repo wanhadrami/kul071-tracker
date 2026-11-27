@@ -91,7 +91,7 @@ async def main():
     ok=r['acc']!=r['orig'] and all(abs(x-y)<1e-9 for x,y in zip(r['after'],r['orig'])) and abs(r['manual']-.95)<1e-9
     rec('T13','cancelled site update reverts its accepted SRP value (manual kept)',ok,f"{r['act']} → GF ELE row 20: original {r['orig']} · after accept {r['acc']} · after cancel {r['after']} ({r['nr']} cell reverted) · manual GF ACMV Dahu07 3rd stays {r['manual']}")
     r2=await JA(pg,"""const id='gfe20';const a=sActs(id).filter(isOpen)[0];const f={...eff(a),...pick(U[sid(a.id)])};f.st='A';f.pct=100;await save(a,f,true);await sAcceptAll();
-      const acc=sFinal(id).slice();await pg_reset(a.id);return {acc,after:sFinal(id)}""".replace('await pg_reset(a.id);',"startRoom(a.area);oItem=a.id;qPanel='rst';renderHome(false);document.querySelector('[data-qrst=\"1\"]').click();await new Promise(r=>setTimeout(r,800));"))
+      const acc=sFinal(id).slice();await pg_reset(a.id);return {acc,after:sFinal(id)}""".replace('await pg_reset(a.id);',"startRoom(a.area);oItem=a.id;qDet=true;qPanel='rst';renderHome(false);document.querySelector('[data-qrst=\"1\"]').click();await new Promise(r=>setTimeout(r,800));"))
     rec('T13','same via Reset button in Site Walk UI',r2['acc']!=r2['after'],f"after accept {r2['acc']} · after tapping Reset {r2['after']}")
     await br.close()
   print('\nSUMMARY',sum(1 for r in R if r[2]),'/',len(R));json.dump(R,open(os.environ.get('QA_OUT','/tmp/qa2.json'),'w'))

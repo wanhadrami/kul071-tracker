@@ -506,6 +506,19 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .hxtc{margin-top:14px;font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}.hxtc+.hxk{margin-top:6px}
 .wrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-top:1px solid var(--line)}.wrow:first-of-type{border-top:0}.wrow .li{border:0}.xd{color:var(--late)!important;font-weight:700}
 .xcx{height:34px;padding:0 10px;border-radius:10px;background:var(--card2);font-size:11.5px;font-weight:800;color:var(--mute);white-space:nowrap}.xmis{box-shadow:inset 0 0 0 1.5px var(--late)!important}.xmis .li{display:flex;justify-content:space-between;align-items:center}
+/* compact update panel */
+.qx{display:flex;flex-direction:column;gap:10px}
+.qbig{display:grid;grid-template-columns:56px 1fr 56px;align-items:center;gap:8px;padding:6px;border-radius:18px;background:var(--card2)}
+.qst{height:56px;border-radius:14px;background:var(--card);font-size:26px;font-weight:700;color:var(--navy2);box-shadow:var(--sh)}.qst:active{transform:scale(.95)}
+.qnum{text-align:center}.qnum b{display:block;font:800 34px/1 "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.qnum b i{font-style:normal;font-size:18px;color:var(--mute);margin-left:2px}.qnum small{font-size:11px;font-weight:700;color:var(--mute)}
+.qchips{display:flex;gap:6px}.qchips button{flex:1;height:46px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--ink)}.qchips .qd{flex:1.6;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;gap:6px}.qchips .qd svg{width:16px;height:16px}
+.qx .qsave{height:50px;border-radius:14px;margin:0}
+.qacts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.qacts button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;height:62px;border-radius:14px;background:var(--card2);color:var(--navy2);font-size:11.5px;font-weight:800}.qacts svg{width:20px;height:20px}.qacts .r{color:var(--r4)}
+.qphs{display:flex;gap:6px}.qphs img{width:56px;height:56px;border-radius:10px;object-fit:cover;display:block}
+.qdet{display:flex;align-items:center;gap:8px;width:100%;height:42px;padding:0 4px;font-weight:800;font-size:13px;color:var(--ink);border-top:1px dashed var(--line)}.qdet span{flex:1;text-align:right;font-weight:600;font-size:11.5px;color:var(--mute)}.qdet em{font-style:normal;color:var(--mute)}
+.qdb{display:flex;flex-direction:column;gap:10px}.qdb .hint2{margin:0}.qdb .irst{margin-top:0}
+.it.op .itb .inav{margin:12px 0 0;position:static;padding:10px 0 0;border-top:1px solid var(--line)}.it.op .itb .inav button{height:40px}
+.sgb{flex-wrap:wrap}.sgb .sgf{flex:1 1 100%;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:6px;margin-top:2px}.sgf b{white-space:nowrap}.sgb .sgf>div{flex:none;padding:8px 10px;border-radius:12px;background:var(--card)}.sgf small{display:block;font-size:10.5px;font-weight:700;color:var(--mute)}.sgf b{display:block;font:800 13.5px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.sgf b i{font-style:normal;color:var(--late)}.sgf em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--ok)}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -749,27 +762,32 @@ Give 5 short bullet points: what to physically check to judge the real % complet
 
 function navBar(a){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===a.id),R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);
   return`<div class="inav"><button data-inav="-1" ${i<=0?'disabled':''}>‹ Back</button><span>${i+1} / ${l.length}</span><button data-inav="1" ${i>=l.length-1&&!nr?'disabled':''}>${i>=l.length-1&&nr?'Next room ›':'Next ›'}</button><button class="imin" data-imin aria-label="Minimise">▾ Hide</button></div>`}
-function goItem(id){oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
-let lastSh=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90].filter(p=>p>e.pct);
-  return`<div class="it ${op?'op':''} ${sh?'sh':''} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}">${op?`<div class="nowl">● Now checking</div>`:''}<button class="ith" data-item="${esc(a.id)}">
+function goItem(id){qDet=false;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
+let lastSh=null,qDet=false,phFor=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90].filter(p=>p>e.pct);
+  return`<div class="it ${op?'op':''} ${sh?'sh':''} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}"><button class="ith" data-item="${esc(a.id)}">
    <span class="ir">${ring(e.pct,11,e.st==='C'?'var(--ok)':col)}<b>${e.pct}</b></span>
    <span class="itx"><b>${esc(a.sn)}</b><small><span class="dtag ${a.D==='MECH'?'m':a.D==='FIRE'?'f':''}">${a.D}</span>${late(a)?`<em>${daysLate(a)}d late</em>`:'Due '+dmy(a.pf)}${u.cons?' · <i class="bk">⛔ '+esc(u.cons.split(' – ')[0])+'</i>':''}</small></span>
    <span class="ist">${ck?WI.ok:op?'▴':'▾'}</span></button>
-  ${op?`<div class="itb">${navBar(a)}
-   <div class="hint2 ${hintOpen?'on':''}"><button class="hbt" data-hint>💡 What to check on site <span>${hintOpen?'▴':'▾'}</span></button>${hintOpen?`<ul>${hintFor(a).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${sampleFn?(aiHint[a.id]?`<div class="aih"><b>✦ AI site tips</b><div id="aih">${esc(aiHint[a.id].t)}</div></div>`:`<button class="aib2" data-aihint="${esc(a.id)}">✦ Ask AI for more detail</button>`):''}`:''}</div>
+  ${op?`<div class="itb">
    ${qPanel==='blk'?`<div class="ql">What's stopping it?</div><div class="chips2">${REASONS.map(r=>`<button data-qr="${esc(r)}" aria-pressed="${wR===r}">${esc(r)}</button>`).join('')}</div>
      <textarea class="in qnote" id="qNote" rows="2" placeholder="Describe the blocker (e.g. ceiling not closed, waiting Kajima scaffold removal)">${esc(u.cons&&!REASONS.includes(u.cons)?u.cons:'')}</textarea>
      <div class="ql">Who needs to act?</div><div class="chips2">${OWNERS.map(o=>`<button data-qo="${o}" aria-pressed="${wO===o}">${o}</button>`).join('')}</div>
      <input class="in qnote" id="qOwn" placeholder="Or type a name / company" value="${esc(u.cown&&!OWNERS.includes(u.cown)?u.cown:'')}">
      <div class="qrow"><button class="qb" data-qcancel>Cancel</button><button class="qb pri" data-qblk>Save blocker</button></div>`
-   :`<div class="ql">Status <span>${e.src==='site'?'site walk':'from P6'} · tick to change</span></div><div class="pst">
-     <div class="psr${e.as?' on':''}"><button class="pcb" data-qst="s" aria-pressed="${!!e.as}"><i>${e.as?WI.ok:''}</i>Started</button>${e.as?`<label class="pdt">📅 ${dmy(e.as)}<input type="date" data-qd="s" value="${e.as}" max="${today()}"></label>`:''}</div>
-     <div class="psr${e.st==='C'?' on':''}"><button class="pcb" data-qst="f" aria-pressed="${e.st==='C'}"><i>${e.st==='C'?WI.ok:''}</i>Finished</button>${e.st==='C'?`<label class="pdt">📅 ${dmy(e.af)}<input type="date" data-qd="f" value="${e.af}" max="${today()}"></label>`:''}</div></div>
-     <div class="ql">Progress now <span>tap to save</span></div><div class="qp">${opts.map(p=>`<button data-qp="${p}">${p}%</button>`).join('')}<button class="qd" data-q="done">${WI.ok} Done</button></div>
-     <div class="qrow"><button class="qb" data-q="same">${WI.same} No change</button><button class="qb red" data-q="blk">${WI.blk} Blocked</button></div><div class="ql" style="margin-top:12px">Fine-tune <span>±1%</span></div><div class="qrow1"><span class="stp"><button data-qs="-1" aria-label="Minus 1%">−</button><b>${qVal??e.pct}%</b><button data-qs="1" aria-label="Plus 1%">+</button></span></div>
-     ${qVal!=null&&qVal!==e.pct?`<button class="qsave" data-qsave>Save ${qVal}%</button>`:''}`}
-   ${U[sid(a.id)]?(qPanel==='rst'?`<div class="irst on"><span>Reset to P6 (${a.pct}%${a.as?', started '+dmy(a.as):''})? Removes site status, %, blocker and remarks for this activity.</span><div class="qrow"><button class="qb" data-qrst="0">Cancel</button><button class="qb red" data-qrst="1">Yes, reset</button></div></div>`:`<button class="irst" data-qrst="ask">↺ Reset this activity to P6</button>`):''}
-   <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${e.as?' · started '+dmy(e.as):''}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}</div>`}
+   :`<div class="qx">
+     <div class="qbig"><button class="qst" data-qs="-1" aria-label="Minus 1%">−</button><div class="qnum"><b>${qVal??e.pct}<i>%</i></b><small>${qVal!=null&&qVal!==e.pct?`was ${e.pct}%`:'progress now'}</small></div><button class="qst" data-qs="1" aria-label="Plus 1%">+</button></div>
+     ${qVal!=null&&qVal!==e.pct?`<button class="qsave" data-qsave>Save ${qVal}%</button>`:`<div class="qchips">${opts.map(p=>`<button data-qp="${p}">${p}%</button>`).join('')}<button class="qd" data-q="done">${WI.ok} Done</button></div>`}
+     <div class="qacts"><button data-q="same">${WI.same}<span>No change</span></button><button class="r" data-q="blk">${WI.blk}<span>Blocked</span></button>${assets&&canWrite?`<button data-qph>${IC.cam}<span>Photo${(u.ph||[]).length?` (${u.ph.length})`:''}</span></button>`:''}<button data-open="${esc(a.id)}"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Note</span></button></div>
+     ${(u.ph||[]).length?`<div class="qphs">${u.ph.slice(-4).map(p=>`<a href="/_blob/${esc(p)}" target="_blank" rel="noopener"><img src="/_blob/${esc(p)}" alt="Site photo" loading="lazy"></a>`).join('')}</div>`:''}
+     <button class="qdet" data-qdet aria-expanded="${qDet}">Dates &amp; details <span>${e.as?'started '+dmy(e.as):'not started'}${e.st==='C'?' · finished '+dmy(e.af):''}</span><em>${qDet?'▴':'▾'}</em></button>
+     ${qDet?`<div class="qdb"><div class="pst">
+      <div class="psr${e.as?' on':''}"><button class="pcb" data-qst="s" aria-pressed="${!!e.as}"><i>${e.as?WI.ok:''}</i>Started</button>${e.as?`<label class="pdt">📅 ${dmy(e.as)}<input type="date" data-qd="s" value="${e.as}" max="${today()}"></label>`:''}</div>
+      <div class="psr${e.st==='C'?' on':''}"><button class="pcb" data-qst="f" aria-pressed="${e.st==='C'}"><i>${e.st==='C'?WI.ok:''}</i>Finished</button>${e.st==='C'?`<label class="pdt">📅 ${dmy(e.af)}<input type="date" data-qd="f" value="${e.af}" max="${today()}"></label>`:''}</div></div>
+   <div class="hint2 ${hintOpen?'on':''}"><button class="hbt" data-hint>💡 What to check on site <span>${hintOpen?'▴':'▾'}</span></button>${hintOpen?`<ul>${hintFor(a).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${sampleFn?(aiHint[a.id]?`<div class="aih"><b>✦ AI site tips</b><div id="aih">${esc(aiHint[a.id].t)}</div></div>`:`<button class="aib2" data-aihint="${esc(a.id)}">✦ Ask AI for more detail</button>`):''}`:''}</div>
+      ${U[sid(a.id)]?(qPanel==='rst'?`<div class="irst on"><span>Reset to P6 (${a.pct}%${a.as?', started '+dmy(a.as):''})? Removes site status, %, blocker and remarks for this activity.</span><div class="qrow"><button class="qb" data-qrst="0">Cancel</button><button class="qb red" data-qrst="1">Yes, reset</button></div></div>`:`<button class="irst" data-qrst="ask">↺ Reset this activity to P6</button>`):''}
+      <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}
+    </div>`}
+   ${navBar(a)}</div>`:''}</div>`}
 function renderHome(anim){
   const all=A.filter(a=>isOpen(a)||checked(a)),done=all.filter(checked).length,tot=all.length,pc=Math.round(done/Math.max(1,tot)*100);
   const R=ORDER[romp],next=R.find(k=>toCheck(k).length),started=R.some(k=>roomOpen(k).length&&toCheck(k).length<roomOpen(k).length),left=R.reduce((s,k)=>s+toCheck(k).length,0);
@@ -1212,6 +1230,10 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('ssave' in d){if(t.classList.contains('ghost'))sTmp.v=sFinal(sTmp.id)[sTmp.k];sSaveCell();return}
   if('suse' in d){sTmp.v=sTmp.sg;sSaveCell();return}
   if('sacc' in d){sAcceptAll();return}
+  if(d.sclr){if(d.sclr==='ask'){sClr=true;renderSrp();return}if(d.sclr==='0'){sClr=false;renderSrp();return}
+    const W0=sWeek(sCut),ids=SIDS.filter(id=>soG(id)),old={};ids.forEach(id=>old[id]=soG(id));sClr=false;const r=await Promise.all(ids.map(id=>soW(id,null)));
+    ids.forEach(id=>{if(SO[id]&&(SO[id].w===W0||!SO[id].w)){delete SO[id];db&&db.doc('srpo/'+id).delete().catch(()=>{})}});renderSrp();
+    undo=()=>{Promise.all(Object.entries(old).map(([id,o])=>soW(id,o,W0))).then(()=>renderSrp())};const bad=r.filter(x=>!x).length;toast(bad?`${bad} row${bad>1?'s':''} not cleared – retry`:`W${W0} SRP edits cleared`,!bad);return}
   if('sdx' in d){sDiff=null;renderSrp();return}
   if('sdw' in d){sGenOk=true;sGenerate();return}
   if('sdm' in d){const D=sDiff,W0=D.W0,by={};D.items.forEach(x=>{(by[x.id]??=sFinal(x.id).slice())[x.i]=x.mv});const r=await Promise.all(Object.entries(by).map(([id,v])=>soW(id,{v,sg:[null,null,null],w:W0,at:Date.now(),by:me||'',src:'master'})));sDiff=null;renderSrp();toast(r.every(Boolean)?`Master values loaded into W${W0} – generate again`:'Some rows not saved – retry');return}
@@ -1247,6 +1269,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
     try{if(db)await db.doc('upd/'+key).delete();undo=()=>{U[key]=old;db&&db.doc('upd/'+key).set(old);rerender()};const nr=await srpRevertOrphans();toast('Reset to P6'+(nr?` · SRP reverted (${nr})`:''),true)}catch(e){U[key]=old;renderHome(false);toast('Not reset – check signal')}return}
   if(d.inav){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===oItem),j=i+ +d.inav;if(l[j]){goItem(l[j].id);vib(4)}else if(j>=l.length){const R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);if(nr)startRoom(nr)}return}
   if('imin' in d){const id=oItem;oItem=null;qPanel='';qVal=null;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({block:'nearest'}));return}
+  if(d.item)qDet=false;
   if(d.item){oItem=oItem===d.item?null:d.item;qPanel='';qVal=null;renderHome(false);if(oItem)requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem))?.scrollIntoView({behavior:'smooth',block:'nearest'}));return}
   if(d.q){qAct(d.q);return}
   if('hint' in d){hintOpen=!hintOpen;renderHome(false);return}
@@ -1275,7 +1298,9 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.pct&&F){readF();setPct(+d.pct);refreshDial();vib(6);return}
   if('dates' in d&&F){readF();F.showD=!F.showD;$('.dd').classList.toggle('on',F.showD);t.textContent=F.showD?'Hide':'Edit dates';return}
   if(d.ev&&F){F.ev=F.ev===d.ev?'':d.ev;document.querySelectorAll('.tgl').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ev===F.ev));vib(5);return}
-  if('photo' in d){readF();$('#phIn').click();return}
+  if('photo' in d){readF();phFor=null;$('#phIn').click();return}
+  if('qph' in d){phFor=oItem;$('#phIn').click();return}
+  if('qdet' in d){qDet=!qDet;renderHome(false);return}
   if('save' in d&&F){readF();if(F.st==='A'&&(F.pct<=0||F.pct>=100)){$('#fErr').textContent='Pick a % between 5 and 95, or Done.';return}save(F.a,F);return}
   if(d.x==='p6')exportP6();if(d.x==='out')exportOut();if(d.x==='xer')$('#xerIn').click();
   if(t.id==='tundo'){undo&&undo();undo=null;$('#toast').classList.remove('on')}});
@@ -1293,7 +1318,9 @@ document.addEventListener('input',e=>{const t=e.target;if(t.classList?.contains(
 document.addEventListener('keydown',e=>{if(e.target.id==='hpw'&&e.key==='Enter')hUnlock()});
 document.addEventListener('change',e=>{if(e.target.id==='sCut'&&e.target.value){const d=new Date(e.target.value+'T00:00');d.setDate(d.getDate()+((3-d.getDay()+7)%7));sCut=ymd(d);if(sCut!==e.target.value)toast('Cut-off moved to Wed '+dmy(sCut));renderSrp();db&&db.doc('srpm/cut').set({date:sCut}).catch(()=>{})}});
 $('#xerIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)importXer(f)});
-$('#phIn').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!F||!f||!assets)return;
+$('#phIn').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f||!assets)return;
+  if(!F&&phFor){const id=phFor;phFor=null;try{toast('Uploading photo…');const r=await assets.upload(f),a=A.find(x=>x.id===id),g={...eff(a),...pick(U[sid(id)])};g.ph=[...(g.ph||[]),r.id];g.ev=g.ev||wEv;if(await save(a,g,true))toast('Photo saved')}catch(err){toast('Upload failed – check signal')}return}
+  if(!F)return;
   try{toast('Uploading photo…');const r=await assets.upload(f);F.ph.push(r.id);readF();drawSheet();toast('Photo added – tap Save')}catch(err){toast('Upload failed')}});
 
 /* ---------- interactive guide ---------- */
@@ -1499,12 +1526,15 @@ function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
   $('#s-srp').innerHTML=`${heroX({eye:`Recovery plan · W${W0} · cut-off ${dmy(sCut).slice(0,5)}`,title:'SRP',btn:'<div class="hbtns"><button class="hb" data-sinfo aria-label="How the SRP works">i</button></div>',st:sst,val:act*100,label:`% physical · ${p1(Math.abs(act-pl))} pp ${act-pl>=0?'ahead of':'behind'} plan (${p1(pl)}%) · rows reviewed ${rev}/${SIDS.length}`,chip:svd?{lab:`Saved ${svP.toFixed(1)}% → draft`,v:act*100,d:act*100-svP}:{lab:`vs ${lw?'W'+lw.w:'last SRP'}`,v:act*100,d:(act-last)*100},mark:pl*100})}
   <div class="wset hpills"><label class="wsb"><span class="wsl">Collecting for · cut-off Wed</span><b>📅 W${W0} · ${new Date(sCut+'T00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} ▾</b><input type="date" id="sCut" value="${sCut}"></label><button class="wsb" data-smaster><span class="wsl">Master SRP file</span><b>${SM.name?esc(SM.name.slice(0,18)):'Upload ▸'}</b></button></div>
   ${sInfo?sInfoBox():''}
-  ${(()=>{const P=sPendAll();return P.length?`<div class="sgb"><div><b>${P.length} suggestion${P.length>1?'s':''} from site walk</b><span>Cells marked → are waiting for you. Tap one to review the numbers.</span></div><button data-sacc>Accept all</button></div>`:''})()}
+  ${(()=>{const P=sPendAll();if(!P.length)return'';const V={};SIDS.forEach(id=>V[id]=sFinal(id).slice());P.forEach(([id,k,v])=>V[id][k]=v);
+    const now=avg(SIDS.map(id=>sPh(sFinal(id))))*100,aft=avg(SIDS.map(id=>sPh(V[id])))*100,fl=[['GF',x=>x.startsWith('gf')],['1F',x=>x.startsWith('ff')]].map(([n,f])=>{const ii=SIDS.filter(f);return[n,avg(ii.map(id=>sPh(sFinal(id))))*100,avg(ii.map(id=>sPh(V[id])))*100]});
+    return`<div class="sgb"><div><b>${P.length} suggestion${P.length>1?'s':''} from site walk</b><span>Cells marked → are waiting for you. Tap one to review the numbers.</span>
+</div><button data-sacc>Accept all</button><div class="sgf"><div class="sgt"><small>If you accept all</small><b>${now.toFixed(2)}% <i>→</i> ${aft.toFixed(2)}%</b><em>+${(aft-now).toFixed(2)}%</em></div>${fl.map(([n,a,b])=>`<div><small>${n}</small><b>${a.toFixed(1)} → ${b.toFixed(1)}%</b></div>`).join('')}</div></div>`})()}
   ${sDiffHTML()}
   <div class="sgrid">${SRP.map(s=>{const ii=s.rows.map(([r])=>s.k+r);return`<div class="blk srpb ${s.k.startsWith('gf')?'f-gf':'f-ff'}"><div class="bh"><h2>${s.label}</h2><span>${p1(avg(ii.map(id=>sPh(sFinal(id)))))}% phys.</span></div>
    <div class="srt"><span></span><span>1st</span><span>2nd</span><span>3rd</span><span>Phys</span></div>
    ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=soG(id),ed=o&&f.some((v,k)=>Math.abs(v-l[k])>.004);const rv=!!o;return`<div class="srr${rv?' rv':''}"><button class="srn" data-sconf="${id}"><b>${esc(SITEM[id].area)}</b><small>${rv?'✓ reviewed':ed?'set · tap to confirm':'tap to confirm'}</small></button>${[0,1,2].map(k=>{const pd=sPend(id,k,st);return`<button class="src ${pd?'sg':f[k]>l[k]+.004?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${pd?'→ '+Math.round(st[k].v*100)+'?':f[k]>l[k]+.004?'▲ set':'carried'}</small></button>`}).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${Math.abs(sPh(f)-sPh(l))<.0005?'var(--mute)':tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}%</small></span></div>`}).join('')}</div>`}).join('')}
-  </div><div class="ctaw"><button class="cta" data-sgen><span class="ct">${SWK[W0]?`Update saved W${W0}`:`Generate SRP · W${W0}`}<small>${sPendAll().length?sPendAll().length+(sPendAll().length>1?' suggestions':' suggestion')+' not reviewed – not included yet':'Fills your master Excel and saves this week'}</small></span><span class="ca">↓</span></button></div>
+  </div>${(()=>{const ids=SIDS.filter(id=>soG(id));if(!ids.length)return'';return sClr?`<div class="wrs on"><b>Clear all W${W0} SRP edits?</b><span>${ids.length} row${ids.length>1?'s':''} go back to ${SWK[W0]?'the saved W'+W0+' values':'last week\'s SRP'}. Accepted suggestions come back as suggestions. Saved history is not touched. Undo is available for a few seconds.</span><div class="qrow"><button class="qb" data-sclr="0">Cancel</button><button class="qb red" data-sclr="go">Yes, clear ${ids.length}</button></div></div>`:`<button class="wrs" data-sclr="ask"><i>↺</i><span><b>Clear all SRP edits</b><small>${ids.length} row${ids.length>1?'s':''} changed for W${W0}</small></span><em>›</em></button>`})()}<div class="ctaw"><button class="cta" data-sgen><span class="ct">${SWK[W0]?`Update saved W${W0}`:`Generate SRP · W${W0}`}<small>${sPendAll().length?sPendAll().length+(sPendAll().length>1?' suggestions':' suggestion')+' not reviewed – not included yet':'Fills your master Excel and saves this week'}</small></span><span class="ca">↓</span></button></div>
   ${sHist()}
   `;
   animate($('#s-srp'))}
@@ -1533,7 +1563,7 @@ function sPut(x,ref,mk,opt={}){const m=x.match(sRx(ref)),f=a=>mk(a).replace('"__
   return[x.replace(rm[0],`<row r="${r}"${rm[1]}>${cells.slice(0,pos)}${f(opt.s?` s="${opt.s}"`:'')}${cells.slice(pos)}</row>`),'set']}
 const sNum=v=>a=>`<c r="__"${a}><v>${v}</v></c>`,sStr=t=>a=>`<c r="__"${a} t="inlineStr"><is><t xml:space="preserve">${sXe(t)}</t></is></c>`;
 const sSer=s=>Math.round((Date.parse(s)-Date.UTC(1899,11,30))/864e5);
-let sDiff=null,sGenOk=false;
+let sDiff=null,sGenOk=false,sClr=false;
 const sCellV=(x,ref)=>{const m=x.match(sRx(ref));if(!m)return null;const v=(m[3]||'').match(/<v>([^<]*)<\/v>/);return v?+v[1]:null};
 function sPathFn(wb,rels){return name=>{const m=wb.match(new RegExp('<sheet[^>]*?name="'+sXe(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"[^>]*r:id="([^"]+)"'));if(!m)return null;const t=rels.match(new RegExp('Id="'+m[1]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('Target="([^"]+)"[^>]*Id="'+m[1]+'"'));return t?'xl/'+t[1].replace(/^\/?xl\//,''):null}}
 async function sCheckMaster(buf){let zip;try{zip=await JSZip.loadAsync(buf)}catch(e){return{err:['Not an Excel .xlsx file']}}
