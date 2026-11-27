@@ -447,7 +447,8 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .rph,.rpr{display:grid;grid-template-columns:minmax(0,1fr) 108px 88px;gap:10px;align-items:center}.rph{font-size:10.5px;font-weight:800;color:var(--mute);text-align:right;padding:6px 0 4px}
 .rpr{padding:10px 0;border-top:1px solid var(--line)}.rpr>b{font-size:13.5px;font-weight:700}.rpr.tot>b{font-weight:800}.rpr.tot{border-top:0;background:color-mix(in srgb,var(--navy) 7%,transparent);border-radius:12px;padding:12px 10px;margin:0 -10px}
 .rpv,.rpw{text-align:right;font:800 15px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.rpv i{display:block;height:4px;border-radius:4px;background:var(--soft);margin-top:5px;overflow:hidden}.rpv em{display:block;height:100%;background:var(--navy2);border-radius:4px}
-.rpw{color:var(--navy2)}.rpw small{display:block;font-size:11px;color:var(--ok);font-weight:800}.rpn{font-size:11px;color:var(--mute);margin:10px 0 0;line-height:1.45}
+.rpw{color:var(--navy2)}.rpw small{display:block;font-size:11px;color:var(--ok);font-weight:800}.rpx{display:flex;justify-content:space-between;gap:10px;width:100%;margin-top:8px;padding:10px 12px;border-radius:12px;background:var(--card2);font-size:11.5px;text-align:left}.rpx span{color:var(--mute);font-weight:600}.rpx b{color:var(--navy2);white-space:nowrap}.rpx[aria-pressed=false] b{color:var(--late)}
+.rpn{font-size:11px;color:var(--mute);margin:10px 0 0;line-height:1.45}
 /* definitions popover */
 #glp{position:fixed;right:12px;width:min(340px,calc(100vw - 24px));z-index:80;background:var(--card);color:var(--ink);border-radius:20px;box-shadow:0 18px 50px light-dark(rgba(15,42,92,.25),rgba(0,0,0,.6));padding:14px;opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .18s,transform .18s}
 #glp.on{opacity:1;transform:none;pointer-events:auto}#glp::before{content:"";position:absolute;top:-6px;right:var(--ax,24px);width:14px;height:14px;background:var(--card);transform:rotate(45deg);border-radius:3px}
@@ -826,12 +827,13 @@ function laHTML(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{con
  ${la.length?groups.map(g=>`<div class="lg2"><div class="lgh"><b>${lab(g.k)}</b><span>${g.l.length}</span></div>${g.l.map(row).join('')}</div>`).join('')+(laDay||f.length<=6?'':moreBtn('la',f.length,laAll)):'<div class="eok">Nothing due in the next 14 days.</div>'}</section>`}
 const p6p=(a,e)=>e.st==='C'?100:(a.pt==='P'||e.src==='site')?e.pct:e.st==='N'?0:(a.od?Math.max(0,Math.min(100,100*(1-a.rd/a.od))):0);
 const RPT=[['Construction',''],['Ground floor','GROUND FLOOR'],['GF Mezzanine','GROUND FLOOR MEZZANINE'],['First floor','FIRST FLOOR'],['FF Mezzanine','FIRST FLOOR MEZZANINE'],['Roof floor','ROOF FLOOR']];
-function rptCalc(){const S=B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')),wp=(l,f)=>{const w=l.reduce((t,a)=>t+a.od,0);return w?l.reduce((t,a)=>t+a.od*f(a),0)/w:0};
+let rptX=true;const RPTX=['ROMP4-3250'];
+function rptCalc(){const S=B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')&&!(rptX&&RPTX.includes(a.id))),wp=(l,f)=>{const w=l.reduce((t,a)=>t+a.od,0);return w?l.reduce((t,a)=>t+a.od*f(a),0)/w:0};
  return RPT.map(([n,lv])=>{const l=S.filter(a=>!lv||a.lvl===lv);return{n,lv,c:l.length,p6:wp(l,a=>p6p(a,{st:a.st,pct:a.pct,src:'p6'})),wk:wp(l,a=>p6p(a,eff(a)))}})}
 function rptHTML(R){const f2=v=>v.toFixed(2);return`<section class="blk rpt"><div class="bh"><h2>Progress summary</h2><span>as P6 · ${dmy(B.dd)}</span></div>
  <div class="rph"><span></span><span>P6 % compl.</span><span>After walk</span></div>
  ${R.map((r,i)=>{const d=r.wk-r.p6;return`<div class="rpr${i?'':' tot'}"><b>${r.n}</b><span class="rpv">${f2(r.p6)}%<i><em style="width:${r.p6}%"></em></i></span><span class="rpw">${f2(r.wk)}%${d>.005?`<small>+${f2(d)}</small>`:''}</span></div>`}).join('')}
- <p class="rpn">P6 % Complete method: PMX scope, Romp R3 &amp; R4 activities, weighted by original duration. After walk = same with site walk updates.</p></section>`}
+ <p class="rpn">P6 % Complete method: PMX scope, Romp R3 &amp; R4 activities, weighted by original duration. After walk = same with site walk updates.</p><button class="rpx" data-rptx aria-pressed="${rptX}"><span>ROMP4-3250 Chiller Delivery &amp; Installation</span><b>${rptX?'Excluded (matches P6)':'Included'}</b></button></section>`}
 function renderDash(){
   const L=A.filter(a=>(!dR||a.R===dR)&&(!dD||a.D===dD)),W=a=>Math.max(1,a.od||1),sw=L.reduce((s,a)=>s+W(a),0)||1;
   const wpc=l=>{const w=l.reduce((s,a)=>s+W(a),0);return w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0};
@@ -1060,6 +1062,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.ar){arSel=arSel===d.ar?null:d.ar;chartAreas(DL);vib(4);return}
   if(d.walkarea){startRoom(d.walkarea);return}
   if(d.dn!==undefined){dnSel=dnSel===+d.dn?null:+d.dn;chartDonut(DL);vib(4);return}
+  if('rptx' in d){rptX=!rptX;renderDash();return}
   if('gl' in d){glToggle(t);return}
   if(d.glk){glK=d.glk;glDraw();vib(4);return}
   if('glx' in d){glClose();return}
