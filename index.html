@@ -415,11 +415,11 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .hcur{stroke:var(--r4);stroke-width:1.2;stroke-dasharray:3 3}.hdot{fill:var(--navy)}.hdot.on{fill:var(--r4);stroke:#fff;stroke-width:2}
 .hax{display:flex;justify-content:space-between;font-size:10.5px;color:var(--mute);font-weight:700}
 .hl{margin-top:8px}.hr{border-top:1px solid var(--line)}.hr.op{background:var(--card2);border-radius:16px;border-top-color:transparent;margin:4px -8px;padding:0 8px}
-.hrow{width:100%;display:grid;grid-template-columns:48px 70px 1fr 48px 38px 20px;gap:8px;align-items:center;padding:11px 0;text-align:left}
+.hwr{width:100%;display:grid;grid-template-columns:48px 70px 1fr 48px 38px 20px;gap:8px;align-items:center;padding:11px 0;text-align:left}
 .hwk{font-weight:800;font-size:12px;background:color-mix(in srgb,var(--navy) 10%,transparent);color:var(--navy);border-radius:8px;padding:4px 0;text-align:center}
 .hdt{font-size:12px;color:var(--mute);font-weight:600;line-height:1.2}.hdt i{display:block;font-style:normal;font-size:10px;color:var(--late);font-weight:800}
 .hbar{height:6px;border-radius:99px;background:var(--soft);overflow:hidden}.hbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--navy),var(--r4))}
-.hrow b{font-size:13.5px;font-weight:800;text-align:right}.hrow em{font-style:normal;font-size:11px;font-weight:800;text-align:right}.hrow em.up{color:var(--ok)}.hrow em.dn{color:var(--r4)}.hed{color:var(--mute);font-size:14px;text-align:center}
+.hwr b{font-size:13.5px;font-weight:800;text-align:right}.hwr em{font-style:normal;font-size:11px;font-weight:800;text-align:right}.hwr em.up{color:var(--ok)}.hwr em.dn{color:var(--r4)}.hed{color:var(--mute);font-size:14px;text-align:center}
 .hmore{width:100%;margin-top:6px;height:44px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy)}
 .hpw{padding:4px 0 14px}.hpw span{font-size:12.5px;font-weight:700}.hpw div{display:flex;gap:8px;margin-top:8px}.hpw input{flex:1;min-width:0;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);padding:0 12px;font:inherit}
 .hpw button{height:44px;padding:0 16px;border-radius:12px;background:var(--navy);color:#fff;font-weight:800}.hpw small{color:var(--r4);font-weight:700}
@@ -1219,7 +1219,7 @@ function sHist(){const ws=Object.values(SWK).sort((a,b)=>a.w-b.w);if(!ws.length)
  const rows=ws.slice().reverse(),show=hAll?rows:rows.slice(0,3);
  return`<div class="blk srpb"><div class="bh"><h2>SRP history</h2><span class="hcn">${n} weeks</span></div>${chart}
   <div class="hl">${show.map(x=>{const i=ws.indexOf(x),v=P[i],d=i?v-P[i-1]:0,op=hOpen===x.w;return`<div class="hr ${op?'op':''}">
-   <button class="hrow" data-hrow="${x.w}"><span class="hwk">W${x.w}</span><span class="hdt">${dmy(x.cut)}${SE[x.w]?'<i>edited</i>':''}</span><span class="hbar"><i style="width:${v*100}%"></i></span><b>${p1(v)}%</b><em class="${d>=0?'up':'dn'}">${i?(d>=0?'+':'')+p1(d):'–'}</em><span class="hed">${op?'×':'✎'}</span></button>
+   <button class="hwr" data-hrow="${x.w}"><span class="hwk">W${x.w}</span><span class="hdt">${dmy(x.cut)}${SE[x.w]?'<i>edited</i>':''}</span><span class="hbar"><i style="width:${v*100}%"></i></span><b>${p1(v)}%</b><em class="${d>=0?'up':'dn'}">${i?(d>=0?'+':'')+p1(d):'–'}</em><span class="hed">${op?'×':'✎'}</span></button>
    ${op?hEdit(x):''}</div>`}).join('')}</div>
   ${n>3?`<button class="hmore" data-hall>${hAll?'Show latest 3 only':'Show all '+n+' weeks'}<span class="hchev ${hAll?'up':''}">▾</span></button>`:''}</div>`}
 function hEdit(x){if(!window.__EDIT)return`<div class="hpw"><span>🔒 Enter password to edit W${x.w}</span><div><input type="password" id="hpw" placeholder="Password" autocomplete="current-password"><button data-hunlock>Unlock</button></div><small id="hpe"></small></div>`;
