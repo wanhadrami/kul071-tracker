@@ -745,11 +745,11 @@ const dmy=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(2,4):'–';
 const sid=id=>id.replace(/[^A-Za-z0-9_\-.~:@+]/g,'_');
 // very soft synthesized sound effects (no files); mute toggle in Site Walk header
 let sfxOn=(()=>{try{return localStorage.getItem('ksfx')!=='0'}catch(e){return true}})(),AC=null;
-let sfxT=0,sfxK='';function sfx(k){if(!sfxOn)return;const n=performance.now();if(n-sfxT<350&&k!=='tap'&&sfxK!=='tap')return;sfxT=n;sfxK=k;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime,
+let sfxT=0,sfxK='';function sfx(k){if(k==='save'||k==='done')hap('ok');if(!sfxOn)return;const n=performance.now();if(n-sfxT<350&&k!=='tap'&&sfxK!=='tap')return;sfxT=n;sfxK=k;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime,
   tone=(f,d,v,type='sine',at=0,f2)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+at+d);g.gain.setValueAtTime(0,t+at);g.gain.linearRampToValueAtTime(v,t+at+.008);g.gain.exponentialRampToValueAtTime(.0001,t+at+d);o.connect(g).connect(AC.destination);o.start(t+at);o.stop(t+at+d+.02)};
   if(k==='save')tone(660,.18,.014,'sine');
   else if(k==='done')tone(587,.22,.014,'sine'),tone(880,.32,.012,'sine',.11)}catch(e){}}
-const vib=n=>{try{if(Date.now()-hapT<60)return;hapT=Date.now();navigator.vibrate?navigator.vibrate(Math.max(n,15)):hapIOS()}catch(e){}if(Array.isArray(n))sfx(n[0]===15?'done':'err');else if(n>=6)sfx('swipe')};
+const vib=n=>{try{hap(n>=20?'med':n>=6?'light':'sel')}catch(e){}if(Array.isArray(n))sfx(n[0]===15?'done':'err');else if(n>=6)sfx('swipe')};
 
 const IC={back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
@@ -1083,12 +1083,15 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
 const BUILD='28 Nov 06:20';
 let hapT=0,hapSw=null;
-function haptic(){if(Date.now()-hapT<60)return;hapT=Date.now();try{navigator.vibrate?navigator.vibrate(15):hapIOS()}catch(e){}}
+/* iPhone-style haptics: selection tick, light/medium impact, success double-tap */
+const HP={sel:10,light:16,med:26,ok:[14,70,26],tick:9,end:18};
+function hap(k){const n=Date.now();if(n-hapT<60&&k!=='ok'&&k!=='tick'&&k!=='end')return;hapT=n;try{navigator.vibrate?navigator.vibrate(HP[k]||10):hapIOS()}catch(e){}}
+function haptic(t){hap(t&&t.closest('[role=tab],[data-dr],[data-dd],input,[aria-pressed],.seg button,.sc')?'sel':'light')}
 let hapRollEnd=0;
 function hapRoll(dur,delay=0){if(RM.matches||document.hidden)return;const now=Date.now();if(hapRollEnd>now)return;hapRollEnd=now+delay+dur;const T=[];for(let t=110,g=110;t<=dur+40;g*=1.3,t+=g)T.push(t);
-  T.forEach((t,i)=>setTimeout(()=>{if(document.hidden)return;hapT=Date.now();navigator.vibrate?navigator.vibrate(i===T.length-1?22:12):hapIOS()},delay+t))}
+  T.forEach((t,i)=>setTimeout(()=>{if(!document.hidden)hap(i===T.length-1?'end':'tick')},delay+t))}
 function hapIOS(){if(!hapSw){hapSw=document.createElement('label');hapSw.setAttribute('aria-hidden','true');hapSw.style.display='none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');hapSw.appendChild(i);document.head.appendChild(hapSw)}try{hapSw.click()}catch(e){}}
-document.addEventListener('click',e=>{if(!e.isTrusted)return;const t=e.target.closest('button,[role=tab],[data-dr],[data-dd],input[type=checkbox],input[type=radio],label');if(t&&t!==hapSw&&!t.disabled)haptic()},true);
+document.addEventListener('click',e=>{if(!e.isTrusted)return;const t=e.target.closest('button,[role=tab],[data-dr],[data-dd],input[type=checkbox],input[type=radio],label');if(t&&t!==hapSw&&!t.disabled)haptic(t)},true);
 let srpOut=null;
 function shFile(){return new File([srpOut.blob],srpOut.fn,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
 function openShare(){if(!srpOut)return;let o=$('#shr');if(!o){o=document.createElement('div');o.id='shr';document.body.appendChild(o)}
