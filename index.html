@@ -493,7 +493,7 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 /* desktop */
 @media(min-width:1000px){#app{max-width:1240px}.tabs{left:50%;right:auto;width:560px;transform:translateX(-50%)}body.walking .tabs{transform:translate(-50%,140%)}
  #s-home>*:not(.hx){max-width:720px;margin-left:auto!important;margin-right:auto!important}#s-home .sw{max-width:688px}
- .pd2{columns:2;column-gap:0}.pd2>*{break-inside:avoid}.pd2>.hx,.pd2>.dfl,.pd2>.pdft2{column-span:all}#s-dash .pd2>.blk{display:inline-block;width:calc(100% - 32px)}#toast{left:calc(50% - 280px)!important;right:calc(50% - 280px)!important}
+ .pd2{columns:2;column-gap:0}.pd2>*{break-inside:avoid}.pd2>.hx,.pd2>.scp,.pd2>.pdft2{column-span:all}#s-dash .pd2>.blk{display:inline-block;width:calc(100% - 32px)}#toast{left:calc(50% - 280px)!important;right:calc(50% - 280px)!important}
  .sgrid{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:row dense;align-items:start}.sgrid .f-gf{grid-column:1}.sgrid .f-ff{grid-column:2}
  #s-srp>.ctaw,#s-srp>.srpb:last-child,#s-srp>.wset,#s-srp>.sgb{max-width:900px;margin-left:auto!important;margin-right:auto!important}
  #s-sync>*:not(.hx){max-width:720px;margin-left:auto!important;margin-right:auto!important}}
@@ -577,6 +577,12 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .hxk button{position:relative;padding:10px 6px 9px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);text-align:center;overflow:hidden;color:#fff}.hxk button.on{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.45)}
 .hxk button::before{content:"";position:absolute;left:20%;right:20%;top:0;height:2px;border-radius:2px;background:#9cc4ff;box-shadow:0 0 10px #9cc4ff}.hxk .lt::before{background:#ffb648;box-shadow:0 0 10px #ffb648}.hxk .bk::before{background:#ff7a85;box-shadow:0 0 10px #ff7a85}.hxk .ok::before{background:#5ef0a8;box-shadow:0 0 10px #5ef0a8}
 .hkl{max-height:340px;overflow:auto}.hkx{float:right;color:rgba(255,255,255,.7);font-size:13px;padding:0 4px}
+.scp{margin:14px 16px 0;padding:14px;border-radius:22px;background:var(--card);box-shadow:var(--sh)}.sch{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}.sch b{font:800 16px "Plus Jakarta Sans",sans-serif}.sch span{font-size:11px;color:var(--mute);font-weight:600}
+.scr4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.scr4+.scr4{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line)}
+.sc{position:relative;overflow:hidden;text-align:left;padding:9px 8px 11px;border-radius:14px;background:var(--card2);color:var(--ink);display:flex;flex-direction:column;gap:1px;transition:background .2s,transform .15s}.sc:active{transform:scale(.97)}.sc:disabled{opacity:.4}
+.sc .scl{font-size:10.5px;font-weight:700;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sc b{font:800 16px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.sc small{font-size:10px;font-weight:800;min-height:13px}.sc small.up{color:var(--ok)}.sc small.dn{color:var(--r4)}
+.sc i{position:absolute;left:0;bottom:0;height:3px;background:var(--navy2);border-radius:0 2px 2px 0;transition:width .6s}
+.sc.on{background:var(--navy);color:#fff}.sc.on .scl{color:rgba(255,255,255,.7)}.sc.on small.up{color:#5ef0a8}.sc.on small.dn{color:#ff9aa3}.sc.on i{background:#5ef0a8}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -1045,6 +1051,10 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
 function closeWalkResult(){const o=$('#wres');if(!o||!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showWalkResult.t);if(tab!=='dash')return;
   setTimeout(()=>{if(tab==='dash'){curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')}},350)}
 let hxLa=false,hxDay='',hxK='';
+function scopeCard(){const sv=[dR,dD],pc=(r,d)=>{dR=r;dD=d;const x=rptCalc()[0];return x&&x.c?x:null};
+ const fl=[['','All floors','PMX'],['R4','Ground','GF'],['R3','First','1F'],['RF','Roof','RF']].map(([k,l,ic])=>({k,l,ic,x:pc(k,sv[1])})),tr=[['','All trades'],['ELE','Electrical'],['MECH','Mechanical'],['FIRE','Fire']].map(([k,l])=>({k,l,x:pc(sv[0],k)}));[dR,dD]=sv;
+ const chip=(o,attr,on)=>`<button class="sc${on?' on':''}" ${attr}="${o.k}" ${o.x?'':'disabled'}><span class="scl">${o.l}</span><b>${o.x?o.x.p6.toFixed(1)+'%':'–'}</b>${o.x&&o.x.pl!=null?`<small class="${o.x.p6>=o.x.pl?'up':'dn'}">${o.x.p6>=o.x.pl?'▲':'▼'} ${Math.abs(o.x.p6-o.x.pl).toFixed(1)}</small>`:'<small></small>'}<i style="width:${o.x?o.x.p6:0}%"></i></button>`;
+ return`<section class="scp"><div class="sch"><b>Scope</b><span>% complete · ▲▼ vs baseline</span></div><div class="scr4">${fl.map(o=>chip(o,'data-dr',dR===o.k)).join('')}</div><div class="scr4">${tr.map(o=>chip(o,'data-dd',dD===o.k)).join('')}</div></section>`}
 function hkList(M){if(!hxK)return'';const T={open:'Open activities',late:'Late activities',blk:'Blocked activities',done:'Finished in the last 7 days'}[hxK];let l=(M[hxK]||[]).slice();
  l.sort(hxK==='late'?(x,y)=>daysLate(y)-daysLate(x):hxK==='done'?(x,y)=>(eff(y).af||'')<(eff(x).af||'')?-1:1:(x,y)=>(x.pf<y.pf?-1:1));
  return`<div class="hxl2 hkl"><div class="hxlh">${T} · ${l.length}<button class="hkx" data-hk="${hxK}">✕</button></div>${l.length?l.map(a=>{const e=eff(a),u=U[sid(a.id)]||{};return`<button class="hxli" data-open="${esc(a.id)}"><span><b>${esc(a.sn)}</b><small>${FS[a.R]} ${esc(a.rm)} · ${a.D}${hxK==='blk'&&u.cons?' · <em>'+esc(u.cons.split(' – ')[0])+'</em>':''}${hxK==='done'&&e.af?' · finished '+dmy(e.af).slice(0,5):hxK!=='done'?' · due '+dmy(a.pf).slice(0,5):''}</small></span><strong>${hxK==='late'?daysLate(a)+'d':e.pct+'%'}</strong></button>`}).join(''):'<p class="hxlp">Nothing here.</p>'}</div>`}
@@ -1078,7 +1088,7 @@ function renderDash(){
   const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
   ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,tcap:`${dR?FL[dR]:'PMX scope'} · ${dD||'Overall'}${ffin?` · finish ${dmy(ffin)}`:''}`,label:`${R6[0].n} · P6 ${dmy(B.dd)}${R6[0].pl!=null?` · baseline ${R6[0].pl.toFixed(2)}% <b class="${act>=R6[0].pl?'up':'dn'}">${act>=R6[0].pl?'+':''}${(act-R6[0].pl).toFixed(2)}%</b>`:''}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,mark:R6[0].pl,curve:!!B1,la:laHero(la),tiles:[[open.length,'Open','','open'],[lt.length,'Late','lt','late'],[bl.length,'Blocked','bk','blk'],[dn7,'Done 7d','ok','done']],tlist:hkList({open,late:lt,blk:bl,done:L.filter(a=>{const e=eff(a);return e.st==='C'&&e.af>=wk})})})}
-  <div class="dfl"><div class="seg3">${[['','PMX scope'],['R4','GF'],['R3','1F'],['RF','Roof']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','Overall'],['ELE','ELE'],['MECH','MECH'],['FIRE','FIRE']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
+  ${scopeCard()}
 ${rptHTML(R6)}
 
   <section class="blk"><div class="bh"><h2>Finishes per week</h2><span>done vs planned</span></div><div id="wkr"></div></section>
