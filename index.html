@@ -218,7 +218,7 @@ body.walking .aib-btn{bottom:calc(200px + env(safe-area-inset-bottom));right:12p
 /* inline walk */
 .hpills{display:flex;gap:6px;flex-wrap:wrap}.dpill.rp{background:rgba(240,160,168,.3)}
 .route2{margin:0 16px;display:grid;gap:10px}
-.rm{background:var(--card);border-radius:22px;box-shadow:var(--sh);overflow:hidden;border:2px solid transparent;animation:pop .35s backwards}
+.rm{background:var(--card);border-radius:22px;box-shadow:var(--sh);overflow:hidden;border:2px solid transparent}#s-home.anim .rm{animation:pop .35s backwards}
 .rm.op{border-color:color-mix(in srgb,var(--c) 45%,transparent)}
 .rmh{display:grid;grid-template-columns:40px minmax(0,1fr) 24px;gap:12px;align-items:center;width:100%;text-align:left;padding:14px}
 .rm .sn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;border:2px solid var(--line);color:var(--mute)}.rm .sn svg{width:18px;height:18px}
@@ -540,8 +540,8 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .hxr .ok b{color:#9ff0c5}.hxr .go{background:linear-gradient(160deg,rgba(255,182,72,.28),rgba(255,182,72,.08));border-color:rgba(255,182,72,.55);animation:hxglow 2.4s ease-in-out infinite}.hxr .go b{color:#ffd08a}.hxr .go span{color:#fff}
 @keyframes hxglow{50%{box-shadow:0 0 18px rgba(255,182,72,.35)}}@media (prefers-reduced-motion:reduce){.hxr .go{animation:none}}
 .cta{background:linear-gradient(135deg,#13285a,#0b1a3d)!important;box-shadow:0 12px 28px rgba(8,22,49,.32)!important}.cta .ca{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#5ef0a8,#2fbf7a);color:#06301f;font-size:20px;font-weight:800;flex:none}
-.it.navf>.ith,.it.navf>.itb{animation:walkIn .6s cubic-bezier(.25,.8,.3,1) both}.it.navb>.ith,.it.navb>.itb{animation:walkBack .6s cubic-bezier(.25,.8,.3,1) both}.it.navf>.itb,.it.navb>.itb{animation-delay:.06s}
-@keyframes walkIn{from{transform:translateX(-44px);opacity:0}to{transform:none;opacity:1}}@keyframes walkBack{from{transform:translateX(44px);opacity:0}to{transform:none;opacity:1}}
+.it.navf>.ith,.it.navf>.itb{animation:walkIn .7s cubic-bezier(.22,.61,.36,1) both}.it.navb>.ith,.it.navb>.itb{animation:walkBack .7s cubic-bezier(.22,.61,.36,1) both}
+@keyframes walkIn{from{transform:translateX(48px);opacity:0}to{transform:none;opacity:1}}@keyframes walkBack{from{transform:translateX(-48px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.it.navf>*,.it.navb>*{animation:none!important}}
 .hxcv{margin-top:14px}.hxcv svg{display:block;width:100%;height:120px}.hxlg{display:flex;gap:14px;margin-top:4px;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7)}.hxlg i{display:inline-block;width:14px;height:0;vertical-align:middle;margin-right:5px;border-top:2px solid}.hxlg .p{border-top:2px dashed rgba(255,255,255,.6)}.hxlg .a{border-color:#5ef0a8}.hxlg .f{border-top:2px dashed #9cc4ff}
 .wkx{display:grid;grid-template-columns:72px minmax(0,1fr) 54px;gap:10px;align-items:center;padding:7px 0}.wkx .wl{font-size:12px;font-weight:700;color:var(--mute)}.wkx.cur .wl{color:var(--ink);font-weight:800}
@@ -583,6 +583,10 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .sc .scl{font-size:10.5px;font-weight:700;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sc b{font:800 16px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.sc small{font-size:10px;font-weight:800;min-height:13px}.sc small.up{color:var(--ok)}.sc small.dn{color:var(--r4)}
 .sc i{position:absolute;left:0;bottom:0;height:3px;background:var(--navy2);border-radius:0 2px 2px 0;transition:width .6s}
 .sc.on{background:var(--navy);color:#fff}.sc.on .scl{color:rgba(255,255,255,.7)}.sc.on small.up{color:#5ef0a8}.sc.on small.dn{color:#ff9aa3}.sc.on i{background:#5ef0a8}
+#s-dash.q .draw{animation:none;stroke-dashoffset:0}#s-dash.q .rm,#s-dash.q .blk{animation:none}#s-dash.q .grow{animation:none}
+.hxl2{animation:none;transform-origin:top;overflow:hidden}.hxl2.in{animation:panelIn .45s cubic-bezier(.22,.61,.36,1) both}.hxll.in,.hxll>.hxli{animation:panelIn .4s cubic-bezier(.22,.61,.36,1) both}
+.hxll>.hxli:nth-child(2){animation-delay:.04s}.hxll>.hxli:nth-child(3){animation-delay:.08s}.hxll>.hxli:nth-child(4){animation-delay:.12s}
+@keyframes panelIn{from{opacity:0;transform:translateY(-8px);max-height:0}to{opacity:1;transform:none;max-height:900px}}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -834,7 +838,13 @@ Give 5 short bullet points: what to physically check to judge the real % complet
 
 function navBar(a){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===a.id),R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);
   return`<div class="inav"><button data-inav="-1" ${i<=0?'disabled':''}>‹ Back</button><span>${i+1} / ${l.length}</span><button data-inav="1" ${i>=l.length-1&&!nr?'disabled':''}>${i>=l.length-1&&nr?'Next room ›':'Next ›'}</button><button class="imin" data-imin aria-label="Minimise">▾ Hide</button></div>`}
-function goItem(id,dir=0){qDet=false;navDir=dir;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+// slide to another activity: current one leaves, next one enters from the right (Back: from the left); page does not jump
+async function navTo(id,dir){const sc=curScr(),old=document.querySelector('.it.op'),y0=old?old.getBoundingClientRect().top:null;
+  if(old&&dir&&!RM.matches){const k=[{transform:'translateX(0)',opacity:1},{transform:`translateX(${-dir*48}px)`,opacity:0}];old.querySelectorAll('.ith,.itb').forEach(e=>e.animate(k,{duration:320,easing:'cubic-bezier(.4,0,.7,1)',fill:'forwards'}));await new Promise(r=>setTimeout(r,310))}
+  qDet=false;navDir=dir;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);
+  const nw=document.getElementById('it-'+sid(id));if(nw&&sc){let d=y0!=null?nw.getBoundingClientRect().top-y0:0;const t=nw.getBoundingClientRect().top-d;if(t<60||t>innerHeight*.6)d+=t-90;if(d)sc.scrollTo({top:sc.scrollTop+d,behavior:'instant'})}}
+function goItem(id,dir=0){navTo(id,dir)}
 let lastSh=null,qDet=false,phFor=null,navDir=0;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90,100].filter(p=>p>e.pct);
   const nv=op&&navDir?(navDir>0?' navf':' navb'):'';if(op&&navDir)setTimeout(()=>navDir=0);return`<div class="it ${op?'op':''} ${sh&&!nv?'sh':''}${nv} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}"><button class="ith" data-item="${esc(a.id)}">
    <span class="ir">${ring(e.pct,11,e.st==='C'?'var(--ok)':col)}<b>${e.pct}</b></span>
@@ -860,7 +870,7 @@ let lastSh=null,qDet=false,phFor=null,navDir=0;function itemRow(a){const e=eff(a
       <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}
     </div>`}
    ${navBar(a)}</div>`:''}</div>`}
-function renderHome(anim){try{sessionStorage.setItem('kwalk',JSON.stringify({d:today(),oRoom,oItem,romp}))}catch(e){}
+function renderHome(anim){$('#s-home').classList.toggle('anim',!!anim);try{sessionStorage.setItem('kwalk',JSON.stringify({d:today(),oRoom,oItem,romp}))}catch(e){}
   const all=A.filter(a=>isOpen(a)||checked(a)),done=all.filter(checked).length,tot=all.length,pc=Math.round(done/Math.max(1,tot)*100);
   const R=ORDER[romp],next=R.find(k=>toCheck(k).length),started=R.some(k=>roomOpen(k).length&&toCheck(k).length<roomOpen(k).length),left=R.reduce((s,k)=>s+toCheck(k).length,0);
   const rooms=R.map((k,i)=>{const v=ROOMS[k],l=roomItems(k),lf=toCheck(k).length,ck=l.length-lf,lt=l.filter(late).length,st=!l.length?'none':lf===0?'done':ck?'part':'todo',op=oRoom===k;
@@ -887,7 +897,7 @@ function renderHome(anim){try{sessionStorage.setItem('kwalk',JSON.stringify({d:t
   if(anim)animate($('#s-home'));
 }
 function advance(prevId){const k=oRoom,l=roomItems(k),i=l.findIndex(a=>a.id===prevId),nx=[...l.slice(i+1),...l.slice(0,Math.max(0,i))].find(a=>!checked(a)&&a.id!==prevId);qPanel='';qVal=null;wR='';wO='';
-  if(nx){oItem=nx.id;navDir=l.indexOf(nx)>i?1:-1;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(nx.id))?.scrollIntoView({behavior:'smooth',block:'center'}));return}
+  if(nx){navTo(nx.id,l.indexOf(nx)>i?1:-1);return}
   const R=ORDER[ROOMS[k][0]],nr=R.slice(R.indexOf(k)+1).find(r=>toCheck(r).length)||R.find(r=>toCheck(r).length);
   if(nr){toast(`${ROOMS[k][1]} done ✓ → ${ROOMS[nr][1]}`);startRoom(nr)}else{oRoom=null;oItem=null;renderHome(false);confetti();setTimeout(()=>showWalkResult(ROOMS[k][0]),1100)}}
 async function qAct(k){const a=A.find(x=>x.id===oItem);if(!a)return;const e=eff(a);
@@ -1050,18 +1060,18 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
 function closeWalkResult(){const o=$('#wres');if(!o||!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showWalkResult.t);if(tab!=='dash')return;
   setTimeout(()=>{if(tab==='dash'){curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')}},350)}
-let hxLa=false,hxDay='',hxK='';
+let hxLa=false,hxDay='',hxK='',hxLaNew=false,hxKNew=false;
 function scopeCard(){const sv=[dR,dD],pc=(r,d)=>{dR=r;dD=d;const x=rptCalc()[0];return x&&x.c?x:null};
  const fl=[['','All floors','PMX'],['R4','Ground','GF'],['R3','First','1F'],['RF','Roof','RF']].map(([k,l,ic])=>({k,l,ic,x:pc(k,sv[1])})),tr=[['','All trades'],['ELE','Electrical'],['MECH','Mechanical'],['FIRE','Fire']].map(([k,l])=>({k,l,x:pc(sv[0],k)}));[dR,dD]=sv;
  const chip=(o,attr,on)=>`<button class="sc${on?' on':''}" ${attr}="${o.k}" ${o.x?'':'disabled'}><span class="scl">${o.l}</span><b>${o.x?o.x.p6.toFixed(1)+'%':'–'}</b>${o.x&&o.x.pl!=null?`<small class="${o.x.p6>=o.x.pl?'up':'dn'}">${o.x.p6>=o.x.pl?'▲':'▼'} ${Math.abs(o.x.p6-o.x.pl).toFixed(1)}</small>`:'<small></small>'}<i style="width:${o.x?o.x.p6:0}%"></i></button>`;
  return`<section class="scp"><div class="sch"><b>Scope</b><span>% complete · ▲▼ vs baseline</span></div><div class="scr4">${fl.map(o=>chip(o,'data-dr',dR===o.k)).join('')}</div><div class="scr4">${tr.map(o=>chip(o,'data-dd',dD===o.k)).join('')}</div></section>`}
 function hkList(M){if(!hxK)return'';const T={open:'Open activities',late:'Late activities',blk:'Blocked activities',done:'Finished in the last 7 days'}[hxK];let l=(M[hxK]||[]).slice();
  l.sort(hxK==='late'?(x,y)=>daysLate(y)-daysLate(x):hxK==='done'?(x,y)=>(eff(y).af||'')<(eff(x).af||'')?-1:1:(x,y)=>(x.pf<y.pf?-1:1));
- return`<div class="hxl2 hkl"><div class="hxlh">${T} · ${l.length}<button class="hkx" data-hk="${hxK}">✕</button></div>${l.length?l.map(a=>{const e=eff(a),u=U[sid(a.id)]||{};return`<button class="hxli" data-open="${esc(a.id)}"><span><b>${esc(a.sn)}</b><small>${FS[a.R]} ${esc(a.rm)} · ${a.D}${hxK==='blk'&&u.cons?' · <em>'+esc(u.cons.split(' – ')[0])+'</em>':''}${hxK==='done'&&e.af?' · finished '+dmy(e.af).slice(0,5):hxK!=='done'?' · due '+dmy(a.pf).slice(0,5):''}</small></span><strong>${hxK==='late'?daysLate(a)+'d':e.pct+'%'}</strong></button>`}).join(''):'<p class="hxlp">Nothing here.</p>'}</div>`}
+ return`<div class="hxl2 hkl${hxKNew?' in':''}"><div class="hxlh">${T} · ${l.length}<button class="hkx" data-hk="${hxK}">✕</button></div>${l.length?l.map(a=>{const e=eff(a),u=U[sid(a.id)]||{};return`<button class="hxli" data-open="${esc(a.id)}"><span><b>${esc(a.sn)}</b><small>${FS[a.R]} ${esc(a.rm)} · ${a.D}${hxK==='blk'&&u.cons?' · <em>'+esc(u.cons.split(' – ')[0])+'</em>':''}${hxK==='done'&&e.af?' · finished '+dmy(e.af).slice(0,5):hxK!=='done'?' · due '+dmy(a.pf).slice(0,5):''}</small></span><strong>${hxK==='late'?daysLate(a)+'d':e.pct+'%'}</strong></button>`}).join(''):'<p class="hxlp">Nothing here.</p>'}</div>`}
 function laHero(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{const k=ymd(new Date((t0+i)*864e5));const l=la.filter(a=>a.pf===k);return{k,i,l,r:l.filter(riskA).length}}),mx=Math.max(1,...days.map(d=>d.l.length)),risk=la.filter(riskA).length;
  const sel=hxDay?days.find(d=>d.k===hxDay):null,list=sel?sel.l:[];
  return`<button class="hxla${hxLa?' on':''}" data-hxla><b>Next 2 weeks</b><span>${la.length} due${risk?` · <em>${risk} at risk</em>`:''}</span><i>${hxLa?'▴':'▾'}</i></button>
- ${hxLa?`<div class="hxl2"><div class="hxd">${days.map(d=>`<button data-hxd="${d.k}" class="${d.k===hxDay?'on':''}${d.i===0?' tdy':''}" ${d.l.length?'':'disabled'}><em>${d.l.length||''}</em><i style="height:${d.l.length?10+d.l.length/mx*44:3}px" class="${d.r?'r':''}"></i><b>${+d.k.slice(8)}</b><span>${new Date(d.k).toLocaleDateString('en-GB',{weekday:'narrow'})}</span></button>`).join('')}</div>
+ ${hxLa?`<div class="hxl2${hxLaNew?' in':''}"><div class="hxd">${days.map(d=>`<button data-hxd="${d.k}" class="${d.k===hxDay?'on':''}${d.i===0?' tdy':''}" ${d.l.length?'':'disabled'}><em>${d.l.length||''}</em><i style="height:${d.l.length?10+d.l.length/mx*44:3}px" class="${d.r?'r':''}"></i><b>${+d.k.slice(8)}</b><span>${new Date(d.k).toLocaleDateString('en-GB',{weekday:'narrow'})}</span></button>`).join('')}</div>
   ${sel?`<div class="hxll"><div class="hxlh">${new Date(sel.k).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})} · ${list.length} due</div>${list.map(a=>{const p=eff(a).pct,rk=riskA(a);return`<button class="hxli" data-open="${esc(a.id)}"><span><b>${esc(a.sn)}</b><small>${FS[a.R]} ${esc(a.rm)} · ${a.D}${rk?' · <em>at risk</em>':''}</small></span><strong>${p}%</strong></button>`}).join('')}</div>`:'<p class="hxlp">Tap a day to see what is due.</p>'}</div>`:''}`}
 function heroX(o){const f=v=>v.toFixed(2);
  return`<div class="hx"><div class="hxg"></div><div class="hrow"><div><div class="hello">${o.eye}</div><div class="proj">${o.title}</div></div>${o.btn}</div>
@@ -1072,7 +1082,7 @@ function heroX(o){const f=v=>v.toFixed(2);
   ${o.tcap?`<div class="hxtc">${o.tcap}</div>`:''}${o.tiles?`<div class="hxk">${o.tiles.map(([n,l,c,k])=>`<button class="${c||''}${k&&k===hxK?' on':''}" ${k?`data-hk="${k}"`:''}><b data-n="${n}">0</b><span>${l}</span></button>`).join('')}</div>${o.tlist||''}`:''}</div>`}
 function walkStatus(){const P=A.filter(pend),last=Object.values(U).reduce((m,u)=>Math.max(m,u.pat||0),0),t=last?new Date(last).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'';
  return P.length?{cls:'pend',txt:`<b>Includes ${P.length} site update${P.length>1?'s':''} not yet in P6</b> · walk ${t}`}:{cls:'ok',txt:`Matches P6 ${dmy(B.dd)}`}}
-function renderDash(){
+function renderDash(q){const sd=$('#s-dash'),st=q?sd.scrollTop:0;sd.classList.toggle('q',!!q);
   const L=A.filter(a=>(!dR||a.R===dR)&&(!dD||a.D===dD)),W=a=>Math.max(1,a.od||1),sw=L.reduce((s,a)=>s+W(a),0)||1;
   const wpc=l=>{const w=l.reduce((s,a)=>s+W(a),0);return w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0};
   const R6=rptCalc(),act=R6[0].p6,walkG=R6[0].wk-R6[0].p6,open=L.filter(isOpen),lt=L.filter(late),bl=L.filter(blk),wk=wkAgo();
@@ -1100,7 +1110,7 @@ ${rptHTML(R6)}
    <div><div class="bh"><h2>Late items by age</h2><span>tap to list</span></div><div id="agb"></div></div></section>
   ${excHTML(exc.map(({a})=>a),bl,lt)}
   <footer class="pdft2">KUL071 · PMX Malaysia · generated ${new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</footer></div>`;
-  animate($('#s-dash'));(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawHeroCurve(R6.S);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
+  if(!q)animate($('#s-dash'));else{sd.querySelectorAll('[data-n]').forEach(e=>{const v=+e.dataset.n,dc=+e.dataset.dec||0;e.textContent=v.toFixed(dc)});sd.scrollTop=st}(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawHeroCurve(R6.S);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
 }
 
 /* ---------- interactive charts ---------- */
@@ -1313,11 +1323,11 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('wresx' in d){closeWalkResult();return}
   if(d.wnext){const f=d.wnext;$('#wres')?.classList.remove('on');romp=f;const k=ORDER[f].find(r=>toCheck(r).length);setTimeout(()=>{if(k)startRoom(k);else renderHome(false);curScr()?.scrollTo({top:0,behavior:'smooth'})},300);return}
   if('wdash' in d){$('#wres')?.classList.remove('on');goTab('dash');setTimeout(()=>{curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')},300);return}
-  if(d.hk){hxK=hxK===d.hk?'':d.hk;renderDash();return}
-  if('hxla' in d){hxLa=!hxLa;if(!hxLa)hxDay='';renderDash();return}
-  if(d.hxd){hxDay=hxDay===d.hxd?'':d.hxd;renderDash();return}
+  if(d.hk){hxK=hxK===d.hk?'':d.hk;hxKNew=true;hxLaNew=false;renderDash(1);hxKNew=false;return}
+  if('hxla' in d){hxLa=!hxLa;if(!hxLa)hxDay='';hxLaNew=true;hxKNew=false;renderDash(1);hxLaNew=false;return}
+  if(d.hxd){hxDay=hxDay===d.hxd?'':d.hxd;renderDash(1);return}
   if('sfx' in d){sfxOn=!sfxOn;try{localStorage.setItem('ksfx',sfxOn?'1':'0')}catch(e){}renderHome(false);if(sfxOn)sfx('save');toast(sfxOn?'Sound on':'Sound off');return}
-  if('dr' in d){dR=d.dr;renderDash();return}
+  if('dr' in d){dR=d.dr;renderDash(1);return}
   if(d.scr){scR=d.scr;document.querySelectorAll('[data-scr]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scr===scR));drawCurve(DL);return}
   if(d.ars){arSort=d.ars;document.querySelectorAll('[data-ars]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ars===arSort));chartAreas(DL);return}
   if(d.ar){arSel=arSel===d.ar?null:d.ar;chartAreas(DL);vib(4);return}
@@ -1326,12 +1336,12 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('gl' in d){glToggle(t);return}
   if(d.glk){glK=d.glk;glDraw();vib(4);return}
   if('glx' in d){glClose();return}
-  if(d.exf){exF=d.exf;exAll=0;renderDash();vib(4);return}
-  if(d.lad!==undefined){laDay=laDay===d.lad?'':d.lad;renderDash();vib(4);return}
-  if(d.xmore){if(d.xmore==='ex')exAll^=1;else laAll^=1;renderDash();return}
+  if(d.exf){exF=d.exf;exAll=0;renderDash(1);vib(4);return}
+  if(d.lad!==undefined){laDay=laDay===d.lad?'':d.lad;renderDash(1);vib(4);return}
+  if(d.xmore){if(d.xmore==='ex')exAll^=1;else laAll^=1;renderDash(1);return}
   if('psedit' in d){psSheet();return}
   if('pssave' in d){psSave();return}
-  if('dd' in d){dD=d.dd;renderDash();return}
+  if('dd' in d){dD=d.dd;renderDash(1);return}
   if(d.romp){romp=d.romp;const s=$('.sw');s.style.setProperty('--c',RC[romp]);$('.sw i').style.transform=`translateX(${FLRS.indexOf(romp)*100}%)`;document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.romp===romp));vib(6);setTimeout(()=>renderHome(true),200);return}
   if(d.walk){startRoom(d.walk);return}
   if('exit' in d){back();return}
