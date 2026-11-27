@@ -796,7 +796,7 @@ const isOpen=a=>eff(a).st!=='C',late=a=>isOpen(a)&&a.pf&&a.pf<today(),blk=a=>isO
 const remDur=(a,e)=>e.st==='C'?0:+(a.od*(1-e.pct/100)).toFixed(1);
 const daysLate=a=>Math.round((new Date(today())-new Date(a.pf))/864e5);
 const ring=(p,sw,col,anim)=>{const r=50-sw/2,c=2*Math.PI*r;return`<svg class="rg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--soft)" stroke-width="${sw}"/><circle class="v" cx="50" cy="50" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${anim?0:c*p/100} ${c}" data-d="${c*p/100} ${c}"/></svg>`};
-const animate=el=>requestAnimationFrame(()=>requestAnimationFrame(()=>{el.querySelectorAll('.v[data-d]').forEach(v=>v.setAttribute('stroke-dasharray',v.dataset.d));el.querySelectorAll('[data-w]').forEach(i=>i.style.width=i.dataset.w);el.querySelectorAll('[data-n]').forEach(countUp)}));
+const animate=el=>requestAnimationFrame(()=>requestAnimationFrame(()=>{el.querySelectorAll('.v[data-d]').forEach(v=>v.setAttribute('stroke-dasharray',v.dataset.d));el.querySelectorAll('[data-w]').forEach(i=>i.style.width=i.dataset.w);el.querySelectorAll('[data-n]').forEach(countUp);if(el.querySelector('[data-n],.v[data-d],[data-w]'))hapRoll(900)}));
 function countUp(el){const to=+el.dataset.n,dc=+(el.dataset.dec||0),t0=performance.now(),dur=900;if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=to.toFixed(dc);return}
   const f=t=>{const k=Math.min(1,(t-t0)/dur);el.textContent=(to*(1-Math.pow(1-k,3))).toFixed(dc);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
 
@@ -1077,11 +1077,14 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
    ${fl?`<p class="wrp">Construction overall ${RA.p6.toFixed(2)}% → <b>${RA.wk.toFixed(2)}%</b></p>`:''}
    ${fl&&nf?`<button class="wrb" data-wnext="${nf}">Next: ${FL[nf]} ›</button><button class="wrb2" data-wresx>Stay here</button>`:`<button class="wrb" data-wdash>Move to Dashboard ›</button>`}</div>`;
   if(!fl)goTab('dash');requestAnimationFrame(()=>o.classList.add('on'));sfx('done');
-  const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;
+  const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;hapRoll(1600,500);
   const step=n=>{const k=Math.max(0,Math.min(1,(n-st)/1600)),e=1-Math.pow(1-k,3);b.textContent=(a0+(a1-a0)*e).toFixed(2);g.textContent='+'+((a1-a0)*e).toFixed(2)+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
 let hapT=0,hapSw=null;
 function haptic(){const c=Date.now();setTimeout(()=>{if(hapT>=c-40)return;hapT=Date.now();navigator.vibrate?navigator.vibrate(8):hapIOS()})}
+let hapRollEnd=0;
+function hapRoll(dur,delay=0){if(RM.matches||document.hidden)return;const now=Date.now();if(hapRollEnd>now)return;hapRollEnd=now+delay+dur;const T=[];for(let t=110,g=110;t<=dur+40;g*=1.3,t+=g)T.push(t);
+  T.forEach((t,i)=>setTimeout(()=>{if(document.hidden)return;hapT=Date.now();navigator.vibrate?navigator.vibrate(i===T.length-1?9:5):hapIOS()},delay+t))}
 function hapIOS(){if(!hapSw){hapSw=document.createElement('label');hapSw.style.cssText='position:fixed;left:-99px;width:1px;height:1px;overflow:hidden';hapSw.innerHTML='<input type="checkbox" switch>';document.body.appendChild(hapSw)}try{hapSw.click()}catch(e){}}
 document.addEventListener('click',e=>{if(!e.isTrusted)return;const t=e.target.closest('button,[role=tab],[data-dr],[data-dd],input[type=checkbox],input[type=radio],label');if(t&&t!==hapSw&&!t.disabled)haptic()},true);
 let srpOut=null;
@@ -1153,7 +1156,7 @@ ${rptHTML(R6)}
    <div><div class="bh"><h2>Late items by age</h2><span>tap to list</span></div><div id="agb"></div></div></section>
   ${excHTML(exc.map(({a})=>a),bl,lt)}
   <footer class="pdft2">KUL071 · PMX Malaysia · generated ${new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</footer></div>`;
-  if(!q){animate($('#s-dash'));$('#s-dash').querySelectorAll('[data-n]').forEach((e,i)=>numPrev['n'+i]=+e.dataset.n);requestAnimationFrame(()=>placeSci(false))}else{sd.querySelectorAll('[data-n]').forEach((e,i)=>{const v=+e.dataset.n,dc=+e.dataset.dec||0,k='n'+i,f=numPrev[k];numPrev[k]=v;if(f==null||f===v||RM.matches){e.textContent=v.toFixed(dc);return}const t0=performance.now();const st2=n=>{const x=Math.min(1,(n-t0)/750),E=1-Math.pow(1-x,3);e.textContent=(f+(v-f)*E).toFixed(dc);if(x<1)requestAnimationFrame(st2)};requestAnimationFrame(st2)});sd.scrollTop=st}placeSci(q);(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawHeroCurve(R6.S,q);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
+  if(!q){animate($('#s-dash'));$('#s-dash').querySelectorAll('[data-n]').forEach((e,i)=>numPrev['n'+i]=+e.dataset.n);requestAnimationFrame(()=>placeSci(false))}else{hapRoll(750);sd.querySelectorAll('[data-n]').forEach((e,i)=>{const v=+e.dataset.n,dc=+e.dataset.dec||0,k='n'+i,f=numPrev[k];numPrev[k]=v;if(f==null||f===v||RM.matches){e.textContent=v.toFixed(dc);return}const t0=performance.now();const st2=n=>{const x=Math.min(1,(n-t0)/750),E=1-Math.pow(1-x,3);e.textContent=(f+(v-f)*E).toFixed(dc);if(x<1)requestAnimationFrame(st2)};requestAnimationFrame(st2)});sd.scrollTop=st}placeSci(q);(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawHeroCurve(R6.S,q);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
 }
 
 /* ---------- interactive charts ---------- */
