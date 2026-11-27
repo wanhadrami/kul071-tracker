@@ -443,6 +443,11 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .xi{display:block;margin-top:5px;font-size:11.5px;font-weight:700;color:var(--r4)}
 .xp{font-size:11px;font-weight:800;padding:5px 9px;border-radius:99px;white-space:nowrap}.xp.r{background:color-mix(in srgb,var(--r4) 13%,transparent);color:var(--r4)}.xp.a{background:color-mix(in srgb,var(--late) 16%,transparent);color:var(--late)}.xp.b{background:color-mix(in srgb,var(--navy) 10%,transparent);color:var(--navy)}
 .xmore summary{list-style:none;display:flex;justify-content:center;align-items:center;gap:8px;height:44px;margin-top:6px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy);cursor:pointer}.xmore summary::-webkit-details-marker{display:none}.xmore[open] summary .hchev{transform:rotate(180deg)}
+/* progress summary */
+.rph,.rpr{display:grid;grid-template-columns:minmax(0,1fr) 108px 88px;gap:10px;align-items:center}.rph{font-size:10.5px;font-weight:800;color:var(--mute);text-align:right;padding:6px 0 4px}
+.rpr{padding:10px 0;border-top:1px solid var(--line)}.rpr>b{font-size:13.5px;font-weight:700}.rpr.tot>b{font-weight:800}.rpr.tot{border-top:0;background:color-mix(in srgb,var(--navy) 7%,transparent);border-radius:12px;padding:12px 10px;margin:0 -10px}
+.rpv,.rpw{text-align:right;font:800 15px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.rpv i{display:block;height:4px;border-radius:4px;background:var(--soft);margin-top:5px;overflow:hidden}.rpv em{display:block;height:100%;background:var(--navy2);border-radius:4px}
+.rpw{color:var(--navy2)}.rpw small{display:block;font-size:11px;color:var(--ok);font-weight:800}.rpn{font-size:11px;color:var(--mute);margin:10px 0 0;line-height:1.45}
 /* definitions popover */
 #glp{position:fixed;right:12px;width:min(340px,calc(100vw - 24px));z-index:80;background:var(--card);color:var(--ink);border-radius:20px;box-shadow:0 18px 50px light-dark(rgba(15,42,92,.25),rgba(0,0,0,.6));padding:14px;opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .18s,transform .18s}
 #glp.on{opacity:1;transform:none;pointer-events:auto}#glp::before{content:"";position:absolute;top:-6px;right:var(--ax,24px);width:14px;height:14px;background:var(--card);transform:rotate(45deg);border-radius:3px}
@@ -786,7 +791,7 @@ const xRow=(a,f)=>{const p=eff(a).pct,x=f(a),r=15.5,c=2*Math.PI*r;return`<button
  <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${FS[a.R]} · ${esc(a.rm)}</i><i class="${dcl(a.D)}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i></span>${x.sub}</span>${x.tag}</button>`};
 const xList=(l,f)=>`<div class="xls">${l.slice(0,5).map(a=>xRow(a,f)).join('')}</div>${l.length>5?`<details class="xmore"><summary>Show all ${l.length}<span class="hchev">▾</span></summary><div class="xls">${l.slice(5).map(a=>xRow(a,f)).join('')}</div></details>`:''}`;
 let exF='all',exAll=0,laDay='',laAll=0,glK='Progress';
-const GL=[['Progress','Weighted % complete: sum of (P6 original duration × % complete) ÷ sum of original durations. Site walk updates after the last XER load override P6.',()=>''],
+const GL=[['Progress','Matches P6 % Complete: PMX activities coded Romp R3/R4 under Construction, activity % complete (physical or duration type) weighted by original duration. After walk uses site walk updates made since the last XER.',()=>''],
  ['Late','Not complete and the P6 planned finish is before today.',()=>A.filter(late).length+' late now'],
  ['Blocked','Blocker recorded on the site walk and not yet cleared.',()=>A.filter(blk).length+' blocked now'],
  ['At risk','Due within 3 days and under 50% done.',()=>''],
@@ -819,10 +824,18 @@ function laHTML(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{con
  <div class="lst" role="tablist">${days.map(d=>`<button class="ld${d.i===0?' tdy':''}${d.n?'':' z'}" data-lad="${d.k}" aria-pressed="${laDay===d.k}"${d.n?'':' disabled'}><span>${wd(d.k).slice(0,2)}</span><b>${+d.k.slice(8)}</b><i style="height:${d.n?8+d.n/mx*22:3}px"${d.r?' class="r"':''}></i><em>${d.n||''}</em></button>`).join('')}</div>
  ${laDay?`<button class="lclr" data-lad="">Filtered to 1 day <span>✕ All days</span></button>`:''}
  ${la.length?groups.map(g=>`<div class="lg2"><div class="lgh"><b>${lab(g.k)}</b><span>${g.l.length}</span></div>${g.l.map(row).join('')}</div>`).join('')+(laDay||f.length<=6?'':moreBtn('la',f.length,laAll)):'<div class="eok">Nothing due in the next 14 days.</div>'}</section>`}
+const p6p=(a,e)=>e.st==='C'?100:(a.pt==='P'||e.src==='site')?e.pct:e.st==='N'?0:(a.od?Math.max(0,Math.min(100,100*(1-a.rd/a.od))):0);
+const RPT=[['Construction',''],['Ground floor','GROUND FLOOR'],['GF Mezzanine','GROUND FLOOR MEZZANINE'],['First floor','FIRST FLOOR'],['FF Mezzanine','FIRST FLOOR MEZZANINE'],['Roof floor','ROOF FLOOR']];
+function rptCalc(){const S=B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')),wp=(l,f)=>{const w=l.reduce((t,a)=>t+a.od,0);return w?l.reduce((t,a)=>t+a.od*f(a),0)/w:0};
+ return RPT.map(([n,lv])=>{const l=S.filter(a=>!lv||a.lvl===lv);return{n,lv,c:l.length,p6:wp(l,a=>p6p(a,{st:a.st,pct:a.pct,src:'p6'})),wk:wp(l,a=>p6p(a,eff(a)))}})}
+function rptHTML(R){const f2=v=>v.toFixed(2);return`<section class="blk rpt"><div class="bh"><h2>Progress summary</h2><span>as P6 · ${dmy(B.dd)}</span></div>
+ <div class="rph"><span></span><span>P6 % compl.</span><span>After walk</span></div>
+ ${R.map((r,i)=>{const d=r.wk-r.p6;return`<div class="rpr${i?'':' tot'}"><b>${r.n}</b><span class="rpv">${f2(r.p6)}%<i><em style="width:${r.p6}%"></em></i></span><span class="rpw">${f2(r.wk)}%${d>.005?`<small>+${f2(d)}</small>`:''}</span></div>`}).join('')}
+ <p class="rpn">P6 % Complete method: PMX scope, Romp R3 &amp; R4 activities, weighted by original duration. After walk = same with site walk updates.</p></section>`}
 function renderDash(){
   const L=A.filter(a=>(!dR||a.R===dR)&&(!dD||a.D===dD)),W=a=>Math.max(1,a.od||1),sw=L.reduce((s,a)=>s+W(a),0)||1;
   const wpc=l=>{const w=l.reduce((s,a)=>s+W(a),0);return w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0};
-  const act=wpc(L),open=L.filter(isOpen),lt=L.filter(late),bl=L.filter(blk),wk=wkAgo();
+  const R6=rptCalc(),act=R6[0].p6,walkG=R6[0].wk-R6[0].p6,open=L.filter(isOpen),lt=L.filter(late),bl=L.filter(blk),wk=wkAgo();
   const dn7=L.filter(a=>{const e=eff(a);return e.st==='C'&&e.af>=wk}).length;
   const wkn=dn(wk),gain=L.reduce((s,a)=>{const u=U[sid(a.id)];if(!u?.hist?.length)return s;const b=[...u.hist].reverse().find(h=>h.t<wkn*864e5);return s+W(a)*Math.max(0,eff(a).pct-(b?b.pct:a.pct))},0)/sw;
   const ffin=open.reduce((m,a)=>{const f=a.ef>today()?a.ef:today();return f>m?f:m},'');
@@ -835,10 +848,11 @@ function renderDash(){
   const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
   <div class="hero dh2"><div class="hrow"><div><div class="hello">KUL071 · PMX construction</div><div class="proj">Dashboard</div></div><button class="hbtn" data-gl aria-label="Definitions">i</button></div>
-   <div class="dk"><div class="dkr">${ring(act,10,'#fff',true).replace('stroke="var(--soft)"','stroke="rgba(255,255,255,.18)"')}<div><b data-n="${f1(act)}" data-dec="1">0</b><span>% done</span></div></div>
-    <div class="dkt"><div class="htitle">${gain>0?'+'+f1(gain)+' pts this week':'No movement this week'}</div><div class="hsub">P6 ${dmy(B.dd)} + site walk · forecast finish ${ffin?dmy(ffin):'–'}</div></div></div>
+   <div class="dk"><div class="dkr">${ring(act,10,'#fff',true).replace('stroke="var(--soft)"','stroke="rgba(255,255,255,.18)"')}<div><b data-n="${act.toFixed(2)}" data-dec="2">0</b><span>% compl.</span></div></div>
+    <div class="dkt"><div class="htitle">${walkG>.005?'+'+walkG.toFixed(2)+' pts after site walk':'No site walk gain yet'}</div><div class="hsub">Construction · P6 ${dmy(B.dd)} · forecast finish ${ffin?dmy(ffin):'–'}</div></div></div>
    <div class="dks"><div><b data-n="${open.length}">0</b><span>Open</span></div><div><b class="lt" data-n="${lt.length}">0</b><span>Late</span></div><div><b class="bk" data-n="${bl.length}">0</b><span>Blocked</span></div><div><b class="ok" data-n="${dn7}">0</b><span>Done 7d</span></div></div></div>
   <div class="dfl"><div class="seg3">${[['','All'],['R4','GF'],['R3','1F'],['RF','Roof']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','All'],['ELE','ELE'],['MECH','MECH'],['FIRE','FIRE']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
+${rptHTML(R6)}
 <section class="blk"><div class="bh"><h2>Cumulative progress</h2><div class="seg2 sm">${[['all','All'],['6m','6M'],['3m','3M']].map(([k,l])=>`<button data-scr="${k}" aria-pressed="${scR===k}">${l}</button>`).join('')}</div></div>
    <div class="fig" id="sc"><svg id="scs"></svg><div class="tip" id="tip" hidden></div></div>
    <div class="lg"><span><i class="l1"></i>Actual</span><span><i class="l2"></i>Forecast</span><span><i class="l3"></i>Data date</span><span style="margin-left:auto">Drag across the chart</span></div></section>
