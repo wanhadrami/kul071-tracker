@@ -20,9 +20,9 @@ let sig='';async function pull(){try{const r=await api('/api/db');const all=awai
 let timer=null;const startPoll=()=>{if(!timer){pull();timer=1}};
 
 const docRef=p=>({id:last(p),path:p,get:async()=>{await pull();return snapDoc(p)},
- set:async d=>{await api('/api/db',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({path:p,data:d})});cache[p]=d;fire()},
+ set:async d=>{await api('/api/db',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({path:p,data:d})});cache[p]=d},
  update:async d=>{const n={...(cache[p]||{}),...d};await docRef(p).set(n)},
- delete:async()=>{await api('/api/db?path='+encodeURIComponent(p),{method:'DELETE'});delete cache[p];fire()},
+ delete:async()=>{await api('/api/db?path='+encodeURIComponent(p),{method:'DELETE'});delete cache[p]},
  onSnapshot:(next)=>{const s={kind:'doc',p,next};subs.push(s);startPoll();return()=>subs.splice(subs.indexOf(s),1)}});
 const db={doc:docRef,collection:c=>({path:c,doc:id=>docRef(c+'/'+id),onSnapshot:(next)=>{const s={kind:'col',p:c,next};subs.push(s);startPoll();return()=>subs.splice(subs.indexOf(s),1)},get:async()=>{await pull();return snapCol(c)}})};
 const user={id:async()=>name,isOwner:async()=>role==='admin',canEdit:async()=>role==='admin',can:async()=>true,me:async()=>({id:name,name}),profiles:async ids=>Object.fromEntries(ids.map(i=>[i,{name:i}]))};

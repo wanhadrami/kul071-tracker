@@ -558,7 +558,7 @@ details.gl summary{list-style:none;display:flex;justify-content:space-between;al
 <input type="file" id="phIn" accept="image/*" capture="environment" hidden>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="shim.js"></script>
+<script src="shim.js?v=4"></script>
 <script>
 {
 const $=s=>document.querySelector(s);
@@ -1022,6 +1022,8 @@ function renderSync(){
 
 /* ---------- nav ---------- */
 function rerender(){if(tab==='home'){if(!qPanel)renderHome(false)}if(tab==='dash')renderDash();if(tab==='sync')renderSync();if(tab==='srp'&&!$('#sheet').classList.contains('on'))renderSrp();if(!$('#s-find').classList.contains('off-r'))renderFind()}
+let liveP=false;const busy=()=>!!(oRoom||qPanel||F||$('#sheet')?.classList.contains('on'));
+function live(){if(busy())liveP=true;else{liveP=false;rerender()}}
 function goTab(t){tab=t;window.__pull&&window.__pull();document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   ['home','dash','sync','srp'].forEach(s=>$('#s-'+s).classList.toggle('hide',s!==t));$('#s-room').classList.toggle('hide',t!=='home');
   if(t!=='home'){document.body.classList.remove('walking');wRoom=null;$('#s-room').classList.add('off-r');$('#s-home').classList.remove('off-l')}
@@ -1409,9 +1411,9 @@ async function boot(){
   db.collection('srpg').onSnapshot(q=>{SG={};q.docs.forEach(d=>{const x=d.data();if(Number.isInteger(x.w))SG[x.w]=x});sMerge();if(tab==='srp'&&hOpen==null&&!$('#sheet').classList.contains('on'))renderSrp()},()=>{});
   db.doc('srpm/master').onSnapshot(d=>{SM=d.exists?d.data():{};if(tab==='srp')renderSrp()},()=>{});
   db.doc('srpm/cut').onSnapshot(d=>{if(d.exists&&/^\d{4}-\d\d-\d\d$/.test(d.data().date))sCut=d.data().date},()=>{});
-  db.doc('base/current').onSnapshot(s=>{if(s.exists){const d=s.data();prevBase=d.prev||null;setBase({...d});rerender()}},()=>{});
+  db.doc('base/current').onSnapshot(s=>{if(s.exists){const d=s.data();prevBase=d.prev||null;setBase({...d});live()}},()=>{});
   db.collection('upd').onSnapshot(async s=>{got=true;clearTimeout(timer);if(!s.metadata.fromCache&&canWrite&&noteMsg.startsWith('No signal'))noteMsg='';
-    U={};s.docs.forEach(d=>U[d.id]=d.data());await resolveNames();if(!F)rerender()},()=>{clearTimeout(timer);noteMsg='Live sync stopped – reload to reconnect.';rerender()});
+    U={};s.docs.forEach(d=>U[d.id]=d.data());await resolveNames();live()},()=>{clearTimeout(timer);noteMsg='Live sync stopped – reload to reconnect.';rerender()});
   rerender();
 }
 async function resolveNames(){if(!user)return;const ids=[...new Set(Object.values(U).flatMap(u=>[u.by,...(u.hist||[]).map(h=>h.by)]).filter(Boolean))];
