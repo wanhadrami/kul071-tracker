@@ -529,6 +529,9 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .qsb i{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:var(--card)}.qsb i svg{width:12px;height:12px}.qsb.on{background:color-mix(in srgb,var(--ok) 10%,var(--card2))}.qsb.on i{background:var(--ok);border-color:var(--ok);color:#fff}
 .qsb label{position:relative;margin-left:auto;font-size:12px;font-weight:800;color:var(--ok);padding:4px 6px;border-radius:8px;background:var(--card)}.qsb label input{position:absolute;inset:0;opacity:0;width:100%}
 .phw{position:relative;display:inline-block}.phx{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;background:var(--r4);color:#fff;font-size:15px;font-weight:800;line-height:1;box-shadow:0 0 0 2px var(--card)}.qphs{flex-wrap:wrap;padding-top:6px}
+.totop{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:30;height:38px;padding:0 16px;border-radius:99px;background:var(--navy);color:#fff;font-weight:800;font-size:13px;box-shadow:0 8px 24px rgba(8,22,49,.3);transition:.25s}.totop.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
+.topzone{position:fixed;top:0;left:20%;right:20%;height:max(env(safe-area-inset-top),12px);z-index:40;background:transparent;opacity:0}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -1214,7 +1217,8 @@ document.addEventListener('click',ev=>{if(!ev.isTrusted||tab!=='home'||!oItem||t
 document.addEventListener('click',ev=>{if(ev.target.closest('.qsb label'))ev.stopPropagation()},true);
 document.addEventListener('change',ev=>{const q=ev.target.dataset?.qd;if(q)qStat(q+'d',ev.target.value)});
 document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[data-dn]');if(dp){dnSel=dnSel===+dp.dataset.dn?null:+dp.dataset.dn;chartDonut(DL);vib(4);return}const to=ev.target.closest('tr[data-open]');if(to){openSheet(to.dataset.open);return}const tr=ev.target.closest('tr[data-room],g[data-room]');if(tr){romp=ROOMS[tr.dataset.room][0];goRoom(tr.dataset.room);return}const t=ev.target.closest('button');if(!t)return;const d=t.dataset;
-  if(d.tab){if(tour)endTour();goTab(d.tab);return}
+  if(d.tab){if(tour)endTour();if(d.tab===tab){toTop();return}goTab(d.tab);return}
+  if('totop' in d){toTop();return}
   if('dr' in d){dR=d.dr;renderDash();return}
   if(d.scr){scR=d.scr;document.querySelectorAll('[data-scr]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scr===scR));drawCurve(DL);return}
   if(d.ars){arSort=d.ars;document.querySelectorAll('[data-ars]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ars===arSort));chartAreas(DL);return}
@@ -1670,6 +1674,10 @@ function srpBadge(){const b=document.querySelector('.tabs [data-tab="srp"]');if(
   let i=b.querySelector('.tbg');if(!n){i?.remove();return}if(!i){i=document.createElement('i');i.className='tbg';b.appendChild(i)}if(i.textContent!=String(n)){i.textContent=n>99?'99+':n;i.classList.remove('pop');void i.offsetWidth;i.classList.add('pop')}
   b.setAttribute('aria-label','SRP, '+n+' suggestion'+(n>1?'s':'')+' from site walk')}
 for(const f of ['renderHome','renderSrp','rerender']){const o=window[f]||eval(f);eval(f+'=function(...a){const r=o.apply(this,a);srpBadge();return r}')}
+const curScr=()=>document.querySelector('#s-'+tab);function toTop(){curScr()?.scrollTo({top:0,behavior:'smooth'});vib(4)}
+{const b=document.createElement('button');b.className='totop';b.dataset.totop='';b.setAttribute('aria-label','Back to top');b.innerHTML='↑ Top';document.body.appendChild(b);
+ const z=document.createElement('button');z.className='topzone';z.dataset.totop='';z.setAttribute('aria-label','Scroll to top');z.tabIndex=-1;document.body.appendChild(z);
+ document.addEventListener('scroll',e=>{const t=e.target;if(t&&t.classList&&t.classList.contains('scr'))b.classList.toggle('on',t.scrollTop>700)},true)}
 boot();
 }
 </script>
