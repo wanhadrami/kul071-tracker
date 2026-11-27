@@ -439,6 +439,32 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .xi{display:block;margin-top:5px;font-size:11.5px;font-weight:700;color:var(--r4)}
 .xp{font-size:11px;font-weight:800;padding:5px 9px;border-radius:99px;white-space:nowrap}.xp.r{background:color-mix(in srgb,var(--r4) 13%,transparent);color:var(--r4)}.xp.a{background:color-mix(in srgb,var(--late) 16%,transparent);color:var(--late)}.xp.b{background:color-mix(in srgb,var(--navy) 10%,transparent);color:var(--navy)}
 .xmore summary{list-style:none;display:flex;justify-content:center;align-items:center;gap:8px;height:44px;margin-top:6px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy);cursor:pointer}.xmore summary::-webkit-details-marker{display:none}.xmore[open] summary .hchev{transform:rotate(180deg)}
+/* definitions popover */
+#glp{position:fixed;right:12px;width:min(340px,calc(100vw - 24px));z-index:80;background:var(--card);color:var(--ink);border-radius:20px;box-shadow:0 18px 50px light-dark(rgba(15,42,92,.25),rgba(0,0,0,.6));padding:14px;opacity:0;transform:translateY(-6px) scale(.97);transform-origin:top right;pointer-events:none;transition:opacity .18s,transform .18s}
+#glp.on{opacity:1;transform:none;pointer-events:auto}#glp::before{content:"";position:absolute;top:-6px;right:var(--ax,24px);width:14px;height:14px;background:var(--card);transform:rotate(45deg);border-radius:3px}
+.glh{display:flex;justify-content:space-between;align-items:center}.glh b{font:800 15px "Plus Jakarta Sans",sans-serif}.glx{width:32px;height:32px;border-radius:10px;background:var(--card2);color:var(--mute);font-size:13px}
+.glc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.glc button{height:32px;padding:0 12px;border-radius:99px;background:var(--card2);font-weight:700;font-size:12.5px;color:var(--mute)}.glc button[aria-pressed=true]{background:var(--navy);color:#fff}
+.gld{background:var(--card2);border-radius:14px;padding:12px;animation:gfi .2s}.gld h4{margin:0 0 4px;font-size:14px}.gld p{margin:0;font-size:13px;line-height:1.5;color:var(--mute)}.gln{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:800;color:var(--navy2);background:color-mix(in srgb,var(--navy) 12%,transparent);padding:3px 9px;border-radius:99px}
+@keyframes gfi{from{opacity:0;transform:translateY(3px)}}
+/* exceptions */
+.ekp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 6px}.ek{border-radius:16px;background:var(--card2);padding:10px 12px;text-align:left;border:2px solid transparent;transition:.15s}.ek b{display:block;font:800 22px/1.1 "Plus Jakarta Sans",sans-serif}.ek span{font-size:11.5px;font-weight:700;color:var(--mute)}
+.ek.r b{color:var(--r4)}.ek.a b{color:var(--late)}.ek[aria-pressed=true]{border-color:var(--navy2);background:color-mix(in srgb,var(--navy) 8%,var(--card))}.ek.r[aria-pressed=true]{border-color:var(--r4)}.ek.a[aria-pressed=true]{border-color:var(--late)}
+.els{display:flex;flex-direction:column;gap:8px;margin-top:8px}.er{display:flex;gap:12px;width:100%;text-align:left;background:var(--card2);border-radius:16px;padding:12px 12px 12px 0;overflow:hidden}.er:active{transform:scale(.99)}
+.ebar{flex:none;width:4px;border-radius:0 4px 4px 0;background:var(--late)}.eb .ebar{background:var(--r4)}.em{flex:1;min-width:0}
+.et{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.et>b{font-size:13.5px;font-weight:700;line-height:1.3}.edl{flex:none;font-size:11px;font-weight:700;color:var(--late);text-align:right;line-height:1}.edl b{display:block;font:800 18px/1 "Plus Jakarta Sans",sans-serif}.eb .edl{color:var(--r4)}
+.eblk{display:flex;gap:7px;align-items:flex-start;margin-top:8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--r4) 10%,transparent);color:var(--r4);font-size:12px;font-weight:700;line-height:1.35}.eblk svg{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.4;margin-top:1px}.eblk em{display:block;font-style:normal;font-weight:600;opacity:.75;font-size:11px}
+.epb{display:block;height:4px;border-radius:4px;background:var(--soft);margin-top:9px;overflow:hidden}.epb i{display:block;height:100%;background:var(--navy2);border-radius:4px}
+.eok{display:flex;align-items:center;justify-content:center;gap:8px;padding:18px;border-radius:16px;background:color-mix(in srgb,var(--ok) 10%,transparent);color:var(--ok);font-weight:700;font-size:13px;margin-top:8px}.eok svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6}
+.xmb{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;height:44px;margin-top:8px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy2)}
+/* look-ahead */
+.lrk{color:var(--late);font-weight:800}
+.lst{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:8px 0 4px}
+.ld{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px;height:78px;min-width:0;border-radius:14px;background:var(--card2);padding:6px 0;border:2px solid transparent}
+.ld span{font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase}.ld b{font:800 14px "Plus Jakarta Sans",sans-serif}.ld i{width:10px;border-radius:5px;background:var(--navy2);margin-top:2px}.ld i.r{background:var(--late)}.ld em{font-style:normal;font-size:10.5px;font-weight:800;color:var(--mute);min-height:13px}
+.ld.z{opacity:.45}.ld.z i{background:var(--line)}.ld.tdy{border-color:color-mix(in srgb,var(--navy2) 40%,transparent)}.ld[aria-pressed=true]{background:var(--navy);border-color:var(--navy)}.ld[aria-pressed=true] *{color:#fff}.ld[aria-pressed=true] i{background:#fff}
+.lclr{display:flex;justify-content:space-between;width:100%;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--navy) 10%,transparent);font-weight:800;font-size:12.5px;color:var(--navy2);margin-top:4px}.lclr span{font-weight:700}
+.lg2{margin-top:10px}.lgh{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:2px}.lgh b{font-weight:800}.lgh span{font-size:10.5px;font-weight:800;color:var(--mute);background:var(--card2);padding:1px 7px;border-radius:99px}.lgh::after{content:"";flex:1;height:1px;background:var(--line)}
+.lr{display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:center;width:100%;text-align:left;padding:9px 0}.lr .xt i.rk{color:var(--late);background:color-mix(in srgb,var(--late) 15%,transparent)}
 /* pro dashboard */
 .dht{display:flex;justify-content:space-between;align-items:flex-end}
 .dseg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--card);border-radius:14px;padding:4px;margin-top:12px;box-shadow:var(--sh)}
@@ -753,6 +779,40 @@ function toast(m,u){$('#tmsg').textContent=m;$('#tundo').hidden=!u;$('#toast').c
 const xRow=(a,f)=>{const p=eff(a).pct,x=f(a),r=15.5,c=2*Math.PI*r;return`<button class="xr" data-open="${esc(a.id)}"><svg class="xg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="${r}" fill="none" stroke="var(--soft)" stroke-width="3.5"/><circle cx="18" cy="18" r="${r}" fill="none" stroke="${p>=100?'var(--ok)':'var(--navy)'}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 18 18)"/><text x="18" y="21.5" text-anchor="middle">${p}</text></svg>
  <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${a.R==='R3'?'1F':'GF'} · ${esc(a.rm)}</i><i class="${a.D==='ELE'?'e':'m'}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i></span>${x.sub}</span>${x.tag}</button>`};
 const xList=(l,f)=>`<div class="xls">${l.slice(0,5).map(a=>xRow(a,f)).join('')}</div>${l.length>5?`<details class="xmore"><summary>Show all ${l.length}<span class="hchev">▾</span></summary><div class="xls">${l.slice(5).map(a=>xRow(a,f)).join('')}</div></details>`:''}`;
+let exF='all',exAll=0,laDay='',laAll=0,glK='Progress';
+const GL=[['Progress','Weighted % complete: sum of (P6 original duration × % complete) ÷ sum of original durations. Site walk updates after the last XER load override P6.',()=>''],
+ ['Late','Not complete and the P6 planned finish is before today.',()=>A.filter(late).length+' late now'],
+ ['Blocked','Blocker recorded on the site walk and not yet cleared.',()=>A.filter(blk).length+' blocked now'],
+ ['At risk','Due within 3 days and under 50% done.',()=>''],
+ ['Forecast','Linear from today to each open activity\'s P6 early finish.',()=>''],
+ ['Scope','PMX scope, ELE or MECH (incl. BMS/EPMS), Romp 3 & 4 rooms only. Chiller plant, genset yard and roof excluded.',()=>A.length+' activities']];
+function glDraw(){let p=$('#glp');if(!p){p=document.createElement('div');p.id='glp';p.setAttribute('role','dialog');p.setAttribute('aria-label','Definitions');document.body.appendChild(p)}
+ const g=GL.find(x=>x[0]===glK)||GL[0],n=g[2]();
+ p.innerHTML=`<div class="glh"><b>Definitions</b><button class="glx" data-glx aria-label="Close">✕</button></div><div class="glc">${GL.map(([t])=>`<button data-glk="${t}" aria-pressed="${t===glK}">${t}</button>`).join('')}</div><div class="gld"><h4>${g[0]}</h4><p>${g[1]}</p>${n?`<span class="gln">${n}</span>`:''}</div>`}
+function glToggle(btn){const p=$('#glp');if(p&&p.classList.contains('on')){glClose();return}glDraw();const q=$('#glp'),r=btn.getBoundingClientRect();q.style.top=(r.bottom+10)+'px';q.style.setProperty('--ax',Math.max(16,innerWidth-r.right+r.width/2-8)+'px');requestAnimationFrame(()=>q.classList.add('on'));vib(4)}
+function glClose(){$('#glp')?.classList.remove('on')}
+const riskA=a=>{const d=dn(a.pf)-dn(today());return d<=3&&eff(a).pct<50};
+const moreBtn=(k,n,open)=>n>5?`<button class="xmb" data-xmore="${k}">${open?'Show less':'Show all '+n}<span class="hchev${open?' up':''}">▾</span></button>`:'';
+function excHTML(l,bl,lt){const f=exF==='blk'?l.filter(blk):exF==='late'?l.filter(late):l,sh=exAll?f:f.slice(0,5);
+ const worst=lt.reduce((m,a)=>Math.max(m,daysLate(a)),0);
+ const row=a=>{const u=U[sid(a.id)]||{},b=blk(a),lz=late(a),dl=lz?daysLate(a):0,p=eff(a).pct;
+  return`<button class="er ${b?'eb':'el'}" data-open="${esc(a.id)}"><span class="ebar"></span><span class="em"><span class="et"><b>${esc(a.sn)}</b>${lz?`<span class="edl"><b>${dl}</b>d late</span>`:''}</span>
+  <span class="xt"><i>${a.R==='R3'?'1F':'GF'} · ${esc(a.rm)}</i><i class="${a.D==='ELE'?'e':'m'}">${a.D}</i><i>Fin ${dmy(a.pf).slice(0,5)}</i><i>${p}%</i></span>
+  ${u.cons?`<span class="eblk"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg><span>${esc(u.cons)}${u.cown?`<em>${esc(u.cown)}</em>`:''}</span></span>`:''}
+  <span class="epb"><i style="width:${p}%"></i></span></span></button>`};
+ return`<section class="blk exb"><div class="bh"><h2>Exceptions</h2><span>${l.length?`oldest ${worst}d late`:''}</span></div>
+ <div class="ekp">${[['all','All',l.length,''],['blk','Blocked',bl.length,'r'],['late','Late',lt.length,'a']].map(([k,t,n,c])=>`<button class="ek ${c}" data-exf="${k}" aria-pressed="${exF===k}"><b>${n}</b><span>${t}</span></button>`).join('')}</div>
+ ${f.length?`<div class="els">${sh.map(row).join('')}</div>${moreBtn('ex',f.length,exAll)}`:`<div class="eok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No ${exF==='blk'?'blocked':exF==='late'?'late':''} items</div>`}</section>`}
+function laHTML(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{const k=ymd(new Date((t0+i)*864e5));return{k,i,n:la.filter(a=>a.pf===k).length,r:la.filter(a=>a.pf===k&&riskA(a)).length}}),mx=Math.max(1,...days.map(d=>d.n));
+ const f=laDay?la.filter(a=>a.pf===laDay):la,sh=laAll||laDay?f:f.slice(0,6),risk=la.filter(riskA).length;
+ const wd=k=>new Date(k).toLocaleDateString('en-GB',{weekday:'short'}),lab=k=>{const d=dn(k)-t0;return d===0?'Today':d===1?'Tomorrow':new Date(k).toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short'})};
+ const groups=[];sh.forEach(a=>{let g=groups.find(g=>g.k===a.pf);if(!g)groups.push(g={k:a.pf,l:[]});g.l.push(a)});
+ const row=a=>{const p=eff(a).pct,rk=riskA(a),c=2*Math.PI*15.5;return`<button class="lr${rk?' rk':''}" data-open="${esc(a.id)}"><svg class="xg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--soft)" stroke-width="3.5"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="${rk?'var(--late)':'var(--navy2)'}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 18 18)"/><text x="18" y="21.5" text-anchor="middle">${p}</text></svg>
+  <span class="xm"><b>${esc(a.sn)}</b><span class="xt"><i>${a.R==='R3'?'1F':'GF'} · ${esc(a.rm)}</i><i class="${a.D==='ELE'?'e':'m'}">${a.D}</i>${rk?'<i class="rk">At risk</i>':''}</span></span></button>`};
+ return`<section class="blk lab"><div class="bh"><h2>Two-week look-ahead</h2><span>${la.length} due${risk?` · <b class="lrk">${risk} at risk</b>`:''}</span></div>
+ <div class="lst" role="tablist">${days.map(d=>`<button class="ld${d.i===0?' tdy':''}${d.n?'':' z'}" data-lad="${d.k}" aria-pressed="${laDay===d.k}"${d.n?'':' disabled'}><span>${wd(d.k).slice(0,2)}</span><b>${+d.k.slice(8)}</b><i style="height:${d.n?8+d.n/mx*22:3}px"${d.r?' class="r"':''}></i><em>${d.n||''}</em></button>`).join('')}</div>
+ ${laDay?`<button class="lclr" data-lad="">Filtered to 1 day <span>✕ All days</span></button>`:''}
+ ${la.length?groups.map(g=>`<div class="lg2"><div class="lgh"><b>${lab(g.k)}</b><span>${g.l.length}</span></div>${g.l.map(row).join('')}</div>`).join('')+(laDay||f.length<=6?'':moreBtn('la',f.length,laAll)):'<div class="eok">Nothing due in the next 14 days.</div>'}</section>`}
 function renderDash(){
   const L=A.filter(a=>(!dR||a.R===dR)&&(!dD||a.D===dD)),W=a=>Math.max(1,a.od||1),sw=L.reduce((s,a)=>s+W(a),0)||1;
   const wpc=l=>{const w=l.reduce((s,a)=>s+W(a),0);return w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0};
@@ -766,7 +826,7 @@ function renderDash(){
   const floors=['R4','R3'].filter(r=>!dR||r===dR);
   const areaRows=floors.map(r=>{const lf=L.filter(a=>a.R===r);return`<tr class="grp"><th colspan="8">${FL[r]} · ${RN[r]}</th></tr>`+ORDER[r].map(k=>{const l=lf.filter(a=>a.area===k);return l.length?line(ROOMS[k][1],l,'arow" data-room="'+esc(k)):''}).join('')+line('Subtotal',lf,'sub')}).join('')+line('Total',L,'tot');
   const exc=[...bl.map(a=>({a,b:1})),...lt.filter(a=>!blk(a)).map(a=>({a,b:0}))].sort((x,y)=>(y.b-x.b)||(daysLate(y.a)-daysLate(x.a)));
-  const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+14).sort((x,y)=>x.pf<y.pf?-1:1);
+  const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
   <div class="hero dh2"><div class="hrow"><div><div class="hello">Romp 3 &amp; 4 · ELE &amp; MECH</div><div class="proj">Dashboard</div></div><button class="hbtn" data-gl aria-label="Definitions">i</button></div>
    <div class="dk"><div class="dkr">${ring(act,10,'#fff',true).replace('stroke="var(--soft)"','stroke="rgba(255,255,255,.18)"')}<div><b data-n="${f1(act)}" data-dec="1">0</b><span>% done</span></div></div>
@@ -785,11 +845,8 @@ function renderDash(){
    <details class="tdet"><summary>Show as table</summary><div class="tbw"><table class="pt"><thead><tr><th>Area</th><th class="n">Acts</th><th class="n">Done</th><th class="n">In prog.</th><th class="n">Not st.</th><th class="n">% compl.</th><th class="n">Late</th><th class="n">Blkd</th></tr></thead><tbody>${areaRows}</tbody></table></div></details></section>
   <section class="blk duo2"><div><div class="bh"><h2>Status mix</h2><span>tap a segment</span></div><div class="dnw"><svg id="dns" viewBox="0 0 160 160"></svg><div class="dnl" id="dnl"></div></div></div>
    <div><div class="bh"><h2>Late items by age</h2><span>tap to list</span></div><div id="agb"></div></div></section>
-  <section class="blk"><div class="bh"><h2>Exceptions</h2><span class="xc">${bl.length?`<b class="xb">${bl.length} blocked</b>`:''}<b class="xl">${lt.length} late</b></span></div>
-   ${exc.length?xList(exc.map(({a})=>a),a=>{const u=U[sid(a.id)]||{};return{tag:late(a)?`<b class="xp r">${daysLate(a)}d late</b>`:'',sub:u.cons?`<span class="xi">⛔ ${esc(u.cons)}${u.cown?' · '+esc(u.cown):''}</span>`:''}}):'<p class="none">No exceptions.</p>'}</section>
-  <section class="blk"><div class="bh"><h2>Two-week look-ahead</h2><span>${la.length} due by ${dmy(ymd(new Date((dn(today())+14)*864e5)))}</span></div>
-   ${la.length?xList(la,a=>{const d=dn(a.pf)-dn(today());return{tag:`<b class="xp ${d<=3?'a':'b'}">${d<=0?'Today':d===1?'Tomorrow':'in '+d+'d'}</b>`,sub:''}}):'<p class="none">Nothing due in the next 14 days.</p>'}</section>
-  <section class="blk notes" id="gl" hidden><div class="bh"><h2>Definitions</h2></div><dl>${[['Progress','Sum of (P6 original duration × % complete) ÷ sum of original durations. % complete = P6 value, overridden by site walk updates made after the last XER load.'],['Late','Not complete and P6 planned finish is before today.'],['Blocked','Blocker recorded during the site walk and not yet cleared.'],['Forecast','Linear from today to each open activity\'s P6 early finish.'],['Scope','PMX scope, Combine System = Mech or Elec (incl. BMS/EPMS), Romp 3 & 4 rooms only. Chiller plant, genset yard and roof excluded.']].map(([t,d])=>`<dt>${t}</dt><dd>${d}</dd>`).join('')}</dl></section>
+  ${excHTML(exc.map(({a})=>a),bl,lt)}
+  ${laHTML(la)}
   <footer class="pdft2">KUL071 · PMX Malaysia · generated ${new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</footer></div>`;
   animate($('#s-dash'));(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawCurve(L);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
 }
@@ -974,6 +1031,7 @@ async function importXer(file){try{const txt=await new Promise((res,rej)=>{const
   catch(e){toast('Load failed: '+(e?.message||e?.code||''))}}
 
 /* ---------- events ---------- */
+document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('#glp,[data-gl]'))glClose()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')glClose()});
 document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[data-dn]');if(dp){dnSel=dnSel===+dp.dataset.dn?null:+dp.dataset.dn;chartDonut(DL);vib(4);return}const to=ev.target.closest('tr[data-open]');if(to){openSheet(to.dataset.open);return}const tr=ev.target.closest('tr[data-room],g[data-room]');if(tr){romp=ROOMS[tr.dataset.room][0];goRoom(tr.dataset.room);return}const t=ev.target.closest('button');if(!t)return;const d=t.dataset;
   if(d.tab){goTab(d.tab);return}
   if('dr' in d){dR=d.dr;renderDash();return}
@@ -982,7 +1040,12 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.ar){arSel=arSel===d.ar?null:d.ar;chartAreas(DL);vib(4);return}
   if(d.walkarea){startRoom(d.walkarea);return}
   if(d.dn!==undefined){dnSel=dnSel===+d.dn?null:+d.dn;chartDonut(DL);vib(4);return}
-  if('gl' in d){const g=$('#gl');g.hidden=!g.hidden;if(!g.hidden)g.scrollIntoView({behavior:'smooth'});return}
+  if('gl' in d){glToggle(t);return}
+  if(d.glk){glK=d.glk;glDraw();vib(4);return}
+  if('glx' in d){glClose();return}
+  if(d.exf){exF=d.exf;exAll=0;renderDash();vib(4);return}
+  if(d.lad!==undefined){laDay=laDay===d.lad?'':d.lad;renderDash();vib(4);return}
+  if(d.xmore){if(d.xmore==='ex')exAll^=1;else laAll^=1;renderDash();return}
   if('psedit' in d){psSheet();return}
   if('pssave' in d){psSave();return}
   if('dd' in d){dD=d.dd;renderDash();return}
