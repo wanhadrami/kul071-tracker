@@ -72,7 +72,7 @@ async def main():
       for i,c in enumerate(info['scol']['p']):cells[name][f'{c}{r}']=info['sv'][id][i]
     st.blobs['m1']=xlsx(cells)
     out=await JA(pg,"""SM={id:'m1',name:'master.xlsx'};let got=null;dl={save:async o=>{got=o}};const before=JSON.stringify(SG[sWeek(sCut)]||null);
-      await sGenerate();await new Promise(r=>setTimeout(r,800));if(got&&got.data){const a=new Uint8Array(await got.data.arrayBuffer());let s='';a.forEach(x=>s+=String.fromCharCode(x));return {b64:btoa(s),hist:!!SG[sWeek(sCut)]}}return {b64:null,hist:!!SG[sWeek(sCut)],panel:!!document.querySelector('.sdf')}""")
+      await sGenerate();await new Promise(r=>setTimeout(r,800));if(srpOut)await shareDo('save');if(got&&got.data){const a=new Uint8Array(await got.data.arrayBuffer());let s='';a.forEach(x=>s+=String.fromCharCode(x));return {b64:btoa(s),hist:!!SG[sWeek(sCut)]}}return {b64:null,hist:!!SG[sWeek(sCut)],panel:!!document.querySelector('.sdf')}""")
     if out['b64']:
       wb=readx(base64.b64decode(out['b64']));ch=[]
       for id,name,r in info['rows']:
