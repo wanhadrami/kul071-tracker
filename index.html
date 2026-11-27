@@ -443,6 +443,11 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .xi{display:block;margin-top:5px;font-size:11.5px;font-weight:700;color:var(--r4)}
 .xp{font-size:11px;font-weight:800;padding:5px 9px;border-radius:99px;white-space:nowrap}.xp.r{background:color-mix(in srgb,var(--r4) 13%,transparent);color:var(--r4)}.xp.a{background:color-mix(in srgb,var(--late) 16%,transparent);color:var(--late)}.xp.b{background:color-mix(in srgb,var(--navy) 10%,transparent);color:var(--navy)}
 .xmore summary{list-style:none;display:flex;justify-content:center;align-items:center;gap:8px;height:44px;margin-top:6px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy);cursor:pointer}.xmore summary::-webkit-details-marker{display:none}.xmore[open] summary .hchev{transform:rotate(180deg)}
+/* P6 status checkboxes */
+.pst{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}.psr{display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:14px;background:var(--card2)}.psr.on{background:color-mix(in srgb,var(--ok) 10%,var(--card2))}
+.pcb{display:flex;align-items:center;gap:10px;height:40px;font-weight:800;font-size:14.5px;color:var(--ink);text-align:left}.pcb i{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:var(--card)}.pcb i svg{width:16px;height:16px}
+.pcb[aria-pressed=true] i{background:var(--ok);border-color:var(--ok);color:#fff}
+.pdt{position:relative;display:block;font-size:12.5px;font-weight:700;color:var(--ok);padding:4px 2px}.pdt input{position:absolute;inset:0;opacity:0;width:100%}
 /* progress summary */
 .rph,.rpr{display:grid;grid-template-columns:minmax(0,1fr) 108px 88px;gap:10px;align-items:center}.rph{font-size:10.5px;font-weight:800;color:var(--mute);text-align:right;padding:6px 0 4px}
 .rpr{padding:10px 0;border-top:1px solid var(--line)}.rpr>b{font-size:13.5px;font-weight:700}.rpr.tot>b{font-weight:800}.rpr.tot{border-top:0;background:color-mix(in srgb,var(--navy) 7%,transparent);border-radius:12px;padding:12px 10px;margin:0 -10px}
@@ -684,7 +689,10 @@ let lastSh=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked
      <div class="ql">Who needs to act?</div><div class="chips2">${OWNERS.map(o=>`<button data-qo="${o}" aria-pressed="${wO===o}">${o}</button>`).join('')}</div>
      <input class="in qnote" id="qOwn" placeholder="Or type a name / company" value="${esc(u.cown&&!OWNERS.includes(u.cown)?u.cown:'')}">
      <div class="qrow"><button class="qb" data-qcancel>Cancel</button><button class="qb pri" data-qblk>Save blocker</button></div>`
-   :`<div class="ql">Progress now <span>tap to save</span></div><div class="qp">${opts.map(p=>`<button data-qp="${p}">${p}%</button>`).join('')}<button class="qd" data-q="done">${WI.ok} Done</button></div>
+   :`<div class="ql">Status <span>${e.src==='site'?'site walk':'from P6'} · tick to change</span></div><div class="pst">
+     <div class="psr${e.as?' on':''}"><button class="pcb" data-qst="s" aria-pressed="${!!e.as}"><i>${e.as?WI.ok:''}</i>Started</button>${e.as?`<label class="pdt">📅 ${dmy(e.as)}<input type="date" data-qd="s" value="${e.as}" max="${today()}"></label>`:''}</div>
+     <div class="psr${e.st==='C'?' on':''}"><button class="pcb" data-qst="f" aria-pressed="${e.st==='C'}"><i>${e.st==='C'?WI.ok:''}</i>Finished</button>${e.st==='C'?`<label class="pdt">📅 ${dmy(e.af)}<input type="date" data-qd="f" value="${e.af}" max="${today()}"></label>`:''}</div></div>
+     <div class="ql">Progress now <span>tap to save</span></div><div class="qp">${opts.map(p=>`<button data-qp="${p}">${p}%</button>`).join('')}<button class="qd" data-q="done">${WI.ok} Done</button></div>
      <div class="qrow"><button class="qb" data-q="same">${WI.same} No change</button><button class="qb red" data-q="blk">${WI.blk} Blocked</button></div><div class="ql" style="margin-top:12px">Fine-tune <span>±1%</span></div><div class="qrow1"><span class="stp"><button data-qs="-1" aria-label="Minus 1%">−</button><b>${qVal??e.pct}%</b><button data-qs="1" aria-label="Plus 1%">+</button></span></div>
      ${qVal!=null&&qVal!==e.pct?`<button class="qsave" data-qsave>Save ${qVal}%</button>`:''}`}
    <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${e.as?' · started '+dmy(e.as):''}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}</div>`}
@@ -715,6 +723,12 @@ async function qAct(k){const a=A.find(x=>x.id===oItem);if(!a)return;const e=eff(
   if(k==='same'){if(await saveMeta(a,{chk:Date.now(),wd:wDate,ev:wEv})){toast('No change',true);advance(a.id)}return}
   if(k==='done'){const f={...e,...pick(U[sid(a.id)])};f.st='C';f.pct=100;f.as=e.as&&e.as<=wDate?e.as:wDate;f.af=wDate;f.ev=wEv;if(await save(a,f,true))advance(a.id);return}
   if(k==='blk'){qPanel='blk';wR='';wO='';renderHome(false)}}
+async function qStat(w,v){const a=A.find(x=>x.id===oItem);if(!a)return;const e=eff(a),f={...e,...pick(U[sid(a.id)])};f.ev=wEv;
+  if(w==='s'){if(e.as){if(e.st==='C')return toast('Untick Finished first');f.st='N';f.as='';f.af='';f.pct=0}else{f.st='A';f.as=wDate}}
+  else if(w==='f'){if(e.st==='C'){f.st='A';f.af='';f.pct=Math.min(e.pct,99)}else{f.st='C';f.pct=100;f.af=wDate;f.as=e.as&&e.as<=wDate?e.as:wDate}}
+  else if(w==='sd'){if(!v)return;if(e.af&&v>e.af)return toast('Start must be before finish');f.as=v}
+  else if(w==='fd'){if(!v)return;if(v<e.as)return toast('Finish must be after start');f.af=v}
+  if(await save(a,f,true)&&w==='f'&&f.st==='C')advance(a.id)}
 async function qPct(p){const a=A.find(x=>x.id===oItem),e=eff(a),f={...e,...pick(U[sid(a.id)])};f.pct=p;f.st='A';f.as=e.as&&e.as<=wDate?e.as:wDate;f.af='';f.ev=wEv;if(await save(a,f,true))advance(a.id)}
 
 function wNext(){vib(8);wPanel='';wR='';wO='';if(wIdx<wList.length-1){wIdx++;renderRoom(true)}else{wMode='roomdone';renderRoom(true)}$('#s-room').scrollTop=0}
@@ -1056,6 +1070,7 @@ async function importXer(file){try{const txt=await new Promise((res,rej)=>{const
 
 /* ---------- events ---------- */
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('#glp,[data-gl]'))glClose()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')glClose()});
+document.addEventListener('change',ev=>{const q=ev.target.dataset?.qd;if(q)qStat(q+'d',ev.target.value)});
 document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[data-dn]');if(dp){dnSel=dnSel===+dp.dataset.dn?null:+dp.dataset.dn;chartDonut(DL);vib(4);return}const to=ev.target.closest('tr[data-open]');if(to){openSheet(to.dataset.open);return}const tr=ev.target.closest('tr[data-room],g[data-room]');if(tr){romp=ROOMS[tr.dataset.room][0];goRoom(tr.dataset.room);return}const t=ev.target.closest('button');if(!t)return;const d=t.dataset;
   if(d.tab){goTab(d.tab);return}
   if('dr' in d){dR=d.dr;renderDash();return}
@@ -1116,6 +1131,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.q){qAct(d.q);return}
   if('hint' in d){hintOpen=!hintOpen;renderHome(false);return}
   if(d.aihint){askHint(A.find(x=>x.id===d.aihint));return}
+  if(d.qst){qStat(d.qst);return}
   if(d.qp){qPct(+d.qp);return}
   if(d.qs){const a=A.find(x=>x.id===oItem),e=eff(a);qVal=Math.max(0,Math.min(100,(qVal??e.pct)+(+d.qs)));vib(4);renderHome(false);return}
   if('qsave' in d){const v=qVal;qVal=null;if(v>=100)qAct('done');else if(v<=0){const a=A.find(x=>x.id===oItem),e=eff(a),f={...e,...pick(U[sid(a.id)])};f.pct=0;f.st='N';f.as='';f.af='';f.ev=wEv;if(await save(a,f,true))advance(a.id)}else qPct(v);return}
