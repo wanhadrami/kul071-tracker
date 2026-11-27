@@ -1811,9 +1811,11 @@ async function sCheckMaster(buf){let zip;try{zip=await JSZip.loadAsync(buf)}catc
    for(const[row] of s.rows){if(!new RegExp('<row r="'+row+'"').test(x)){err.push(`${s.name.trim()}: row ${row} not found`);continue}
     for(let i=0;i<3;i++){const ref=SCOL.p[i]+row,m=x.match(sRx(ref));if(m&&/<f[ >]/.test(m[3]||''))err.push(`${s.name.trim()}!${ref} is a formula cell`)}}}
   return{err,zip,wb,X}}
+async function getBlob(id){const u='/_blob/'+encodeURIComponent(id),r=await fetch(u);if(!r.ok)return null;const n=+r.headers.get('x-parts');if(!n)return r.arrayBuffer();
+  const ps=[];for(let i=0;i<n;i++){const q=await fetch(u+'?part='+i);if(!q.ok)return null;ps.push(await q.arrayBuffer())}return await new Blob(ps).arrayBuffer()}
 async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel tool did not load');if(!SM.id)return toast('Upload the master SRP file first');
   const W0=sWeek(sCut),ok=sGenOk;sGenOk=false;toast('Checking master…');
-  try{const mr=await fetch('/_blob/'+encodeURIComponent(SM.id));if(!mr.ok){SM={};renderSrp();return toast('Master file missing on the server – upload it again')}const buf=await mr.arrayBuffer();const zip=await JSZip.loadAsync(buf);
+  try{const buf=await getBlob(SM.id);if(!buf){SM={};renderSrp();return toast('Master file missing on the server – upload it again')}const zip=await JSZip.loadAsync(buf);
    let wb=await zip.file('xl/workbook.xml')?.async('string'),rels=await zip.file('xl/_rels/workbook.xml.rels')?.async('string');if(!wb||!rels)throw new Error('Not an Excel workbook');
    const path=name=>{const m=wb.match(new RegExp('<sheet[^>]*?name="'+sXe(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"[^>]*r:id="([^"]+)"'));if(!m)return null;const t=rels.match(new RegExp('Id="'+m[1]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('Target="([^"]+)"[^>]*Id="'+m[1]+'"'));return t?'xl/'+t[1].replace(/^\/?xl\//,''):null};
    // 1. validate every sheet and mapped cell before anything is written
