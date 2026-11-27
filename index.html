@@ -443,6 +443,10 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .xi{display:block;margin-top:5px;font-size:11.5px;font-weight:700;color:var(--r4)}
 .xp{font-size:11px;font-weight:800;padding:5px 9px;border-radius:99px;white-space:nowrap}.xp.r{background:color-mix(in srgb,var(--r4) 13%,transparent);color:var(--r4)}.xp.a{background:color-mix(in srgb,var(--late) 16%,transparent);color:var(--late)}.xp.b{background:color-mix(in srgb,var(--navy) 10%,transparent);color:var(--navy)}
 .xmore summary{list-style:none;display:flex;justify-content:center;align-items:center;gap:8px;height:44px;margin-top:6px;border-radius:14px;background:var(--card2);font-weight:800;font-size:13px;color:var(--navy);cursor:pointer}.xmore summary::-webkit-details-marker{display:none}.xmore[open] summary .hchev{transform:rotate(180deg)}
+/* item nav */
+.inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
+.inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
+.inav .imin{padding:0 12px;color:var(--mute)}
 /* P6 status checkboxes */
 .pst{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}.psr{display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:14px;background:var(--card2)}.psr.on{background:color-mix(in srgb,var(--ok) 10%,var(--card2))}
 .pcb{display:flex;align-items:center;gap:10px;height:40px;font-weight:800;font-size:14.5px;color:var(--ink);text-align:left}.pcb i{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:var(--card)}.pcb i svg{width:16px;height:16px}
@@ -644,7 +648,7 @@ const OWNERS=['Kajima','PMX','Supplier','Subcon','Client'];
 let wEv='V',wR='',wO='',wDate=today();
 const FLI=r=>r==='RF'?`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M7 19L20 7l13 12z" fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><text x="20" y="17" text-anchor="middle" font-size="7" font-weight="800" fill="var(--fc)">RF</text></svg>`:`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="${r==='R4'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><rect x="9" y="8" width="22" height="11" rx="2" fill="${r==='R3'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><text x="20" y="${r==='R3'?17:30}" text-anchor="middle" font-size="8" font-weight="800" fill="${'var(--fc)'}">${r==='R3'?'1F':'GF'}</text></svg>`;
 let oRoom=null,oItem=null,qPanel='',qVal=null;
-const roomItems=k=>roomOpen(k).sort((x,y)=>(checked(x)-checked(y))||(late(y)-late(x))||(x.pf<y.pf?-1:1));
+const roomItems=k=>roomOpen(k).sort((x,y)=>(late(y)-late(x))||(x.pf<y.pf?-1:x.pf>y.pf?1:x.id<y.id?-1:1));
 function startRoom(k){romp=ROOMS[k][0];if(tab!=='home')goTab('home');oRoom=k;const l=roomItems(k);oItem=(l.find(a=>!checked(a))||{}).id||null;qPanel='';renderHome(false);
   requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem||''))?.scrollIntoView({behavior:'smooth',block:'center'})||document.getElementById('rm-'+sid(k))?.scrollIntoView({behavior:'smooth',block:'start'}));vib(6)}
 function renderRoom(){}
@@ -677,12 +681,15 @@ Give 5 short bullet points: what to physically check to judge the real % complet
   catch(e){aiHint[a.id]={t:e.code==='not_granted'?'AI hints are switched off.':'Could not load AI hint – check signal.'}}
   renderHome(false)}
 
+function navBar(a){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===a.id),R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);
+  return`<div class="inav"><button data-inav="-1" ${i<=0?'disabled':''}>‹ Back</button><span>${i+1} / ${l.length}</span><button data-inav="1" ${i>=l.length-1&&!nr?'disabled':''}>${i>=l.length-1&&nr?'Next room ›':'Next ›'}</button><button class="imin" data-imin aria-label="Minimise">▾ Hide</button></div>`}
+function goItem(id){oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
 let lastSh=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90].filter(p=>p>e.pct);
   return`<div class="it ${op?'op':''} ${sh?'sh':''} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}">${op?`<div class="nowl">● Now checking</div>`:''}<button class="ith" data-item="${esc(a.id)}">
    <span class="ir">${ring(e.pct,11,e.st==='C'?'var(--ok)':col)}<b>${e.pct}</b></span>
    <span class="itx"><b>${esc(a.sn)}</b><small><span class="dtag ${a.D==='MECH'?'m':a.D==='FIRE'?'f':''}">${a.D}</span>${late(a)?`<em>${daysLate(a)}d late</em>`:'Due '+dmy(a.pf)}${u.cons?' · <i class="bk">⛔ '+esc(u.cons.split(' – ')[0])+'</i>':''}</small></span>
    <span class="ist">${ck?WI.ok:op?'▴':'▾'}</span></button>
-  ${op?`<div class="itb">
+  ${op?`<div class="itb">${navBar(a)}
    <div class="hint2 ${hintOpen?'on':''}"><button class="hbt" data-hint>💡 What to check on site <span>${hintOpen?'▴':'▾'}</span></button>${hintOpen?`<ul>${hintFor(a).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${sampleFn?(aiHint[a.id]?`<div class="aih"><b>✦ AI site tips</b><div id="aih">${esc(aiHint[a.id].t)}</div></div>`:`<button class="aib2" data-aihint="${esc(a.id)}">✦ Ask AI for more detail</button>`):''}`:''}</div>
    ${qPanel==='blk'?`<div class="ql">What's stopping it?</div><div class="chips2">${REASONS.map(r=>`<button data-qr="${esc(r)}" aria-pressed="${wR===r}">${esc(r)}</button>`).join('')}</div>
      <textarea class="in qnote" id="qNote" rows="2" placeholder="Describe the blocker (e.g. ceiling not closed, waiting Kajima scaffold removal)">${esc(u.cons&&!REASONS.includes(u.cons)?u.cons:'')}</textarea>
@@ -715,7 +722,7 @@ function renderHome(anim){
   ${canAdmin&&done?`<button class="rst" data-reset="date">↺ Reset this walk (${dmy(wDate)})</button>`:''}`;
   if(anim)animate($('#s-home'));
 }
-function advance(prevId){const k=oRoom,l=roomItems(k),nx=l.find(a=>!checked(a)&&a.id!==prevId);qPanel='';qVal=null;wR='';wO='';
+function advance(prevId){const k=oRoom,l=roomItems(k),i=l.findIndex(a=>a.id===prevId),nx=[...l.slice(i+1),...l.slice(0,Math.max(0,i))].find(a=>!checked(a)&&a.id!==prevId);qPanel='';qVal=null;wR='';wO='';
   if(nx){oItem=nx.id;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(nx.id))?.scrollIntoView({behavior:'smooth',block:'center'}));return}
   const R=ORDER[ROOMS[k][0]],nr=R.slice(R.indexOf(k)+1).find(r=>toCheck(r).length)||R.find(r=>toCheck(r).length);
   if(nr){toast(`${ROOMS[k][1]} done ✓ → ${ROOMS[nr][1]}`);startRoom(nr)}else{oRoom=null;oItem=null;renderHome(false);confetti();toast(`${RN[ROOMS[k][0]]} walk complete ✓`)}}
@@ -1127,6 +1134,8 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.ask){ask(d.ask);return}
   if(t.id==='aiBtn'){aiOpen();return}
   if(d.rt){if(oRoom===d.rt){oRoom=null;oItem=null;renderHome(false)}else startRoom(d.rt);return}
+  if(d.inav){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===oItem),j=i+ +d.inav;if(l[j]){goItem(l[j].id);vib(4)}else if(j>=l.length){const R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);if(nr)startRoom(nr)}return}
+  if('imin' in d){const id=oItem;oItem=null;qPanel='';qVal=null;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({block:'nearest'}));return}
   if(d.item){oItem=oItem===d.item?null:d.item;qPanel='';qVal=null;renderHome(false);if(oItem)requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem))?.scrollIntoView({behavior:'smooth',block:'nearest'}));return}
   if(d.q){qAct(d.q);return}
   if('hint' in d){hintOpen=!hintOpen;renderHome(false);return}
