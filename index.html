@@ -806,8 +806,8 @@ const FLI=r=>r==='RF'?`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><
 let oRoom=null,oItem=null,qPanel='',qVal=null;
 try{const k=JSON.parse(sessionStorage.getItem('kwalk')||'null');if(k&&k.d===today()&&ROOMS[k.oRoom]){oRoom=k.oRoom;oItem=k.oItem;romp=k.romp||romp}}catch(e){}
 const roomItems=k=>roomOpen(k).sort((x,y)=>(late(y)-late(x))||(x.pf<y.pf?-1:x.pf>y.pf?1:x.id<y.id?-1:1));
-function startRoom(k){romp=ROOMS[k][0];if(tab!=='home')goTab('home');oRoom=k;const l=roomItems(k);oItem=(l.find(a=>!checked(a))||{}).id||null;qPanel='';renderHome(false);
-  requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem||''))?.scrollIntoView({behavior:'smooth',block:'center'})||document.getElementById('rm-'+sid(k))?.scrollIntoView({behavior:'smooth',block:'start'}));vib(6)}
+function startRoom(k){romp=ROOMS[k][0];if(tab!=='home')goTab('home');oRoom=k;const l=roomItems(k);oItem=(l.find(a=>!checked(a))||{}).id||null;qPanel='';renderHome(false);if(oItem)requestAnimationFrame(()=>anchorItem(oItem,true));
+  if(!oItem)requestAnimationFrame(()=>document.getElementById('rm-'+sid(k))?.scrollIntoView({behavior:'smooth',block:'start'}));vib(6)}
 function renderRoom(){}
 /* ---------- site check hints ---------- */
 const HINTS=[
@@ -845,7 +845,8 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)');
 async function navTo(id,dir){const sc=curScr(),old=document.querySelector('.it.op'),y0=old?old.getBoundingClientRect().top:null;
   if(old&&dir&&!RM.matches){const k=[{transform:'translateX(0)',opacity:1},{transform:`translateX(${-dir*48}px)`,opacity:0}];old.querySelectorAll('.ith,.itb').forEach(e=>e.animate(k,{duration:320,easing:'cubic-bezier(.4,0,.7,1)',fill:'forwards'}));await new Promise(r=>setTimeout(r,310))}
   qDet=false;navDir=dir;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);
-  const nw=document.getElementById('it-'+sid(id));if(nw&&sc){let d=y0!=null?nw.getBoundingClientRect().top-y0:0;const t=nw.getBoundingClientRect().top-d;if(t<60||t>innerHeight*.6)d+=t-90;if(d)sc.scrollTo({top:sc.scrollTop+d,behavior:'instant'})}}
+  const nw=document.getElementById('it-'+sid(id));if(nw&&sc){const d=nw.getBoundingClientRect().top-ITOP;if(Math.abs(d)>1)sc.scrollTo({top:sc.scrollTop+d,behavior:'instant'})}}
+const ITOP=90;function anchorItem(id,smooth){const sc=curScr(),nw=document.getElementById('it-'+sid(id));if(nw&&sc)sc.scrollTo({top:sc.scrollTop+nw.getBoundingClientRect().top-ITOP,behavior:smooth?'smooth':'instant'})}
 function goItem(id,dir=0){navTo(id,dir)}
 let lastSh=null,qDet=false,phFor=null,navDir=0;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90,100].filter(p=>p>e.pct);
   const nv=op&&navDir?(navDir>0?' navf':' navb'):'';if(op&&navDir)setTimeout(()=>navDir=0);return`<div class="it ${op?'op':''} ${sh&&!nv?'sh':''}${nv} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}"><button class="ith" data-item="${esc(a.id)}">
@@ -1408,7 +1409,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.inav){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===oItem),j=i+ +d.inav;if(l[j]){goItem(l[j].id,+d.inav);vib(4)}else if(j>=l.length){const R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);if(nr)startRoom(nr)}return}
   if('imin' in d){const id=oItem;oItem=null;qPanel='';qVal=null;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({block:'nearest'}));return}
   if(d.item)qDet=false;
-  if(d.item){oItem=oItem===d.item?null:d.item;qPanel='';qVal=null;renderHome(false);if(oItem)requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem))?.scrollIntoView({behavior:'smooth',block:'nearest'}));return}
+  if(d.item){oItem=oItem===d.item?null:d.item;qPanel='';qVal=null;renderHome(false);if(oItem)requestAnimationFrame(()=>anchorItem(oItem,true));return}
   if(d.q){qAct(d.q);return}
   if('hint' in d){hintOpen=!hintOpen;renderHome(false);return}
   if(d.aihint){askHint(A.find(x=>x.id===d.aihint));return}
