@@ -577,6 +577,9 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .atl>*:not(.aw){position:relative}.atn{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.2}.atl>b{font:800 24px/1.05 "Plus Jakarta Sans",sans-serif;color:var(--navy2)}.atl>b small{font-size:13px}.ats{font-size:10.5px;font-weight:700;color:var(--mute)}
 .atl>em{position:absolute!important;top:8px;right:8px;font-style:normal;font-size:10px;font-weight:800;color:#fff;background:var(--late);padding:2px 7px;border-radius:99px}.atl.lt{border-color:color-mix(in srgb,var(--late) 45%,transparent)}.atl.on{border-color:var(--navy2)}
 .agr+.ard{margin-top:8px}
+.hxk button{position:relative;padding:10px 6px 9px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);text-align:center;overflow:hidden;color:#fff}.hxk button.on{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.45)}
+.hxk button::before{content:"";position:absolute;left:20%;right:20%;top:0;height:2px;border-radius:2px;background:#9cc4ff;box-shadow:0 0 10px #9cc4ff}.hxk .lt::before{background:#ffb648;box-shadow:0 0 10px #ffb648}.hxk .bk::before{background:#ff7a85;box-shadow:0 0 10px #ff7a85}.hxk .ok::before{background:#5ef0a8;box-shadow:0 0 10px #5ef0a8}
+.hkl{max-height:340px;overflow:auto}.hkx{float:right;color:rgba(255,255,255,.7);font-size:13px;padding:0 4px}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -1044,7 +1047,10 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
 function closeWalkResult(){const o=$('#wres');if(!o||!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showWalkResult.t);if(tab!=='dash')return;
   setTimeout(()=>{if(tab==='dash'){curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')}},350)}
-let hxLa=false,hxDay='';
+let hxLa=false,hxDay='',hxK='';
+function hkList(M){if(!hxK)return'';const T={open:'Open activities',late:'Late activities',blk:'Blocked activities',done:'Finished in the last 7 days'}[hxK];let l=(M[hxK]||[]).slice();
+ l.sort(hxK==='late'?(x,y)=>daysLate(y)-daysLate(x):hxK==='done'?(x,y)=>(eff(y).af||'')<(eff(x).af||'')?-1:1:(x,y)=>(x.pf<y.pf?-1:1));
+ return`<div class="hxl2 hkl"><div class="hxlh">${T} · ${l.length}<button class="hkx" data-hk="${hxK}">✕</button></div>${l.length?l.map(a=>{const e=eff(a),u=U[sid(a.id)]||{};return`<button class="hxli" data-open="${esc(a.id)}"><span><b>${esc(a.sn)}</b><small>${FS[a.R]} ${esc(a.rm)} · ${a.D}${hxK==='blk'&&u.cons?' · <em>'+esc(u.cons.split(' – ')[0])+'</em>':''}${hxK==='done'&&e.af?' · finished '+dmy(e.af).slice(0,5):hxK!=='done'?' · due '+dmy(a.pf).slice(0,5):''}</small></span><strong>${hxK==='late'?daysLate(a)+'d':e.pct+'%'}</strong></button>`}).join(''):'<p class="hxlp">Nothing here.</p>'}</div>`}
 function laHero(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{const k=ymd(new Date((t0+i)*864e5));const l=la.filter(a=>a.pf===k);return{k,i,l,r:l.filter(riskA).length}}),mx=Math.max(1,...days.map(d=>d.l.length)),risk=la.filter(riskA).length;
  const sel=hxDay?days.find(d=>d.k===hxDay):null,list=sel?sel.l:[];
  return`<button class="hxla${hxLa?' on':''}" data-hxla><b>Next 2 weeks</b><span>${la.length} due${risk?` · <em>${risk} at risk</em>`:''}</span><i>${hxLa?'▴':'▾'}</i></button>
@@ -1056,7 +1062,7 @@ function heroX(o){const f=v=>v.toFixed(2);
   <div class="hxm"><div><div class="hxv"><b data-n="${f(o.val)}" data-dec="2">0</b><em>%</em></div><div class="hxl">${o.label}</div></div>${o.chip?`<div class="hxc ${o.chip.d<0?'dn':''}"><small>${o.chip.lab}</small><b>${f(o.chip.v)}%</b><span>${o.chip.d>=0?'▲ +':'▼ '}${f(o.chip.d)}%</span></div>`:''}</div>
   ${o.curve?`<div class="hxcv"><svg id="hxcs"></svg><div class="hxlg"><span><i class="p"></i>Baseline</span><span><i class="a"></i>Actual</span><span><i class="f"></i>Forecast</span><span><i class="w"></i>Next 2 wks</span></div>${o.la||''}</div>`:''}<div class="hxb"${o.curve?' hidden':''}><i class="b1" style="width:${Math.min(100,o.val)}%"></i>${o.bar2!=null?`<i class="b2" style="left:${Math.min(100,o.val)}%;width:${Math.max(0,Math.min(100,o.bar2)-Math.min(100,o.val))}%"></i>`:''}${o.mark!=null?`<u style="left:${Math.min(100,o.mark)}%" title="Plan"></u>`:''}</div>
   
-  ${o.tcap?`<div class="hxtc">${o.tcap}</div>`:''}${o.tiles?`<div class="hxk">${o.tiles.map(([n,l,c])=>`<div class="${c||''}"><b data-n="${n}">0</b><span>${l}</span></div>`).join('')}</div>`:''}</div>`}
+  ${o.tcap?`<div class="hxtc">${o.tcap}</div>`:''}${o.tiles?`<div class="hxk">${o.tiles.map(([n,l,c,k])=>`<button class="${c||''}${k&&k===hxK?' on':''}" ${k?`data-hk="${k}"`:''}><b data-n="${n}">0</b><span>${l}</span></button>`).join('')}</div>${o.tlist||''}`:''}</div>`}
 function walkStatus(){const P=A.filter(pend),last=Object.values(U).reduce((m,u)=>Math.max(m,u.pat||0),0),t=last?new Date(last).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'';
  return P.length?{cls:'pend',txt:`<b>Includes ${P.length} site update${P.length>1?'s':''} not yet in P6</b> · walk ${t}`}:{cls:'ok',txt:`Matches P6 ${dmy(B.dd)}`}}
 function renderDash(){
@@ -1074,7 +1080,7 @@ function renderDash(){
   const exc=[...bl.map(a=>({a,b:1})),...lt.filter(a=>!blk(a)).map(a=>({a,b:0}))].sort((x,y)=>(y.b-x.b)||(daysLate(y.a)-daysLate(x.a)));
   const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
-  ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,tcap:`${dR?FL[dR]:'PMX scope'} · ${dD||'Overall'}${ffin?` · finish ${dmy(ffin)}`:''}`,label:`${R6[0].n} · P6 ${dmy(B.dd)}${R6[0].pl!=null?` · baseline ${R6[0].pl.toFixed(2)}% <b class="${act>=R6[0].pl?'up':'dn'}">${act>=R6[0].pl?'+':''}${(act-R6[0].pl).toFixed(2)}%</b>`:''}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,mark:R6[0].pl,curve:!!B1,la:laHero(la),tiles:[[open.length,'Open'],[lt.length,'Late','lt'],[bl.length,'Blocked','bk'],[dn7,'Done 7d','ok']]})}
+  ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,tcap:`${dR?FL[dR]:'PMX scope'} · ${dD||'Overall'}${ffin?` · finish ${dmy(ffin)}`:''}`,label:`${R6[0].n} · P6 ${dmy(B.dd)}${R6[0].pl!=null?` · baseline ${R6[0].pl.toFixed(2)}% <b class="${act>=R6[0].pl?'up':'dn'}">${act>=R6[0].pl?'+':''}${(act-R6[0].pl).toFixed(2)}%</b>`:''}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,mark:R6[0].pl,curve:!!B1,la:laHero(la),tiles:[[open.length,'Open','','open'],[lt.length,'Late','lt','late'],[bl.length,'Blocked','bk','blk'],[dn7,'Done 7d','ok','done']],tlist:hkList({open,late:lt,blk:bl,done:L.filter(a=>{const e=eff(a);return e.st==='C'&&e.af>=wk})})})}
   <div class="dfl"><div class="seg3">${[['','PMX scope'],['R4','GF'],['R3','1F'],['RF','Roof']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','Overall'],['ELE','ELE'],['MECH','MECH'],['FIRE','FIRE']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
 ${rptHTML(R6)}
 
@@ -1300,6 +1306,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('wresx' in d){closeWalkResult();return}
   if(d.wnext){const f=d.wnext;$('#wres')?.classList.remove('on');romp=f;const k=ORDER[f].find(r=>toCheck(r).length);setTimeout(()=>{if(k)startRoom(k);else renderHome(false);curScr()?.scrollTo({top:0,behavior:'smooth'})},300);return}
   if('wdash' in d){$('#wres')?.classList.remove('on');goTab('dash');setTimeout(()=>{curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')},300);return}
+  if(d.hk){hxK=hxK===d.hk?'':d.hk;renderDash();return}
   if('hxla' in d){hxLa=!hxLa;if(!hxLa)hxDay='';renderDash();return}
   if(d.hxd){hxDay=hxDay===d.hxd?'':d.hxd;renderDash();return}
   if('sfx' in d){sfxOn=!sfxOn;try{localStorage.setItem('ksfx',sfxOn?'1':'0')}catch(e){}renderHome(false);if(sfxOn)sfx('save');toast(sfxOn?'Sound on':'Sound off');return}
