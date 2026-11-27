@@ -105,7 +105,7 @@ textarea.in{min-height:70px;resize:none}
 .save:disabled{opacity:.5}.err{color:var(--r4);font-weight:700;font-size:13px;margin-top:10px;min-height:1em;text-align:center}
 .hist{font-size:12px;color:var(--mute);margin:14px 0 0;padding-left:16px}
 /* tab bar */
-.tabs{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:10;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(18px);border-radius:24px;display:grid;grid-template-columns:repeat(3,1fr);padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.tabs{position:absolute;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:10;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(18px);border-radius:24px;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .tabs button{height:54px;border-radius:18px;display:grid;place-items:center;align-content:center;gap:2px;font-size:11.5px;font-weight:800;color:var(--mute);transition:.2s}
 .tabs svg{width:22px;height:22px}.tabs button[aria-selected=true]{color:#fff;background:var(--navy)}
 /* dashboard */
@@ -394,6 +394,18 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .wsb{position:relative;display:block;text-align:left;background:var(--card);border-radius:16px;padding:9px 12px;box-shadow:var(--sh);cursor:pointer;border:2px solid transparent}
 .wsb .wsl{display:block;font-size:11px;font-weight:700;color:var(--mute)}.wsb b{font-size:14px;font-weight:800;color:var(--ink)}
 .wsb input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}.wsb.bk{border-color:var(--late);background:color-mix(in srgb,var(--late) 10%,var(--card))}.wsb.rp{border-color:var(--blush)}
+/* srp */
+.srpb{margin:14px 16px 0;background:var(--card);border-radius:22px;box-shadow:var(--sh);padding:16px}
+.srpb .bh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}.srpb .bh h2{margin:0;font-size:16px;font-weight:800}.srpb .bh span{font-size:12px;color:var(--mute);font-weight:700}
+.srt,.srr{display:grid;grid-template-columns:minmax(0,1fr) 50px 50px 50px 54px;gap:6px;align-items:center}
+.srt{font-size:11px;font-weight:800;color:var(--mute);text-align:center;padding:4px 0}.srt span:first-child{text-align:left}
+.srr{padding:7px 0;border-top:1px solid var(--line)}.srr>b{font-size:13.5px;font-weight:700;line-height:1.25}.srr .mo{font-style:normal;font-size:10px;color:var(--late);font-weight:800}
+.src{height:48px;border-radius:12px;background:var(--card2);display:grid;place-items:center;align-content:center;line-height:1.1}.src b{font-size:15px;font-weight:800}.src small{font-size:9.5px;color:var(--mute);font-weight:700}
+.src.ss{background:color-mix(in srgb,var(--navy) 10%,var(--card2));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--navy) 35%,transparent)}
+.srp2{text-align:right;font-weight:800;font-size:14px;line-height:1.15}.srp2 small{display:block;font-size:10.5px}
+.srbig{text-align:center;font-size:54px;font-weight:800;margin:14px 0 6px}.srpad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.srpad button{height:50px;border-radius:14px;background:var(--card2);font-weight:800;font-size:16px}
+.srl{max-height:200px;overflow:auto;border-radius:12px;background:var(--card2);padding:6px 10px}.srl div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:12.5px;border-top:1px solid var(--line)}.srl div:first-child{border-top:0}.srl b{white-space:nowrap}
+.srpb .li{display:flex;justify-content:space-between;padding:10px 0;font-size:13.5px}.srpb .li small{display:block;color:var(--mute);font-size:11px}.srpb .li em{font-style:normal;font-weight:800}
 /* pro dashboard */
 .dht{display:flex;justify-content:space-between;align-items:flex-end}
 .dseg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--card);border-radius:14px;padding:4px;margin-top:12px;box-shadow:var(--sh)}
@@ -454,11 +466,13 @@ details.gl summary{list-style:none;display:flex;justify-content:space-between;al
   <section class="scr off-r" id="s-room"></section>
   <section class="scr hide" id="s-dash"></section>
   <section class="scr hide" id="s-sync"></section>
+  <section class="scr hide" id="s-srp"></section>
   <section class="scr off-r" id="s-find" style="z-index:5"></section>
   <section class="scr off-r" id="s-help" style="z-index:6"></section>
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Site Walk</button>
     <button role="tab" data-tab="dash" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Dashboard</button>
+    <button role="tab" data-tab="srp" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>SRP</button>
     <button role="tab" data-tab="sync" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12A9 9 0 0 1 18.5 5.8M18 2v4h-4M6 22v-4h4"/></svg>P6 sync</button>
   </nav>
   <div class="dim" id="dim"></div>
@@ -471,8 +485,10 @@ details.gl summary{list-style:none;display:flex;justify-content:space-between;al
   <div class="confetti" id="conf"></div>
 </div>
 <input type="file" id="xerIn" accept=".xer" hidden>
+<input type="file" id="srpIn" accept=".xlsx" hidden>
 <input type="file" id="phIn" accept="image/*" capture="environment" hidden>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="shim.js"></script>
 <script>
 {
@@ -890,11 +906,11 @@ function renderSync(){
 }
 
 /* ---------- nav ---------- */
-function rerender(){if(tab==='home'){if(!qPanel)renderHome(false)}if(tab==='dash')renderDash();if(tab==='sync')renderSync();if(!$('#s-find').classList.contains('off-r'))renderFind()}
+function rerender(){if(tab==='home'){if(!qPanel)renderHome(false)}if(tab==='dash')renderDash();if(tab==='sync')renderSync();if(tab==='srp'&&!$('#sheet').classList.contains('on'))renderSrp();if(!$('#s-find').classList.contains('off-r'))renderFind()}
 function goTab(t){tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
-  ['home','dash','sync'].forEach(s=>$('#s-'+s).classList.toggle('hide',s!==t));$('#s-room').classList.toggle('hide',t!=='home');
+  ['home','dash','sync','srp'].forEach(s=>$('#s-'+s).classList.toggle('hide',s!==t));$('#s-room').classList.toggle('hide',t!=='home');
   if(t!=='home'){document.body.classList.remove('walking');wRoom=null;$('#s-room').classList.add('off-r');$('#s-home').classList.remove('off-l')}
-  if(t==='home')renderHome(true);if(t==='dash')renderDash();if(t==='sync')renderSync();vib(6)}
+  if(t==='home')renderHome(true);if(t==='dash')renderDash();if(t==='sync')renderSync();if(t==='srp')renderSrp();vib(6)}
 function goRoom(r){startRoom(r)}
 function back(){document.body.classList.remove('walking');wRoom=null;wPanel='';$('#s-room').classList.add('off-r');$('#s-home').classList.remove('off-l');renderHome(false)}
 /* ---------- exports ---------- */
@@ -938,6 +954,12 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.walk){startRoom(d.walk);return}
   if('exit' in d){back();return}
   if('redo' in d){startRoom(wRoom);wIdx=0;wMode=wList.length?'item':'roomdone';renderRoom(true);return}
+  if(d.scell){const[id,k]=d.scell.split('|');sOpen(id,+k);return}
+  if(d.sd&&sTmp){sTmp.v=Math.max(0,Math.min(1,Math.round(sTmp.v*100+ +d.sd)/100));$('#sv').textContent=Math.round(sTmp.v*100)+'%';vib(4);return}
+  if('ssave' in d){sSaveCell();return}
+  if('sreset' in d){sReset(sTmp.id);return}
+  if('smaster' in d){$('#srpIn').click();return}
+  if('sgen' in d){sGenerate();return}
   if(d.reset){resetAsk(d.reset);return}
   if(d.resetgo){resetGo(d.resetgo);return}
   if('cancelsheet' in d){closeSheet();return}
@@ -997,6 +1019,8 @@ document.addEventListener('input',e=>{if(e.target.id==='q'){q=e.target.value.tri
   if(F&&(e.target.id==='fAs'||e.target.id==='fAf')){F.as=$('#fAs').value;F.af=$('#fAf').value;$('#dtxt').textContent=dtxt()}});
 let sy0=null;$('#sheet').addEventListener('touchstart',e=>{if($('#sheet').scrollTop<=0)sy0=e.touches[0].clientY},{passive:true});
 $('#sheet').addEventListener('touchend',e=>{if(sy0!==null&&e.changedTouches[0].clientY-sy0>110&&!e.target.closest('.dial'))closeSheet();sy0=null},{passive:true});
+$('#srpIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)sUploadMaster(f)});
+document.addEventListener('change',e=>{if(e.target.id==='sCut'&&e.target.value){sCut=e.target.value;renderSrp();db&&db.doc('srpm/cut').set({date:sCut}).catch(()=>{})}});
 $('#xerIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)importXer(f)});
 $('#phIn').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!F||!f||!assets)return;
   try{toast('Uploading photo…');const r=await assets.upload(f);F.ph.push(r.id);readF();drawSheet();toast('Photo added – tap Save')}catch(err){toast('Upload failed')}});
@@ -1117,6 +1141,89 @@ async function resetGo(scope){const ids=Object.keys(U).filter(k=>scope==='all'||
   for(const k of ids){try{if(db)await db.doc('upd/'+k).delete();delete U[k]}catch(e){fail++}}
   wRoom=null;rerender();toast(fail?`Reset done, ${fail} could not be cleared`:'Reset done – back to P6 values')}
 
+/* ---------- SRP (merged) ---------- */
+const SW=[.5,.3,.2],FIXN=['1st fix','2nd fix','3rd fix'];
+const SRP=[
+ {k:'gfa',label:'GF ACMV',name:'GF - ACMV',rows:[[21,'Dahu 07',[1,.93,.87],[['2026-07-02','2026-08-12'],['2026-09-04','2026-09-25'],['2026-09-26','2026-10-09']]],[22,'Dahu 08',[1,.93,.87],[['2026-07-23','2026-09-03'],['2026-09-04','2026-09-15'],['2026-09-26','2026-10-09']]],[23,'Er E1.2 (Romp 4)',[.3,.85,0],[['2026-08-13','2026-10-16'],['2026-08-13','2026-10-16'],['2026-09-26','2026-11-14']]]]},
+ {k:'gfe',label:'GF ELE',name:'GF - Electrical Works',rows:[[20,'Er E1.2 - Romp 4',[.92,.85,.6],[['2026-06-27','2026-09-12'],['2026-08-13','2026-10-16'],['2026-10-13','2026-11-24']]],[21,'Dahu 07',[1,.85,.8],[['2026-08-13','2026-09-03'],['2026-09-04','2026-10-02'],['2026-10-08','2026-11-28']]],[22,'Dahu 08',[.95,.85,.8],[['2026-09-04','2026-09-25'],['2026-09-26','2026-10-16'],['2026-10-17','2026-11-14']]],[23,'Data Hall 04',[.1,0,0],[['2027-01-13','2027-02-20'],['2027-02-16','2027-03-30'],['2027-02-27','2027-03-30']]]]},
+ {k:'ffa',label:'FF ACMV',name:'FF - ACMV',rows:[[18,'Dahu 05',[1,.9,.9],[['2026-06-20','2026-08-21'],['2026-09-14','2026-10-26'],['2026-10-06','2026-11-10']]],[19,'Dahu 06',[1,.9,.9],[['2026-07-14','2026-08-24'],['2026-09-17','2026-09-28'],['2026-09-29','2026-10-21']]],[20,'Er E2.2',[.4,.6,0],[['2026-08-26','2026-10-07'],['2026-11-20','2026-12-10'],['2026-08-24','2026-10-20']]]]},
+ {k:'ffe',label:'FF ELE',name:'1F - Electrical Works ',rows:[[20,'Dahu 05',[1,1,.95],[['2026-08-22','2026-10-26'],['2026-12-02','2027-01-16'],['2027-01-18','2027-03-09']]],[21,'Dahu 06',[1,.85,.85],[['2026-08-26','2026-10-07'],['2026-11-20','2026-12-10'],['2026-12-11','2027-01-11']]],[22,'Data Hall 03',[.1,0,0],[['2027-01-15','2027-02-09'],['2027-02-10','2027-03-31'],['2027-03-29','2027-04-17']]],[23,'Er E2.2 (Romp 3)',[.92,.8,.7],[['2026-05-29','2026-10-06'],['2026-07-20','2026-11-03'],['2026-11-04','2026-12-23']]]]}];
+const SCOL={p:['Q','AB','AM'],s:['J','U','AF'],f:['K','V','AG']};
+const SITEM={};SRP.forEach(s=>s.rows.forEach(([r,a,b,pl])=>SITEM[s.k+r]={id:s.k+r,sh:s,r,area:a,base:b,plan:pl}));
+const SIDS=Object.keys(SITEM);
+const SMAP={'DAHU 07':{MECH:'gfa21',ELE:'gfe21'},'DAHU 08':{MECH:'gfa22',ELE:'gfe22'},'ELECTRICAL 1.2 (ROMP4)':{MECH:'gfa23',ELE:'gfe20'},'DATA HALL ROMP 4':{ELE:'gfe23'},
+ 'DAHU 05':{MECH:'ffa18',ELE:'ffe20'},'DAHU 06':{MECH:'ffa19',ELE:'ffe21'},'ELECTRICAL 2.2 (ROMP3)':{MECH:'ffa20',ELE:'ffe23'},'DATA HALL ROMP 3':{ELE:'ffe22'}};
+const fixOf=a=>{const t=a.sn.toLowerCase();if(a.D==='MECH'){if(/connect|final fix|commission|testing/.test(t))return 2;if(/pipe|duct|drain|refrigerant|insulation/.test(t))return 0;return 1}
+ if(/final fix|terminat|connect|testing|energi/.test(t))return 2;if(/containment|trunking|tray|conduit|support|unistrut|rod|ladder/.test(t))return 0;return 1};
+const SEED={"41":{"w":41,"cut":"2026-04-01","v":{"gfa21":[0,0,0],"gfa22":[0,0,0],"gfa23":[0,0,0],"gfe20":[0.75,0.117,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.45,0,0]},"src":"Imported from old SRP app"},"42":{"w":42,"cut":"2026-04-07","v":{"gfa21":[0,0,0],"gfa22":[0,0,0],"gfa23":[0,0,0],"gfe20":[0.77,0.12,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"43":{"w":43,"cut":"2026-04-14","v":{"gfa21":[0,0,0],"gfa22":[0,0,0],"gfa23":[0,0,0],"gfe20":[0.77,0.12,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.52,0,0]},"src":"Imported from old SRP app"},"44":{"w":44,"cut":"2026-04-18","v":{"gfa21":[0,0,0],"gfa22":[0,0,0],"gfa23":[0,0,0],"gfe20":[0.77,0.18,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.52,0,0]},"src":"Imported from old SRP app"},"45":{"w":45,"cut":"2026-04-29","v":{"gfa21":[0,0,0],"gfa22":[0,0,0],"gfa23":[0,0,0],"gfe20":[0.7,0.24,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.42,0,0]},"src":"Imported from old SRP app"},"46":{"w":46,"cut":"2026-05-06","v":{"gfa21":[0,0,0],"gfa22":[0.0275,0,0],"gfa23":[0.21,0,0.7],"gfe20":[0.7,0.24,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.42,0,0]},"src":"Imported from old SRP app"},"47":{"w":47,"cut":"2026-05-13","v":{"gfa21":[0,0,0],"gfa22":[0.0275,0,0],"gfa23":[0.3,0,0.7],"gfe20":[0.7,0.27,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.42,0,0]},"src":"Imported from old SRP app"},"48":{"w":48,"cut":"2026-05-20","v":{"gfa21":[0,0,0],"gfa22":[0.0275,0,0],"gfa23":[0.3,0,0.7],"gfe20":[0.7,0.27,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"50":{"w":50,"cut":"2026-06-02","v":{"gfa21":[0.165,0,0],"gfa22":[0.33,0,0],"gfa23":[0.3,0,0],"gfe20":[0.7,0.27,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"51":{"w":51,"cut":"2026-06-10","v":{"gfa21":[0.165,0,0],"gfa22":[0.33,0,0],"gfa23":[0.3,0,0],"gfe20":[0.7,0.27,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"53":{"w":53,"cut":"2026-06-23","v":{"gfa21":[0.297,0,0],"gfa22":[0.33,0,0],"gfa23":[0.33,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0.27,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"54":{"w":54,"cut":"2026-06-30","v":{"gfa21":[0.33,0,0],"gfa22":[0.33,0,0],"gfa23":[0.33,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0.3,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"55":{"w":55,"cut":"2026-07-08","v":{"gfa21":[0.33,0,0],"gfa22":[0.33,0,0],"gfa23":[0.33,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0,0,0],"ffa19":[0,0,0],"ffa20":[0.3,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"56":{"w":56,"cut":"2026-07-15","v":{"gfa21":[0.33,0,0],"gfa22":[0.33,0,0],"gfa23":[0.33,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.3,0,0],"ffa19":[0.32,0,0],"ffa20":[0.3,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"57":{"w":57,"cut":"2026-07-22","v":{"gfa21":[0.33,0,0],"gfa22":[0.33,0,0],"gfa23":[0.33,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.3,0,0],"ffa19":[0.4,0,0],"ffa20":[0.3,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"58":{"w":58,"cut":"2026-07-29","v":{"gfa21":[0.6,0,0],"gfa22":[0.6,0,0],"gfa23":[0.6,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.3,0,0],"ffa19":[0.4692,0,0],"ffa20":[0.3,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"59":{"w":59,"cut":"2026-08-05","v":{"gfa21":[0.6,0,0],"gfa22":[0.6,0,0],"gfa23":[0.6,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.3,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0,0,0],"ffe21":[0,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"60":{"w":60,"cut":"2026-08-12","v":{"gfa21":[0.8,0,0],"gfa22":[0.8,0,0],"gfa23":[1,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.3,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0.5,0,0],"ffe21":[0.5,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"61":{"w":61,"cut":"2026-08-19","v":{"gfa21":[0.8,0,0],"gfa22":[0.8,0,0],"gfa23":[1,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.7,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0.5,0,0],"ffe21":[0.5,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"62":{"w":62,"cut":"2026-08-26","v":{"gfa21":[0.8,0,0],"gfa22":[0.8,0,0],"gfa23":[1,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.7,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0.5,0,0],"ffe21":[0.5,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0]},"src":"Imported from old SRP app"},"63":{"w":63,"cut":"2026-09-02","v":{"gfa21":[0.8,0,0],"gfa22":[0.8,0,0],"gfa23":[1,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.7,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0.5,0,0],"ffe21":[0.5,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0.6]},"src":"Imported from old SRP app"},"64":{"w":64,"cut":"2026-09-09","v":{"gfa21":[0.8,0,0],"gfa22":[0.8,0,0],"gfa23":[1,0,0],"gfe20":[0.7,0.3,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.7,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0.5,0,0],"ffe21":[0.5,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0,0.6]},"src":"Imported from old SRP app"},"65":{"w":65,"cut":"2026-09-16","v":{"gfa21":[0.8,0,0],"gfa22":[0.8,0,0],"gfa23":[1,0,0],"gfe20":[0.7,0.35,0],"gfe21":[0.7,0,0],"gfe22":[0,0,0],"gfe23":[0,0,0],"ffa18":[0.7,0,0],"ffa19":[0.6308,0,0],"ffa20":[0.33,0,0],"ffe20":[0.5,0,0],"ffe21":[0.5,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0.15,0.6]},"src":"Imported from old SRP app"},"66":{"w":66,"cut":"2026-09-23","v":{"gfa21":[0.8,0.1,0],"gfa22":[0.8,0.1,0],"gfa23":[1,0,0],"gfe20":[0.72,0.35,0],"gfe21":[1,0,0],"gfe22":[0.6,0,0],"gfe23":[0,0,0],"ffa18":[0.8,0,0],"ffa19":[0.8,0,0],"ffa20":[0.33,0,0],"ffe20":[0.8,0,0],"ffe21":[0.8,0,0],"ffe22":[0,0,0],"ffe23":[0.5,0.2,0.6]},"src":"Imported from old SRP app"},"67":{"w":67,"cut":"2026-09-30","v":{"gfa21":[1,0.8,0.6],"gfa22":[1,0.8,0.6],"gfa23":[0,0,0],"gfe20":[0.9,0.4,0],"gfe21":[1,0.3,0.4],"gfe22":[0.8,0,0],"gfe23":[0,0,0],"ffa18":[1,0.8,0.6],"ffa19":[1,0.8,0.6],"ffa20":[0.33,0,0],"ffe20":[1,1,0],"ffe21":[0.8,0,0],"ffe22":[0,0,0],"ffe23":[0.7,0.3,0.6]},"src":"Imported from old SRP app"},"68":{"w":68,"cut":"2026-10-07","v":{"gfa21":[1,0.8,0.6],"gfa22":[1,0.8,0.6],"gfa23":[0,0,0],"gfe20":[0.9,0.4,0],"gfe21":[1,0.3,0.4],"gfe22":[0.8,0,0],"gfe23":[0,0,0],"ffa18":[1,0.8,0.8],"ffa19":[1,0.8,0.8],"ffa20":[0.33,0,0],"ffe20":[1,1,0],"ffe21":[0.8,0,0],"ffe22":[0,0,0],"ffe23":[0.7,0.35,0.6]},"src":"Imported from old SRP app"},"69":{"w":69,"cut":"2026-10-14","v":{"gfa21":[1,0.8,0.65],"gfa22":[1,0.8,0.65],"gfa23":[0,0.4,0],"gfe20":[0.9,0.4,0],"gfe21":[1,0.3,0.4],"gfe22":[0.8,0,0],"gfe23":[0,0,0],"ffa18":[1,0.8,0.8],"ffa19":[1,0.8,0.8],"ffa20":[0.33,0.4,0],"ffe20":[1,1,0],"ffe21":[0.8,0,0],"ffe22":[0,0,0],"ffe23":[0.8,0.4,0.6]},"src":"Imported from old SRP app"},"70":{"w":70,"cut":"2026-10-21","v":{"gfa21":[1,0.8,0.65],"gfa22":[1,0.8,0.65],"gfa23":[0,0.4,0],"gfe20":[0.9,0.4,0],"gfe21":[1,0.3,0.4],"gfe22":[0.8,0,0],"gfe23":[0,0,0],"ffa18":[1,0.8,0.8],"ffa19":[1,0.8,0.8],"ffa20":[0.33,0.4,0],"ffe20":[1,1,0],"ffe21":[0.8,0,0],"ffe22":[0,0,0],"ffe23":[0.9,0.4,0.6]},"src":"Imported from old SRP app"},"71":{"w":71,"cut":"2026-10-28","v":{"gfa21":[1,0.9,0.7],"gfa22":[1,0.9,0.7],"gfa23":[0.3,0.4,0],"gfe20":[0.9,0.5,0.3],"gfe21":[1,0.3,0.4],"gfe22":[0.9,0.3,0],"gfe23":[0,0,0],"ffa18":[1,0.9,0.8],"ffa19":[1,0.9,0.8],"ffa20":[0.4,0.5,0],"ffe20":[1,1,0],"ffe21":[0.8,0,0],"ffe22":[0,0,0],"ffe23":[0.9,0.4,0.6]},"src":"Imported from old SRP app"},"72":{"w":72,"cut":"2026-11-04","v":{"gfa21":[1,0.9,0.7],"gfa22":[1,0.9,0.7],"gfa23":[0.3,0.8,0],"gfe20":[0.9,0.7,0.6],"gfe21":[1,0.8,0.8],"gfe22":[0.95,0.8,0.8],"gfe23":[0.05,0,0],"ffa18":[1,0.9,0.8],"ffa19":[1,0.9,0.8],"ffa20":[0.4,0.5,0],"ffe20":[1,1,0.95],"ffe21":[1,0.8,0.8],"ffe22":[0.05,0,0],"ffe23":[0.9,0.7,0.7]},"src":"Imported from old SRP app"},"73":{"w":73,"cut":"2026-11-11","v":{"gfa21":[1,0.92,0.85],"gfa22":[1,0.92,0.85],"gfa23":[0.3,0.85,0],"gfe20":[0.92,0.8,0.6],"gfe21":[1,0.8,0.8],"gfe22":[0.95,0.8,0.8],"gfe23":[0.1,0,0],"ffa18":[1,0.9,0.9],"ffa19":[1,0.9,0.9],"ffa20":[0.4,0.6,0],"ffe20":[1,1,0.95],"ffe21":[1,0.85,0.85],"ffe22":[0.1,0,0],"ffe23":[0.92,0.8,0.7]},"src":"Imported from old SRP app"},"74":{"w":74,"cut":"2026-11-18","v":{"gfa21":[1,0.92,0.85],"gfa22":[1,0.92,0.85],"gfa23":[0.3,0.85,0],"gfe20":[0.92,0.85,0.6],"gfe21":[1,0.82,0.8],"gfe22":[0.95,0.82,0.8],"gfe23":[0.1,0,0],"ffa18":[1,0.9,0.9],"ffa19":[1,0.9,0.9],"ffa20":[0.4,0.6,0],"ffe20":[1,1,0.95],"ffe21":[1,0.85,0.85],"ffe22":[0.1,0,0],"ffe23":[0.92,0.8,0.7]},"src":"Imported from old SRP app"},"75":{"w":75,"cut":"2026-11-25","v":{"gfa21":[1,0.93,0.87],"gfa22":[1,0.93,0.87],"gfa23":[0.3,0.85,0],"gfe20":[0.92,0.85,0.6],"gfe21":[1,0.85,0.8],"gfe22":[0.95,0.85,0.8],"gfe23":[0.1,0,0],"ffa18":[1,0.9,0.9],"ffa19":[1,0.9,0.9],"ffa20":[0.4,0.6,0],"ffe20":[1,1,0.95],"ffe21":[1,0.85,0.85],"ffe22":[0.1,0,0],"ffe23":[0.92,0.8,0.7]},"src":"Imported from old SRP app"}};
+let SO={},SWK={...SEED},SM={},sCut=null,sSel=null,sTmp=null;
+const sWeek=s=>74+Math.round((Date.parse(s)-Date.parse('2026-11-18'))/6048e5);
+const sWid=w=>'W'+String(w).padStart(3,'0');
+const nextWed2=()=>{const d=new Date();d.setDate(d.getDate()+((3-d.getDay()+7)%7));return ymd(d)};
+const sActs=id=>A.filter(a=>SMAP[a.area]?.[a.D]===id);
+function sSite(id){const L=sActs(id),W=a=>Math.max(1,a.od||1);return[0,1,2].map(k=>{const l=L.filter(a=>fixOf(a)===k);if(!l.length)return null;const w=l.reduce((s,a)=>s+W(a),0);return{v:l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w/100,n:l.length,l}})}
+function sLast(id){const ws=Object.values(SWK).filter(x=>x.w<sWeek(sCut)).sort((a,b)=>a.w-b.w),x=ws[ws.length-1];return x?.v?.[id]||SITEM[id].base}
+function sFinal(id){const o=SO[id];if(o&&Array.isArray(o.v))return o.v;const s=sSite(id),l=sLast(id);return[0,1,2].map(k=>s[k]?s[k].v:l[k])}
+const sPh=v=>v[0]*SW[0]+v[1]*SW[1]+v[2]*SW[2];
+const sPlanFix=([s,f],d)=>{const c=Date.parse(d),a=Date.parse(s),b=Date.parse(f);return c>b?1:c<a?0:(c-a)/(b-a)};
+const sPlan=(id,d)=>SITEM[id].plan.reduce((t,p,i)=>t+sPlanFix(p,d)*SW[i],0);
+const avg=a=>a.reduce((s,x)=>s+x,0)/(a.length||1);
+const p1=v=>(Math.round(v*1000)/10).toFixed(1);
+function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
+  const act=avg(SIDS.map(id=>sPh(sFinal(id)))),last=avg(SIDS.map(id=>sPh(sLast(id)))),pl=avg(SIDS.map(id=>sPlan(id,sCut)));
+  const lw=Object.values(SWK).filter(x=>x.w<W0).sort((a,b)=>b.w-a.w)[0];
+  const tone=d=>d>=0?'var(--ok)':'var(--r4)';
+  $('#s-srp').innerHTML=`<div class="hero dh2"><div class="hrow"><div><div class="hello">Schedule Recovery Plan · W${W0}</div><div class="proj">SRP</div></div></div>
+   <div class="dk"><div class="dkr">${ring(act*100,10,'#fff',true).replace('stroke="var(--soft)"','stroke="rgba(255,255,255,.18)"')}<div><b>${p1(act)}</b><span>% physical</span></div></div>
+    <div class="dkt"><div class="htitle">${act-last>=0?'+':''}${p1(act-last)} pts vs ${lw?'W'+lw.w:'last SRP'}</div><div class="hsub">Plan ${p1(pl)}% · ${act-pl>=0?'ahead':'behind'} ${p1(Math.abs(act-pl))} pts · cut-off ${dmy(sCut)}</div></div></div></div>
+  <div class="wset hpills"><label class="wsb"><span class="wsl">SRP cut-off (Wed)</span><b>📅 ${dmy(sCut)} · W${W0} ▾</b><input type="date" id="sCut" value="${sCut}"></label><button class="wsb" data-smaster><span class="wsl">Master SRP file</span><b>${SM.name?esc(SM.name.slice(0,18)):'Upload ▸'}</b></button></div>
+  <div class="dsec" style="padding-top:16px"><div class="dh3"><h3>How it works</h3></div><p class="dhint" style="text-align:left;margin:0">Site-walk updates roll up into each SRP fix automatically (duration-weighted). Tap a cell to adjust. Then Generate SRP.</p></div>
+  ${SRP.map(s=>{const ii=s.rows.map(([r])=>s.k+r);return`<div class="blk srpb"><div class="bh"><h2>${s.label}</h2><span>${p1(avg(ii.map(id=>sPh(sFinal(id)))))}% phys.</span></div>
+   <div class="srt"><span></span><span>1st</span><span>2nd</span><span>3rd</span><span>Phys</span></div>
+   ${ii.map(id=>{const f=sFinal(id),st=sSite(id),l=sLast(id),o=SO[id];return`<div class="srr"><b>${esc(SITEM[id].area)}${o?' <i class="mo">edited</i>':''}</b>${[0,1,2].map(k=>`<button class="src ${st[k]?'ss':''}" data-scell="${id}|${k}"><b>${Math.round(f[k]*100)}</b><small>${st[k]?'site':'last'} ${f[k]>l[k]+.004?'▲':''}</small></button>`).join('')}<span class="srp2">${p1(sPh(f))}<small style="color:${tone(sPh(f)-sPh(l))}">${sPh(f)-sPh(l)>=0?'+':''}${p1(sPh(f)-sPh(l))}</small></span></div>`}).join('')}</div>`}).join('')}
+  <div class="ctaw"><button class="cta" data-sgen><span class="ct">Generate SRP · W${W0}<small>Fills your master Excel and saves this week</small></span><span class="ca">↓</span></button></div>
+  <div class="blk srpb"><div class="bh"><h2>Saved weeks</h2><span>${Object.keys(SWK).length}</span></div>${Object.values(SWK).sort((a,b)=>b.w-a.w).map(x=>`<div class="li" style="border-top:1px solid var(--line)"><div>W${x.w} · ${dmy(x.cut)}<small>${esc(x.by||x.src||'')}</small></div><em>${p1(avg(SIDS.map(id=>sPh(x.v[id]||SITEM[id].base))))}%</em></div>`).join('')||'<p class="none">Nothing saved yet. Each Generate saves the week.</p>'}</div>
+  <p class="dhint" style="margin:14px 20px">Mapping: ACMV 1st = pipe/duct/drain, 2nd = equipment, 3rd = connection. ELE 1st = containment/trunking/support, 2nd = cable/busduct/equipment, 3rd = final fix/termination. GF/FF Mezzanine are not in the SRP.</p>`;
+  animate($('#s-srp'))}
+function sOpen(id,k){const f=sFinal(id),st=sSite(id),l=sLast(id);sTmp={id,k,v:f[k]};
+  $('#sheet').innerHTML=`<div class="grab"></div><h3>${esc(SITEM[id].area)} · ${FIXN[k]}</h3><div class="sub">${SITEM[id].sh.label} · last SRP ${Math.round(l[k]*100)}% · weight ${SW[k]*100}%</div>
+  <div class="srbig" id="sv">${Math.round(sTmp.v*100)}%</div>
+  <div class="srpad">${[-5,-1,1,5].map(d=>`<button data-sd="${d}">${d>0?'+':''}${d}</button>`).join('')}</div>
+  ${st[k]?`<div class="lb">From site walk · ${st[k].n} activities · ${Math.round(st[k].v*100)}%</div><div class="srl">${st[k].l.map(a=>`<div><span>${esc(a.sn)}</span><b>${eff(a).pct}%</b></div>`).join('')}</div>`:'<div class="lb">No P6 activities mapped to this fix – value carried from last SRP.</div>'}
+  <button class="save" data-ssave>Save ${FIXN[k]}</button>${SO[id]?'<button class="ghost" data-sreset>Back to site-walk values</button>':''}`;
+  $('#sheet').classList.add('on');$('#dim').classList.add('on')}
+async function sSaveCell(){const {id,k,v}=sTmp,f=sFinal(id).slice();f[k]=Math.max(0,Math.min(1,v));const doc={v:f,at:Date.now(),by:me||''};SO[id]=doc;closeSheet();renderSrp();
+  if(db)try{await db.doc('srpo/'+id).set(doc);toast('SRP updated')}catch(e){toast('Not saved')}}
+async function sReset(id){delete SO[id];closeSheet();renderSrp();if(db)try{await db.doc('srpo/'+id).delete()}catch(e){}}
+async function sUploadMaster(f){if(!assets){toast('Upload not available');return}try{toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now()};if(db)await db.doc('srpm/master').set(SM);renderSrp();toast('Master SRP saved')}catch(e){toast('Upload failed')}}
+const sColN=c=>[...c].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0),sXe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sRx=ref=>new RegExp('<c r="'+ref+'"([^>]*?)(/>|>([\\s\\S]*?)</c>)');
+function sPut(x,ref,mk,opt={}){const m=x.match(sRx(ref)),f=a=>mk(a).replace('"__"','"'+ref+'"');
+  if(m){const inner=m[3]||'';if(opt.ifEmpty&&/<v>/.test(inner))return[x,'kept'];if(!opt.formula&&/<f[ >]/.test(inner))return[x,'formula'];let at=m[1].replace(/\s+t="[^"]*"/,'');if(opt.s)at=at.replace(/\s+s="[^"]*"/,'')+` s="${opt.s}"`;return[x.replace(m[0],f(at)),'set']}
+  const r=ref.match(/\d+/)[0],rm=x.match(new RegExp('<row r="'+r+'"([^>]*?)(/>|>([\\s\\S]*?)</row>)'));if(!rm)return[x,'norow'];
+  const cells=rm[3]||'',tc=sColN(ref.replace(/\d+/,''));let pos=cells.length;for(const c of cells.matchAll(/<c r="([A-Z]+)\d+"/g))if(sColN(c[1])>tc){pos=c.index;break}
+  return[x.replace(rm[0],`<row r="${r}"${rm[1]}>${cells.slice(0,pos)}${f(opt.s?` s="${opt.s}"`:'')}${cells.slice(pos)}</row>`),'set']}
+const sNum=v=>a=>`<c r="__"${a}><v>${v}</v></c>`,sStr=t=>a=>`<c r="__"${a} t="inlineStr"><is><t xml:space="preserve">${sXe(t)}</t></is></c>`;
+const sSer=s=>Math.round((Date.parse(s)-Date.UTC(1899,11,30))/864e5);
+async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel tool did not load');if(!SM.id)return toast('Upload the master SRP file first');
+  toast('Building SRP…');try{const buf=await (await fetch('/_blob/'+encodeURIComponent(SM.id))).arrayBuffer();const zip=await JSZip.loadAsync(buf);
+   let wb=await zip.file('xl/workbook.xml').async('string');const rels=await zip.file('xl/_rels/workbook.xml.rels').async('string');
+   const path=name=>{const m=wb.match(new RegExp('<sheet[^>]*?name="'+sXe(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"[^>]*r:id="([^"]+)"'));if(!m)return null;const t=rels.match(new RegExp('Id="'+m[1]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('Target="([^"]+)"[^>]*Id="'+m[1]+'"'));return t?'xl/'+t[1].replace(/^\/?xl\//,''):null};
+   const W0=sWeek(sCut),iss=[];let n=0;
+   for(const s of SRP){const p=path(s.name);if(!p||!zip.file(p)){iss.push('missing sheet '+s.name);continue}let x=await zip.file(p).async('string'),r;
+    if(s.k==='gfe'){const[y,mo,d]=sCut.split('-').map(Number);[x]=sPut(x,'D1',a=>`<c r="__"${a}><f>DATE(${y},${mo},${d})</f><v>${sSer(sCut)}</v></c>`,{formula:true});[x]=sPut(x,'E1',sStr('(W'+W0+')'))}
+    for(const[row] of s.rows){const id=s.k+row,f=sFinal(id),st=sSite(id);
+     for(let i=0;i<3;i++){[x,r]=sPut(x,SCOL.p[i]+row,sNum(Math.round(f[i]*1000)/1000));r==='set'?n++:iss.push(s.label+' '+SCOL.p[i]+row+' '+r);
+      const ds=(x.match(sRx(SCOL.s[i]+row))||[])[1]?.match(/s="(\d+)"/)?.[1],L=st[i]?.l||[];
+      const as=L.map(a=>eff(a).as).filter(Boolean).sort()[0],af=f[i]>=1?L.map(a=>eff(a).af).filter(Boolean).sort().pop():null;
+      if(f[i]>0&&as)[x]=sPut(x,SCOL.s[i]+row,sNum(sSer(as)),{ifEmpty:true,s:ds});if(af)[x]=sPut(x,SCOL.f[i]+row,sNum(sSer(af)),{ifEmpty:true,s:ds})}}
+    zip.file(p,x)}
+   wb=/<calcPr[^>]*fullCalcOnLoad/.test(wb)?wb:wb.replace(/<calcPr/,'<calcPr fullCalcOnLoad="1"');zip.file('xl/workbook.xml',wb);
+   const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'}),dd=new Date(sCut+'T00:00'),fn=`PMX Daily SRP_${dd.getDate()} ${dd.toLocaleString('en-GB',{month:'short'})} ${dd.getFullYear()}.xlsx`;
+   const snap={w:W0,cut:sCut,v:Object.fromEntries(SIDS.map(id=>[id,sFinal(id)])),at:Date.now(),by:me||''};SWK[W0]=snap;if(db)try{await db.doc('srpw/'+sWid(W0)).set(snap)}catch(e){iss.push('history not saved')}
+   if(dl)await dl.save({filename:fn,data:blob});renderSrp();toast(`SRP ready · ${n} cells${iss.length?' · '+iss.length+' issue(s)':''}`);if(iss.length)console.warn(iss)}
+  catch(e){toast('Generate failed: '+(e.message||e.code||e))}}
+
 /* ---------- boot ---------- */
 async function boot(){
   try{const r=await fetch('baseline.json');setBase({...(await r.json()),at:0})}catch(e){}
@@ -1128,6 +1235,10 @@ async function boot(){
   if(!db){noteMsg='Sign in to save updates.';rerender();return}
   let got=false;const timer=setTimeout(()=>{if(!got){noteMsg='No signal to the shared data yet – showing P6 data.';rerender()}},10000);
   db.collection('p6sum_off').onSnapshot(s=>{P6S={};s.docs.forEach(d=>P6S[d.id]=d.data());if(tab==='dash'&&!$('#sheet').classList.contains('on'))renderDash()},()=>{});
+  db.collection('srpo').onSnapshot(q=>{SO={};q.docs.forEach(d=>SO[d.id]=d.data());if(tab==='srp'&&!$('#sheet').classList.contains('on'))renderSrp()},()=>{});
+  db.collection('srpw').onSnapshot(q=>{SWK={...SEED};q.docs.forEach(d=>{const x=d.data();if(Number.isInteger(x.w))SWK[x.w]=x});if(tab==='srp'&&!$('#sheet').classList.contains('on'))renderSrp()},()=>{});
+  db.doc('srpm/master').onSnapshot(d=>{SM=d.exists?d.data():{};if(tab==='srp')renderSrp()},()=>{});
+  db.doc('srpm/cut').onSnapshot(d=>{if(d.exists&&/^\d{4}-\d\d-\d\d$/.test(d.data().date))sCut=d.data().date},()=>{});
   db.doc('base/current').onSnapshot(s=>{if(s.exists){const d=s.data();prevBase=d.prev||null;setBase({...d});rerender()}},()=>{});
   db.collection('upd').onSnapshot(async s=>{got=true;clearTimeout(timer);if(!s.metadata.fromCache&&canWrite&&noteMsg.startsWith('No signal'))noteMsg='';
     U={};s.docs.forEach(d=>U[d.id]=d.data());await resolveNames();if(!F)rerender()},()=>{clearTimeout(timer);noteMsg='Live sync stopped – reload to reconnect.';rerender()});
