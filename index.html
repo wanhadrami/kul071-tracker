@@ -748,7 +748,7 @@ let sfxT=0,sfxK='';function sfx(k){if(!sfxOn)return;const n=performance.now();if
   tone=(f,d,v,type='sine',at=0,f2)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+at+d);g.gain.setValueAtTime(0,t+at);g.gain.linearRampToValueAtTime(v,t+at+.008);g.gain.exponentialRampToValueAtTime(.0001,t+at+d);o.connect(g).connect(AC.destination);o.start(t+at);o.stop(t+at+d+.02)};
   if(k==='save')tone(660,.18,.014,'sine');
   else if(k==='done')tone(587,.22,.014,'sine'),tone(880,.32,.012,'sine',.11)}catch(e){}}
-const vib=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}if(Array.isArray(n))sfx(n[0]===15?'done':'err');else if(n>=6)sfx('swipe')};
+const vib=n=>{try{hapT=Date.now();navigator.vibrate?navigator.vibrate(n):hapIOS()}catch(e){}if(Array.isArray(n))sfx(n[0]===15?'done':'err');else if(n>=6)sfx('swipe')};
 
 const IC={back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
@@ -1080,6 +1080,10 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;
   const step=n=>{const k=Math.max(0,Math.min(1,(n-st)/1600)),e=1-Math.pow(1-k,3);b.textContent=(a0+(a1-a0)*e).toFixed(2);g.textContent='+'+((a1-a0)*e).toFixed(2)+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
+let hapT=0,hapSw=null;
+function haptic(){const c=Date.now();setTimeout(()=>{if(hapT>=c-40)return;hapT=Date.now();navigator.vibrate?navigator.vibrate(8):hapIOS()})}
+function hapIOS(){if(!hapSw){hapSw=document.createElement('label');hapSw.style.cssText='position:fixed;left:-99px;width:1px;height:1px;overflow:hidden';hapSw.innerHTML='<input type="checkbox" switch>';document.body.appendChild(hapSw)}try{hapSw.click()}catch(e){}}
+document.addEventListener('click',e=>{if(!e.isTrusted)return;const t=e.target.closest('button,[role=tab],[data-dr],[data-dd],input[type=checkbox],input[type=radio],label');if(t&&t!==hapSw&&!t.disabled)haptic()},true);
 let srpOut=null;
 function shFile(){return new File([srpOut.blob],srpOut.fn,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
 function openShare(){if(!srpOut)return;let o=$('#shr');if(!o){o=document.createElement('div');o.id='shr';document.body.appendChild(o)}
