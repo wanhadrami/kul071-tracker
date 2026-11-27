@@ -586,7 +586,7 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .sc .scl{font-size:10.5px;font-weight:700;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sc b{font:800 16px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.sc small{font-size:10px;font-weight:800;min-height:13px}.sc small.up{color:var(--ok)}.sc small.dn{color:var(--r4)}
 .sc i{position:absolute;left:0;bottom:0;height:3px;background:var(--navy2);border-radius:0 2px 2px 0;transition:width .6s}
 .sc.on{background:var(--navy);color:#fff}.sc.on .scl{color:rgba(255,255,255,.7)}.sc.on small.up{color:#5ef0a8}.sc.on small.dn{color:#ff9aa3}.sc.on i{background:#5ef0a8}
-#s-dash.q .draw{animation:none;stroke-dashoffset:0}#s-dash.q .rm,#s-dash.q .blk{animation:none}#s-dash.q .grow{animation:none}
+#s-dash.qm .draw{animation:none;stroke-dashoffset:0}#s-dash.qm .rm,#s-dash.qm .blk{animation:none}#s-dash.qm .grow{animation:none}
 .hxl2{animation:none;transform-origin:top;overflow:hidden}.hxl2.in{animation:panelIn .45s cubic-bezier(.22,.61,.36,1) both}.hxll.in,.hxll>.hxli{animation:panelIn .4s cubic-bezier(.22,.61,.36,1) both}
 .hxll>.hxli:nth-child(2){animation-delay:.04s}.hxll>.hxli:nth-child(3){animation-delay:.08s}.hxll>.hxli:nth-child(4){animation-delay:.12s}
 @keyframes panelIn{from{opacity:0;transform:translateY(-8px);max-height:0}to{opacity:1;transform:none;max-height:900px}}
@@ -1095,7 +1095,7 @@ function heroX(o){const f=v=>v.toFixed(2);
   ${o.tcap?`<div class="hxtc">${o.tcap}</div>`:''}${o.tiles?`<div class="hxk">${o.tiles.map(([n,l,c,k])=>`<button class="${c||''}${k&&k===hxK?' on':''}" ${k?`data-hk="${k}"`:''}><b data-n="${n}">0</b><span>${l}</span></button>`).join('')}</div>${o.tlist||''}`:''}</div>`}
 function walkStatus(){const P=A.filter(pend),last=Object.values(U).reduce((m,u)=>Math.max(m,u.pat||0),0),t=last?new Date(last).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'';
  return P.length?{cls:'pend',txt:`<b>Includes ${P.length} site update${P.length>1?'s':''} not yet in P6</b> · walk ${t}`}:{cls:'ok',txt:`Matches P6 ${dmy(B.dd)}`}}
-function renderDash(q){const sd=$('#s-dash'),st=q?sd.scrollTop:0;sd.classList.toggle('q',!!q);
+function renderDash(q){const sd=$('#s-dash'),st=q?sd.scrollTop:0;sd.classList.toggle('qm',!!q);
   const L=A.filter(a=>(!dR||a.R===dR)&&(!dD||a.D===dD)),W=a=>Math.max(1,a.od||1),sw=L.reduce((s,a)=>s+W(a),0)||1;
   const wpc=l=>{const w=l.reduce((s,a)=>s+W(a),0);return w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0};
   const R6=rptCalc(),act=R6[0].p6,walkG=R6[0].wk-R6[0].p6,open=L.filter(isOpen),lt=L.filter(late),bl=L.filter(blk),wk=wkAgo();
