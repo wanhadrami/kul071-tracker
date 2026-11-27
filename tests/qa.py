@@ -32,6 +32,8 @@ class Store:
         p=u.split('path=')[1];import urllib.parse;p=urllib.parse.unquote(p)
         if any(p.startswith(x) for x in s.fail):return await route.fulfill(status=500,body='fail')
         s.d.pop(p,None);return await route.fulfill(body='{"ok":true}',content_type='application/json')
+    if '/api/photo' in u and q.method=='POST':
+      k='u%d'%len(s.blobs);s.blobs[k]=q.post_data_buffer;return await route.fulfill(body=json.dumps({'id':k,'url':'/_blob/'+k}),content_type='application/json')
     if '/api/' in u:return await route.fulfill(body='{}',content_type='application/json')
     return await route.abort()
 
@@ -134,4 +136,4 @@ async def main():
     errs=A_.errs+B_.errs
     await br.close()
   print('\nSUMMARY',sum(1 for r in R if r[2]),'/',len(R),'passed');json.dump(R,open('/tmp/qa_results.json','w'))
-asyncio.run(main())
+if __name__=='__main__':asyncio.run(main())

@@ -504,6 +504,8 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .sdf ul{margin:6px 0 0;padding-left:18px;font-size:12.5px;line-height:1.5}.sdf.er{box-shadow:inset 0 0 0 1.5px var(--r4)!important}.sdf .sdt{border-radius:12px;background:var(--card2);padding:4px 10px;margin:8px 0 10px;max-height:260px;overflow:auto}
 .sdt>div{display:grid;grid-template-columns:minmax(0,1fr) 56px 56px;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:12.5px;align-items:center}.sdt>div:first-child{border-top:0}.sdt b{text-align:right}.sdt small{display:block;color:var(--mute);font-size:10.5px}.sdt .dn{color:var(--r4)}.sdt .up{color:var(--ok)}.sdh{font-size:10.5px!important;font-weight:800;color:var(--mute)}
 .hxtc{margin-top:14px;font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}.hxtc+.hxk{margin-top:6px}
+.wrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-top:1px solid var(--line)}.wrow:first-of-type{border-top:0}.wrow .li{border:0}.xd{color:var(--late)!important;font-weight:700}
+.xcx{height:34px;padding:0 10px;border-radius:10px;background:var(--card2);font-size:11.5px;font-weight:800;color:var(--mute);white-space:nowrap}.xmis{box-shadow:inset 0 0 0 1.5px var(--late)!important}.xmis .li{display:flex;justify-content:space-between;align-items:center}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -682,8 +684,10 @@ const dn=s=>s?Math.round(Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10))/
 function setBase(b){B=b;A=b.acts.filter(a=>ROOMS[a.area]&&disc(a)).map(a=>({...a,sn:a.sn.replace(/^\S*\[[^\]]*\]\S*\s+/,''),R:ROOMS[a.area][0],rm:ROOMS[a.area][1],D:disc(a)}))}
 
 /* ---------- logic ---------- */
-const RK={N:0,A:1,C:2},ahead=(u,a)=>RK[u.st]>RK[a.st]||(u.st===a.st&&u.pct>a.pct)||(!!u.as&&!a.as)||(!!u.af&&!a.af);
-const eff=a=>{const u=U[sid(a.id)];if(u&&u.pat&&(u.pat>B.at||ahead(u,a)))return{st:u.st,pct:u.pct,as:u.as||'',af:u.af||'',src:'site'};return{st:a.st,pct:a.pct,as:a.as,af:a.af,src:'p6'}};
+const xDiff=(u,a)=>{const d=[];if(u.st!==a.st)d.push('status');
+  const pd=a.pt==='D'&&u.st==='A'&&a.st==='A'?Math.abs(+(a.od*(1-u.pct/100)).toFixed(1)-a.rd)>.051&&u.pct!==a.pct:u.pct!==a.pct;if(pd)d.push('progress');
+  if((u.as||'')!==(a.as||''))d.push('start');if((u.af||'')!==(a.af||''))d.push('finish');return d};
+const eff=a=>{const u=U[sid(a.id)];if(u&&u.pat&&!u.cx&&xDiff(u,a).length)return{st:u.st,pct:u.pct,as:u.as||'',af:u.af||'',src:'site'};return{st:a.st,pct:a.pct,as:a.as,af:a.af,src:'p6'}};
 const pend=a=>{const e=eff(a);return e.src==='site'&&(e.st!==a.st||e.pct!==a.pct||e.as!==a.as||e.af!==a.af)};
 const isOpen=a=>eff(a).st!=='C',late=a=>isOpen(a)&&a.pf&&a.pf<today(),blk=a=>isOpen(a)&&!!U[sid(a.id)]?.cons;
 const remDur=(a,e)=>e.st==='C'?0:+(a.od*(1-e.pct/100)).toFixed(1);
@@ -1109,6 +1113,7 @@ async function psSave(){const d=$('#psDate').value,rows={};
   if(db){try{await db.doc('p6sum/'+d).set(doc);toast('P6 figures saved')}catch(e){toast('Not saved – only the owner/editors can update P6 figures')}}}
 
 /* ---------- sync ---------- */
+const xMissing=()=>Object.values(U).filter(u=>u&&u.id&&u.pat&&!u.cx&&!B.acts.some(a=>a.id===u.id));
 function renderSync(){
   const P=A.filter(pend),diff=prevBase?A.filter(a=>{const o=prevBase[a.id];return o&&(o.st!==a.st||o.pct!==a.pct)}):null;
   $('#s-sync').innerHTML=`<div class="hx hxsy"><div class="hxg"></div><div class="hrow"><div><div class="hello">Data date · P6 ${dmy(B.dd)}</div><div class="proj">P6 sync</div></div></div>
@@ -1118,7 +1123,8 @@ function renderSync(){
   <button class="ab" data-x="out"><div class="ic" style="background:var(--r3)">${IC.dl}</div><div><b>Export outstanding list</b><span>.xlsx for the site meeting</span></div></button>
   ${canAdmin?`<button class="ab" data-x="xer"><div class="ic" style="background:var(--r4)">${IC.up}</div><div><b>Load new XER</b><span>Refresh from this week's P6</span></div></button>`:''}</div>
   ${noteMsg?`<div class="note">${esc(noteMsg)}</div>`:''}
-  <div class="panel"><h3>Waiting for P6 (${P.length})</h3>${P.map(a=>{const e=eff(a),u=U[sid(a.id)]||{};return`<button class="li" data-open="${esc(a.id)}"><div>${esc(a.sn)}<small>${[esc(a.id),e.af?'finish '+dmy(e.af):e.as?'start '+dmy(e.as):'',a.pt==='D'?'rem '+remDur(a,e)+'d':'',names[u.by]?esc(names[u.by]):''].filter(Boolean).join(' · ')}</small></div><em>${a.pct}→${e.pct}%</em></button>`}).join('')||'<p class="dhint">Everything matches P6.</p>'}</div>
+  ${(()=>{const M=xMissing();return M.length?`<div class="panel xmis"><h3>Needs review · not in current XER (${M.length})</h3>${M.map(u=>`<div class="li"><div>${esc(u.id)}<small>Site ${STN[u.st]||u.st} ${u.pct}%${u.as?' · start '+dmy(u.as):''}${u.af?' · finish '+dmy(u.af):''}</small></div><button class="xcx" data-xcx="${esc(u.id)}">Cancel update</button></div>`).join('')}</div>`:''})()}
+  <div class="panel"><h3>Waiting for P6 (${P.length})</h3>${P.map(a=>{const e=eff(a),u=U[sid(a.id)]||{},dfs=xDiff(u,a);return`<div class="wrow"><button class="li" data-open="${esc(a.id)}"><div>${esc(a.sn)}<small class="xd">${dfs.map(k=>k==='status'?`Status P6 ${STN[a.st]} → Site ${STN[u.st]}`:k==='progress'?`P6 ${a.pct}% → Site ${u.pct}%`:k==='start'?`Start P6 ${a.as?dmy(a.as):'–'} → Site ${u.as?dmy(u.as):'–'}`:`Finish P6 ${a.af?dmy(a.af):'–'} → Site ${u.af?dmy(u.af):'–'}`).join(' · ')}</small><small>${[esc(a.id),e.af?'finish '+dmy(e.af):e.as?'start '+dmy(e.as):'',a.pt==='D'?'rem '+remDur(a,e)+'d':'',names[u.by]?esc(names[u.by]):''].filter(Boolean).join(' · ')}</small></div><em>${a.pct}→${e.pct}%</em></button><button class="xcx" data-xcx="${esc(a.id)}">Use P6 value</button></div>`}).join('')||'<p class="dhint">Everything matches P6.</p>'}</div>
   <div class="panel"><h3>Moved in P6 since last XER</h3>${diff?(diff.map(a=>`<div class="li"><div>${esc(a.sn)}<small>${esc(a.id)}</small></div><em>${prevBase[a.id].pct}→${a.pct}%</em></div>`).join('')||'<p class="dhint">No change.</p>'):'<p class="dhint">Load next week\'s XER to see movement. Updates made before a load count as already in P6.</p>'}</div>
   ${canAdmin?`<div class="panel dz"><h3>Reset</h3><button class="rst2" data-reset="date">↺ Reset walk for ${dmy(wDate)}<span>Clears every answer recorded for that walk date</span></button><button class="rst2 red" data-reset="all">⚠ Reset ALL site updates<span>Clears every update, blocker and photo link. Use after P6 is updated, or to start fresh</span></button></div>`:''}
   <p class="dhint" style="margin:14px 20px">Test the first P6 import on a copy of the project.</p>`;
@@ -1234,9 +1240,11 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.rt){if(oRoom===d.rt){oRoom=null;oItem=null;renderHome(false)}else startRoom(d.rt);return}
   if(d.rrs){const v=d.rrs;if(v==='0'){rstR=null;renderHome(false);return}if(v.startsWith('ask|')){rstR=v.slice(4);renderHome(false);return}
     if(v==='*'){resetIds(Object.keys(U).filter(inWalk),'Walk');return}const n=ROOMS[v]?.[1]||'Room';resetIds(roomIds(v),n);return}
+  if(d.xcx){const id=d.xcx,key=sid(id),old=U[key];if(!old)return;const nu={...old,cx:Date.now(),cxBy:me||''};U[key]=nu;rerender();
+    try{if(db)await db.doc('upd/'+key).set(nu);undo=()=>{U[key]=old;db&&db.doc('upd/'+key).set(old);rerender()};const nr=await srpRevertOrphans();toast('Site update cancelled – P6 value kept'+(nr?` · SRP reverted (${nr})`:''),true)}catch(e){U[key]=old;rerender();toast('Not saved – check signal')}return}
   if(d.qrst){if(d.qrst==='ask'){qPanel='rst';renderHome(false);return}if(d.qrst==='0'){qPanel='';renderHome(false);return}
     const id=oItem,key=sid(id),old=U[key];if(!old)return;delete U[key];qPanel='';renderHome(false);
-    try{if(db)await db.doc('upd/'+key).delete();undo=()=>{U[key]=old;db&&db.doc('upd/'+key).set(old);rerender()};toast('Reset to P6',true)}catch(e){U[key]=old;renderHome(false);toast('Not reset – check signal')}return}
+    try{if(db)await db.doc('upd/'+key).delete();undo=()=>{U[key]=old;db&&db.doc('upd/'+key).set(old);rerender()};const nr=await srpRevertOrphans();toast('Reset to P6'+(nr?` · SRP reverted (${nr})`:''),true)}catch(e){U[key]=old;renderHome(false);toast('Not reset – check signal')}return}
   if(d.inav){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===oItem),j=i+ +d.inav;if(l[j]){goItem(l[j].id);vib(4)}else if(j>=l.length){const R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);if(nr)startRoom(nr)}return}
   if('imin' in d){const id=oItem;oItem=null;qPanel='';qVal=null;renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({block:'nearest'}));return}
   if(d.item){oItem=oItem===d.item?null:d.item;qPanel='';qVal=null;renderHome(false);if(oItem)requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem))?.scrollIntoView({behavior:'smooth',block:'nearest'}));return}
@@ -1405,11 +1413,11 @@ let rstR=null;
 async function resetIds(ids,label){const old={};ids.forEach(k=>{old[k]=U[k];delete U[k]});rstR=null;oItem=null;qPanel='';renderHome(false);let fail=0;
   for(const k of ids){try{if(db)await db.doc('upd/'+k).delete()}catch(e){fail++;U[k]=old[k]}}
   undo=()=>{Object.entries(old).forEach(([k,v])=>{if(!U[k]){U[k]=v;db&&db.doc('upd/'+k).set(v)}});rerender()};
-  if(fail)renderHome(false);toast(fail?`${fail} could not be reset – check signal`:`${label} reset to P6`,!fail)}
+  if(fail)renderHome(false);const nr=await srpRevertOrphans();toast(fail?`${fail} could not be reset – check signal`:`${label} reset to P6`+(nr?` · SRP reverted (${nr})`:''),!fail)}
 async function resetGo(scope){const ids=Object.keys(U).filter(k=>scope==='all'||U[k].wd===wDate||(!U[k].wd&&wDate===today()&&(tday(U[k].chk)||tday(U[k].pat))));
   closeSheet();toast('Resetting '+ids.length+'…');let fail=0;
   for(const k of ids){try{if(db)await db.doc('upd/'+k).delete();delete U[k]}catch(e){fail++}}
-  wRoom=null;rerender();toast(fail?`Reset done, ${fail} could not be cleared`:'Reset done – back to P6 values')}
+  wRoom=null;rerender();const nr=await srpRevertOrphans();toast(fail?`Reset done, ${fail} could not be cleared`:'Reset done – back to P6 values'+(nr?` · SRP reverted (${nr})`:''))}
 
 /* ---------- SRP (merged) ---------- */
 const SW=[.5,.3,.2],FIXN=['1st fix','2nd fix','3rd fix'];
@@ -1441,6 +1449,12 @@ const soK=(id,w=sWeek(sCut))=>sWid(w)+'_'+id;
 function soG(id,w=sWeek(sCut)){const o=SO[soK(id,w)];if(o)return o;const l=SO[id];return l&&Array.isArray(l.v)&&(l.w===w||(!l.w&&w===sWeek(nextWed2())))?l:null}
 async function soW(id,doc,w=sWeek(sCut)){const k=soK(id,w),old=SO[k];if(doc)SO[k]=doc;else delete SO[k];
   try{if(db){if(doc)await db.doc('srpo/'+k).set(doc);else await db.doc('srpo/'+k).delete()}return true}catch(e){if(old)SO[k]=old;else delete SO[k];return false}}
+// when a site update is cancelled/reset, SRP cells that came from accepting its suggestion go back to the original value
+async function srpRevertOrphans(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);let n=0;
+  for(const id of SIDS){const o=soG(id);if(!o||!o.sg)continue;const st=sSite(id),base=(SWK[W0]?.v?.[id])||sLast(id),v=o.v.slice(),sg=o.sg.slice();let ch=false;
+   for(let k=0;k<3;k++)if(sg[k]!=null&&Math.abs(v[k]-sg[k])<.005&&(!st[k]||st[k].v<v[k]-.004)){v[k]=base[k];sg[k]=null;ch=true;n++}
+   if(ch){const same=v.every((x,k)=>Math.abs(x-base[k])<.0005)&&sg.every(x=>x==null)&&!o.src;await soW(id,same?null:{...o,v,sg,at:Date.now(),by:me||''})}}
+  if(n){if(tab==='srp')renderSrp();srpBadge&&srpBadge()}return n}
 function sFinal(id){const o=soG(id);if(o)return o.v;const sv=SWK[sWeek(sCut)];if(sv&&sv.v&&sv.v[id])return sv.v[id];return sLast(id)}
 const sPh=v=>v[0]*SW[0]+v[1]*SW[1]+v[2]*SW[2];
 const sPlanFix=([s,f],d)=>{const c=Date.parse(d),a=Date.parse(s),b=Date.parse(f);return c>b?1:c<a?0:(c-a)/(b-a)};
@@ -1507,7 +1521,9 @@ async function sAcceptAll(){const P=sPendAll(),W0=sWeek(sCut),by={};P.forEach(([
   const ids=Object.keys(by),ps=ids.map(id=>soW(id,{...by[id],w:W0,at:Date.now(),by:me||''}));renderSrp();const res=await Promise.all(ps);const bad=res.filter(x=>!x).length;renderSrp();
   toast(bad?`${bad} row${bad>1?'s':''} not saved – reverted, retry`:P.length+' suggestions accepted')}
 async function sReset(id){closeSheet();const W0=sWeek(sCut),ok=await soW(id,null);if(SO[id]&&(SO[id].w===W0||!SO[id].w)){delete SO[id];try{db&&await db.doc('srpo/'+id).delete()}catch(e){}}renderSrp();if(!ok)toast('Not reset – check signal')}
-async function sUploadMaster(f){if(!assets){toast('Upload not available');return}try{toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now()};if(db)await db.doc('srpm/master').set(SM);renderSrp();toast('Master SRP saved')}catch(e){toast('Upload failed')}}
+async function sUploadMaster(f){if(!assets){toast('Upload not available');return}try{if(typeof JSZip==='undefined')return toast('Excel tool did not load');toast('Checking workbook…');const c=await sCheckMaster(await f.arrayBuffer());
+  if(c.err.length){sDiff={type:'err',head:`“${f.name}” rejected – ${SM.name?`still using ${SM.name}`:'no master active'}`,items:c.err};renderSrp();toast('Wrong workbook – master not changed');return}
+  toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now()};if(db)await db.doc('srpm/master').set(SM);renderSrp();toast('Master SRP saved')}catch(e){toast('Upload failed – master not changed')}}
 const sColN=c=>[...c].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0),sXe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sRx=ref=>new RegExp('<c r="'+ref+'"([^>]*?)(/>|>([\\s\\S]*?)</c>)');
 function sPut(x,ref,mk,opt={}){const m=x.match(sRx(ref)),f=a=>mk(a).replace('"__"','"'+ref+'"');
@@ -1519,6 +1535,14 @@ const sNum=v=>a=>`<c r="__"${a}><v>${v}</v></c>`,sStr=t=>a=>`<c r="__"${a} t="in
 const sSer=s=>Math.round((Date.parse(s)-Date.UTC(1899,11,30))/864e5);
 let sDiff=null,sGenOk=false;
 const sCellV=(x,ref)=>{const m=x.match(sRx(ref));if(!m)return null;const v=(m[3]||'').match(/<v>([^<]*)<\/v>/);return v?+v[1]:null};
+function sPathFn(wb,rels){return name=>{const m=wb.match(new RegExp('<sheet[^>]*?name="'+sXe(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"[^>]*r:id="([^"]+)"'));if(!m)return null;const t=rels.match(new RegExp('Id="'+m[1]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('Target="([^"]+)"[^>]*Id="'+m[1]+'"'));return t?'xl/'+t[1].replace(/^\/?xl\//,''):null}}
+async function sCheckMaster(buf){let zip;try{zip=await JSZip.loadAsync(buf)}catch(e){return{err:['Not an Excel .xlsx file']}}
+  const wb=await zip.file('xl/workbook.xml')?.async('string'),rels=await zip.file('xl/_rels/workbook.xml.rels')?.async('string');if(!wb||!rels)return{err:['Not an Excel workbook']};
+  const path=sPathFn(wb,rels),err=[],X={};
+  for(const s of SRP){const p=path(s.name);if(!p||!zip.file(p)){err.push(`Missing sheet “${s.name.trim()}”`);continue}const x=await zip.file(p).async('string');X[s.k]={p,x};
+   for(const[row] of s.rows){if(!new RegExp('<row r="'+row+'"').test(x)){err.push(`${s.name.trim()}: row ${row} not found`);continue}
+    for(let i=0;i<3;i++){const ref=SCOL.p[i]+row,m=x.match(sRx(ref));if(m&&/<f[ >]/.test(m[3]||''))err.push(`${s.name.trim()}!${ref} is a formula cell`)}}}
+  return{err,zip,wb,X}}
 async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel tool did not load');if(!SM.id)return toast('Upload the master SRP file first');
   const W0=sWeek(sCut),ok=sGenOk;sGenOk=false;toast('Checking master…');
   try{const buf=await (await fetch('/_blob/'+encodeURIComponent(SM.id))).arrayBuffer();const zip=await JSZip.loadAsync(buf);
@@ -1551,7 +1575,7 @@ async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel too
    let hok=true;if(db)try{await db.doc('srpg/'+sWid(W0)).set(snap)}catch(e){hok=false}
    if(hok){SG[W0]=snap;sMerge()}renderSrp();toast(hok?`SRP W${W0} generated · ${n} cells${old?' · previous version kept':''}`:'File downloaded but history NOT saved – generate again')}
   catch(e){sDiff={type:'err',items:[e.message||String(e)]};renderSrp();toast('Master not compatible – nothing generated')}}
-function sDiffHTML(){if(!sDiff)return'';const d=sDiff;if(d.type==='err')return`<div class="blk srpb sdf er"><div class="bh"><h2>Cannot generate</h2><button class="ix" data-sdx>×</button></div><p class="sinf">Nothing was written and history is unchanged. Fix the master or upload the right file:</p><ul>${d.items.slice(0,12).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
+function sDiffHTML(){if(!sDiff)return'';const d=sDiff;if(d.type==='err')return`<div class="blk srpb sdf er"><div class="bh"><h2>${esc(d.head||'Cannot generate')}</h2><button class="ix" data-sdx>×</button></div><p class="sinf">Nothing was written and history is unchanged. Fix the master or upload the right file:</p><ul>${d.items.slice(0,12).map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
  return`<div class="blk srpb sdf"><div class="bh"><h2>Master differs · ${d.items.length} cell${d.items.length>1?'s':''}</h2><button class="ix" data-sdx>×</button></div><p class="sinf">The uploaded master and the app's W${d.W0} values disagree. Choose which to keep before generating.</p>
  <div class="sdt"><div class="sdh"><span>Cell</span><b>Master</b><b>App</b></div>${d.items.map(x=>`<div><span>${esc(x.sh)}!${x.ref}<small>${esc(x.area)} · ${FIXN[x.i]}</small></span><b>${Math.round(x.mv*1000)/10}%</b><b class="${x.av<x.mv?'dn':'up'}">${Math.round(x.av*1000)/10}%</b></div>`).join('')}</div>
  <div class="qrow"><button class="qb" data-sdm>Use master values</button><button class="qb pri" data-sdw>Write app values</button></div></div>`}
