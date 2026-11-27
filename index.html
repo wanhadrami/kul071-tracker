@@ -1161,6 +1161,10 @@ function chartAging(L){const box=$('#agb');if(!box)return;const lt=L.filter(late
 function planAt(a,t){const s=dn(a.ps),f=dn(a.pf);if(!a.ps||!a.pf)return 0;if(t<=s)return 0;if(t>=f)return 100;return 100*(t-s)/Math.max(1,f-s)}
 function actAt(a,t){const e=eff(a);if(!e.as||t<dn(e.as))return 0;const s=dn(e.as),end=e.st==='C'?dn(e.af):dn(today()),tg=e.st==='C'?100:e.pct;if(t>=end)return tg;return tg*(t-s)/Math.max(1,end-s)}
 function fcAt(a,t){const e=eff(a),T=dn(today());if(e.st==='C')return 100;const f=Math.max(dn(a.ef||today()),T+1);if(t>=f)return 100;return e.pct+(100-e.pct)*(t-T)/(f-T)}
+function chipIx(k){return[...document.querySelectorAll(`#s-dash [data-${k}]`)].findIndex(b=>b.classList.contains('on'))}
+function flowBelow(dir){if(RM.matches)return;const sc=$('#s-dash .scp');if(!sc)return;const sd=$('#s-dash'),H=innerHeight,E='cubic-bezier(.22,.61,.36,1)';let n=0,dx=(dir||1)*36;
+  const go=e=>{const r=e.getBoundingClientRect();if(r.bottom<0||r.top>H*1.5)return;e.animate([{transform:`translateX(${dx}px)`,opacity:0},{transform:'none',opacity:1}],{duration:650,delay:Math.min(n++,12)*60,easing:E,fill:'backwards'})};
+  for(let el=sc;el&&el!==sd;el=el.parentElement){let x=el.nextElementSibling;while(x){if(x.tagName==='SECTION'||x.classList.contains('blk')){const kids=[...x.children];if(kids.length>1&&kids.length<40)kids.forEach(go);else go(x)}else go(x);x=x.nextElementSibling}}}
 let curPrev=null,curRange=null,numPrev={},sciPrev={};
 function placeSci(an){document.querySelectorAll('#s-dash .scr4').forEach((r,i)=>{const ind=r.querySelector('.sci'),b=r.querySelector('.sc.on');if(!ind||!b)return;const to={x:b.offsetLeft,w:b.offsetWidth,y:b.offsetTop,h:b.offsetHeight},fr=sciPrev[i];sciPrev[i]=to;
   const set=o=>{ind.style.width=o.w+'px';ind.style.height=o.h+'px';ind.style.transform=`translate(${o.x}px,${o.y}px)`};if(an&&fr&&!RM.matches){ind.style.transition='none';set(fr);ind.offsetWidth;ind.style.transition='';set(to)}else{ind.style.transition='none';set(to);ind.offsetWidth;ind.style.transition=''}})}
@@ -1356,7 +1360,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('hxla' in d){hxLa=!hxLa;if(!hxLa)hxDay='';hxLaNew=true;hxKNew=false;renderDash(1);hxLaNew=false;return}
   if(d.hxd){hxDay=hxDay===d.hxd?'':d.hxd;renderDash(1);return}
   if('sfx' in d){sfxOn=!sfxOn;try{localStorage.setItem('ksfx',sfxOn?'1':'0')}catch(e){}renderHome(false);if(sfxOn)sfx('save');toast(sfxOn?'Sound on':'Sound off');return}
-  if('dr' in d){dR=d.dr;renderDash(1);return}
+  if('dr' in d){const o=chipIx('dr');dR=d.dr;renderDash(1);flowBelow(Math.sign(chipIx('dr')-o));return}
   if(d.scr){scR=d.scr;document.querySelectorAll('[data-scr]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scr===scR));drawCurve(DL);return}
   if(d.ars){arSort=d.ars;document.querySelectorAll('[data-ars]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ars===arSort));chartAreas(DL);return}
   if(d.ar){arSel=arSel===d.ar?null:d.ar;chartAreas(DL);vib(4);return}
@@ -1370,7 +1374,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if(d.xmore){if(d.xmore==='ex')exAll^=1;else laAll^=1;renderDash(1);return}
   if('psedit' in d){psSheet();return}
   if('pssave' in d){psSave();return}
-  if('dd' in d){dD=d.dd;renderDash(1);return}
+  if('dd' in d){const o=chipIx('dd');dD=d.dd;renderDash(1);flowBelow(Math.sign(chipIx('dd')-o));return}
   if(d.romp){const dir=FLRS.indexOf(d.romp)>FLRS.indexOf(romp)?1:-1;if(d.romp===romp)return;romp=d.romp;const s=$('.sw');s.style.setProperty('--c',RC[romp]);$('.sw i').style.transform=`translateX(${FLRS.indexOf(romp)*100}%)`;document.querySelectorAll('.sw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.romp===romp));vib(6);const out=document.querySelectorAll('#s-home .ctaw,#s-home .sec,#s-home .route2');if(!RM.matches)out.forEach(e=>e.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-dir*40}px)`}],{duration:280,easing:'cubic-bezier(.4,0,.7,1)',fill:'forwards'}));
     setTimeout(()=>{renderHome(false);if(!RM.matches)document.querySelectorAll('#s-home .ctaw,#s-home .sec,#s-home .route2').forEach((e,i)=>e.animate([{opacity:0,transform:`translateX(${dir*40}px)`},{opacity:1,transform:'none'}],{duration:650,delay:i*70,easing:'cubic-bezier(.22,.61,.36,1)',fill:'backwards'}))},290);return}
   if(d.walk){startRoom(d.walk);return}
