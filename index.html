@@ -523,6 +523,11 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .prt{border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-top:8px}.prh,.prr{display:grid;grid-template-columns:minmax(0,1.3fr) 1fr 1fr 1fr;gap:6px;padding:10px 12px;align-items:center}
 .prh{background:var(--navy);color:#fff;font-size:11.5px;font-weight:800}.prh b,.prr b{text-align:right}.prr{border-top:1px solid var(--line);font-size:13px}.prr span{font-weight:700}.prr b{font:700 13px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}
 .prr.tot{background:color-mix(in srgb,var(--navy) 7%,transparent)}.prr.tot span,.prr.tot b{font-weight:800}.prr .pos{color:var(--ok)}.prr .neg{color:var(--r4)}.prn{margin:8px 2px 0;font-size:12px;color:var(--mute)}
+.qchips button[aria-pressed=true]{background:var(--navy);color:#fff}
+.qmain{height:54px;border-radius:16px;background:var(--navy);color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}.qmain svg{width:18px;height:18px}.qmain.dn{background:var(--ok)}.qmain:disabled{background:var(--card2);color:var(--mute);font-weight:700;font-size:13.5px}
+.qse{display:grid;grid-template-columns:1fr 1fr;gap:6px}.qsb{position:relative;display:flex;align-items:center;gap:8px;height:40px;padding:0 10px;border-radius:12px;background:var(--card2);font-size:13px;font-weight:700;color:var(--ink)}
+.qsb i{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;flex:none;background:var(--card)}.qsb i svg{width:12px;height:12px}.qsb.on{background:color-mix(in srgb,var(--ok) 10%,var(--card2))}.qsb.on i{background:var(--ok);border-color:var(--ok);color:#fff}
+.qsb label{position:relative;margin-left:auto;font-size:12px;font-weight:800;color:var(--ok);padding:4px 6px;border-radius:8px;background:var(--card)}.qsb label input{position:absolute;inset:0;opacity:0;width:100%}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -731,6 +736,7 @@ const OWNERS=['Kajima','PMX','Supplier','Subcon','Client'];
 let wEv='V',wR='',wO='',wDate=today();
 const FLI=r=>r==='RF'?`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M7 19L20 7l13 12z" fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><text x="20" y="17" text-anchor="middle" font-size="7" font-weight="800" fill="var(--fc)">RF</text></svg>`:`<svg class="fli" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34h28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><rect x="9" y="21" width="22" height="11" rx="2" fill="${r==='R4'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><rect x="9" y="8" width="22" height="11" rx="2" fill="${r==='R3'?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2"/><text x="20" y="${r==='R3'?17:30}" text-anchor="middle" font-size="8" font-weight="800" fill="${'var(--fc)'}">${r==='R3'?'1F':'GF'}</text></svg>`;
 let oRoom=null,oItem=null,qPanel='',qVal=null;
+try{const k=JSON.parse(sessionStorage.getItem('kwalk')||'null');if(k&&k.d===today()&&ROOMS[k.oRoom]){oRoom=k.oRoom;oItem=k.oItem;romp=k.romp||romp}}catch(e){}
 const roomItems=k=>roomOpen(k).sort((x,y)=>(late(y)-late(x))||(x.pf<y.pf?-1:x.pf>y.pf?1:x.id<y.id?-1:1));
 function startRoom(k){romp=ROOMS[k][0];if(tab!=='home')goTab('home');oRoom=k;const l=roomItems(k);oItem=(l.find(a=>!checked(a))||{}).id||null;qPanel='';renderHome(false);
   requestAnimationFrame(()=>document.getElementById('it-'+sid(oItem||''))?.scrollIntoView({behavior:'smooth',block:'center'})||document.getElementById('rm-'+sid(k))?.scrollIntoView({behavior:'smooth',block:'start'}));vib(6)}
@@ -767,7 +773,7 @@ Give 5 short bullet points: what to physically check to judge the real % complet
 function navBar(a){const l=roomItems(oRoom),i=l.findIndex(x=>x.id===a.id),R=ORDER[ROOMS[oRoom][0]],nr=R.slice(R.indexOf(oRoom)+1).find(r=>roomOpen(r).length);
   return`<div class="inav"><button data-inav="-1" ${i<=0?'disabled':''}>‹ Back</button><span>${i+1} / ${l.length}</span><button data-inav="1" ${i>=l.length-1&&!nr?'disabled':''}>${i>=l.length-1&&nr?'Next room ›':'Next ›'}</button><button class="imin" data-imin aria-label="Minimise">▾ Hide</button></div>`}
 function goItem(id){qDet=false;oItem=id;qPanel='';qVal=null;wR='';wO='';renderHome(false);requestAnimationFrame(()=>document.getElementById('it-'+sid(id))?.scrollIntoView({behavior:'smooth',block:'start'}))}
-let lastSh=null,qDet=false,phFor=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90].filter(p=>p>e.pct);
+let lastSh=null,qDet=false,phFor=null;function itemRow(a){const e=eff(a),u=U[sid(a.id)]||{},ck=checked(a),op=oItem===a.id,sh=op&&lastSh!==a.id;if(op)lastSh=a.id;const _x=0,col=RC[a.R],opts=[25,50,75,90,100].filter(p=>p>e.pct);
   return`<div class="it ${op?'op':''} ${sh?'sh':''} ${ck?'ck':''}" id="it-${esc(sid(a.id))}" style="--c:${col}"><button class="ith" data-item="${esc(a.id)}">
    <span class="ir">${ring(e.pct,11,e.st==='C'?'var(--ok)':col)}<b>${e.pct}</b></span>
    <span class="itx"><b>${esc(a.sn)}</b><small><span class="dtag ${a.D==='MECH'?'m':a.D==='FIRE'?'f':''}">${a.D}</span>${late(a)?`<em>${daysLate(a)}d late</em>`:'Due '+dmy(a.pf)}${u.cons?' · <i class="bk">⛔ '+esc(u.cons.split(' – ')[0])+'</i>':''}</small></span>
@@ -780,19 +786,19 @@ let lastSh=null,qDet=false,phFor=null;function itemRow(a){const e=eff(a),u=U[sid
      <div class="qrow"><button class="qb" data-qcancel>Cancel</button><button class="qb pri" data-qblk>Save blocker</button></div>`
    :`<div class="qx">
      <div class="qbig"><button class="qst" data-qs="-1" aria-label="Minus 1%">−</button><div class="qnum"><b>${qVal??e.pct}<i>%</i></b><small>${qVal!=null&&qVal!==e.pct?`was ${e.pct}%`:'progress'}</small></div><button class="qst" data-qs="1" aria-label="Plus 1%">+</button></div>
-     ${qVal!=null&&qVal!==e.pct?`<button class="qsave" data-qsave>Save ${qVal}%</button>`:`<div class="qchips">${opts.map(p=>`<button data-qp="${p}">${p}%</button>`).join('')}<button class="qd" data-q="done">${WI.ok} Done</button></div>`}
+     ${opts.length?`<div class="qchips">${opts.map(p=>`<button data-qp="${p}" aria-pressed="${qVal===p}">${p===100?'100%':p+'%'}</button>`).join('')}</div>`:''}
+     ${(()=>{const ch=qVal!=null&&qVal!==e.pct;return`<button class="qmain${ch&&qVal>=100?' dn':''}" data-qsave ${ch?'':'disabled'}>${!ch?'Change the % to save':qVal>=100?WI.ok+' Done · 100%':'Save '+qVal+'%'}</button>`})()}
+     <div class="qse"><button class="qsb${e.as?' on':''}" data-qst="s"><i>${e.as?WI.ok:''}</i>Started${e.as?`<label>${dmy(e.as).slice(0,5)}<input type="date" data-qd="s" value="${e.as}" max="${today()}"></label>`:''}</button><button class="qsb${e.st==='C'?' on':''}" data-qst="f"><i>${e.st==='C'?WI.ok:''}</i>Finished${e.st==='C'?`<label>${dmy(e.af).slice(0,5)}<input type="date" data-qd="f" value="${e.af}" max="${today()}"></label>`:''}</button></div>
      <div class="qacts"><button data-q="same">${WI.same}<span>No change</span></button><button class="r" data-q="blk">${WI.blk}<span>Blocked</span></button>${assets&&canWrite?`<button data-qph>${IC.cam}<span>Photo${(u.ph||[]).length?` (${u.ph.length})`:''}</span></button>`:''}<button data-open="${esc(a.id)}"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Note</span></button></div>
      ${(u.ph||[]).length?`<div class="qphs">${u.ph.slice(-4).map(p=>`<a href="/_blob/${esc(p)}" target="_blank" rel="noopener"><img src="/_blob/${esc(p)}" alt="Site photo" loading="lazy"></a>`).join('')}</div>`:''}
-     <button class="qdet" data-qdet aria-expanded="${qDet}">Dates &amp; details <span>${e.as?'started '+dmy(e.as):'not started'}${e.st==='C'?' · finished '+dmy(e.af):''}</span><em>${qDet?'▴':'▾'}</em></button>
-     ${qDet?`<div class="qdb"><div class="pst">
-      <div class="psr${e.as?' on':''}"><button class="pcb" data-qst="s" aria-pressed="${!!e.as}"><i>${e.as?WI.ok:''}</i>Started</button>${e.as?`<label class="pdt">${dmy(e.as)} ✎<input type="date" data-qd="s" value="${e.as}" max="${today()}"></label>`:''}</div>
-      <div class="psr${e.st==='C'?' on':''}"><button class="pcb" data-qst="f" aria-pressed="${e.st==='C'}"><i>${e.st==='C'?WI.ok:''}</i>Finished</button>${e.st==='C'?`<label class="pdt">${dmy(e.af)} ✎<input type="date" data-qd="f" value="${e.af}" max="${today()}"></label>`:''}</div></div>
+     <button class="qdet" data-qdet aria-expanded="${qDet}">More <span>what to check · reset</span><em>${qDet?'▴':'▾'}</em></button>
+     ${qDet?`<div class="qdb">
    <div class="hint2 ${hintOpen?'on':''}"><button class="hbt" data-hint>What to check <span>${hintOpen?'▴':'▾'}</span></button>${hintOpen?`<ul>${hintFor(a).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${sampleFn?(aiHint[a.id]?`<div class="aih"><b>✦ AI site tips</b><div id="aih">${esc(aiHint[a.id].t)}</div></div>`:`<button class="aib2" data-aihint="${esc(a.id)}">✦ Ask AI for more detail</button>`):''}`:''}</div>
       ${U[sid(a.id)]?(qPanel==='rst'?`<div class="irst on"><span>Reset to P6 (${a.pct}%${a.as?', started '+dmy(a.as):''})? Removes site status, %, blocker and remarks for this activity.</span><div class="qrow"><button class="qb" data-qrst="0">Cancel</button><button class="qb red" data-qrst="1">Yes, reset</button></div></div>`:`<button class="irst" data-qrst="ask">Reset to P6</button>`):''}
       <div class="qmeta">${esc(a.id)} · ${a.D==='MECH'?'Mechanical':a.D==='FIRE'?'Fire':'Electrical'}${u.at?' · last update '+new Date(u.at).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}):''}</div></div>`:''}
     </div>`}
    ${navBar(a)}</div>`:''}</div>`}
-function renderHome(anim){
+function renderHome(anim){try{sessionStorage.setItem('kwalk',JSON.stringify({d:today(),oRoom,oItem,romp}))}catch(e){}
   const all=A.filter(a=>isOpen(a)||checked(a)),done=all.filter(checked).length,tot=all.length,pc=Math.round(done/Math.max(1,tot)*100);
   const R=ORDER[romp],next=R.find(k=>toCheck(k).length),started=R.some(k=>roomOpen(k).length&&toCheck(k).length<roomOpen(k).length),left=R.reduce((s,k)=>s+toCheck(k).length,0);
   const rooms=R.map((k,i)=>{const v=ROOMS[k],l=roomItems(k),lf=toCheck(k).length,ck=l.length-lf,lt=l.filter(late).length,st=!l.length?'none':lf===0?'done':ck?'part':'todo',op=oRoom===k;
@@ -1192,7 +1198,7 @@ async function importXer(file){try{const txt=await new Promise((res,rej)=>{const
 
 /* ---------- events ---------- */
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('#glp,[data-gl]'))glClose()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')glClose()});
-document.addEventListener('click',ev=>{if(tab!=='home'||!oItem||tour)return;const t=ev.target;
+document.addEventListener('click',ev=>{if(!ev.isTrusted||tab!=='home'||!oItem||tour)return;const t=ev.target;if(t.tagName==='INPUT')return;
   if(!t.isConnected||t.closest('.it.op,.rsa,.tabs,#toast,#sheet,#dim,#ai,#aiBtn,#tour,#onb,#glp,#s-find'))return;
   ev.preventDefault();ev.stopPropagation();const k=oRoom;oItem=null;oRoom=null;qPanel='';qVal=null;renderHome(false);
   requestAnimationFrame(()=>document.getElementById('rm-'+sid(k||''))?.scrollIntoView({behavior:'smooth',block:'center'}))},true);
@@ -1204,6 +1210,7 @@ document.addEventListener('click',ev=>{if(tab!=='home'||!oItem||tour)return;cons
  const end=e=>{if(!sw)return;if(mv){const x=(openEl===sw?-W:0)+(e.clientX-x0);if(x<-W/2){set(sw,-W,1);openEl=sw;vib(6)}else{set(sw,0,1);if(openEl===sw)openEl=null}dragT=Date.now()}sw=null};
  document.addEventListener('pointerup',end,true);document.addEventListener('pointercancel',end,true);
  document.addEventListener('click',e=>{if(Date.now()-dragT<350&&e.target.closest('.rmh')){e.preventDefault();e.stopPropagation()}else if(openEl&&e.target.closest('.rmh')===openEl){e.preventDefault();e.stopPropagation();set(openEl,0,1);openEl=null}},true)}
+document.addEventListener('click',ev=>{if(ev.target.closest('.qsb label'))ev.stopPropagation()},true);
 document.addEventListener('change',ev=>{const q=ev.target.dataset?.qd;if(q)qStat(q+'d',ev.target.value)});
 document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[data-dn]');if(dp){dnSel=dnSel===+dp.dataset.dn?null:+dp.dataset.dn;chartDonut(DL);vib(4);return}const to=ev.target.closest('tr[data-open]');if(to){openSheet(to.dataset.open);return}const tr=ev.target.closest('tr[data-room],g[data-room]');if(tr){romp=ROOMS[tr.dataset.room][0];goRoom(tr.dataset.room);return}const t=ev.target.closest('button');if(!t)return;const d=t.dataset;
   if(d.tab){if(tour)endTour();goTab(d.tab);return}
@@ -1283,7 +1290,7 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('hint' in d){hintOpen=!hintOpen;renderHome(false);return}
   if(d.aihint){askHint(A.find(x=>x.id===d.aihint));return}
   if(d.qst){qStat(d.qst);return}
-  if(d.qp){qPct(+d.qp);return}
+  if(d.qp){qVal=qVal===+d.qp?null:+d.qp;renderHome(false);vib(4);return}
   if(d.qs){const a=A.find(x=>x.id===oItem),e=eff(a);qVal=Math.max(0,Math.min(100,(qVal??e.pct)+(+d.qs)));vib(4);renderHome(false);return}
   if('qsave' in d){const v=qVal;qVal=null;if(v>=100)qAct('done');else if(v<=0){const a=A.find(x=>x.id===oItem),e=eff(a),f={...e,...pick(U[sid(a.id)])};f.pct=0;f.st='N';f.as='';f.af='';f.ev=wEv;if(await save(a,f,true))advance(a.id)}else qPct(v);return}
   if(d.qr){wR=d.qr;document.querySelectorAll('[data-qr]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.qr===wR));vib(5);return}
