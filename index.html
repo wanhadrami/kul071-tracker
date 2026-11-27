@@ -562,6 +562,21 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .wrp{margin:12px 2px 0;font-size:12.5px;color:rgba(255,255,255,.8)}.wrb{width:100%;height:48px;margin-top:16px;border-radius:14px;background:#fff;color:#06301f;font-weight:800;font-size:15px}
 .hxcv.replay path.draw{animation:dr 2s cubic-bezier(.2,.8,.2,1) forwards}
 .wrb2{width:100%;height:40px;margin-top:8px;border-radius:12px;background:transparent;color:rgba(255,255,255,.8);font-weight:700;font-size:13px}
+.hxla.on{border-color:rgba(255,182,72,.6)}
+.hxl2{margin-top:8px;padding:12px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);animation:gfi .25s}
+.hxd{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:3px;align-items:end}.hxd button{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;padding:4px 0;border-radius:8px;color:#fff;min-height:96px}.hxd button:disabled{opacity:.4}
+.hxd i{width:70%;border-radius:4px;background:#9cc4ff;transition:height .4s}.hxd i.r{background:#ffb648}.hxd em{font-style:normal;font-size:10px;font-weight:800;min-height:12px}.hxd b{font-size:11px;font-weight:800}.hxd span{font-size:9px;color:rgba(255,255,255,.55)}
+.hxd button.on{background:rgba(255,255,255,.16)}.hxd button.tdy b{color:#5ef0a8}
+.hxll{margin-top:10px}.hxlh{font-size:11.5px;font-weight:800;color:rgba(255,255,255,.75);margin-bottom:6px}.hxli{display:flex;gap:10px;align-items:center;width:100%;text-align:left;padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.08);color:#fff;margin-top:6px}.hxli span{flex:1;min-width:0}.hxli b{display:block;font-size:12.5px}.hxli small{font-size:11px;color:rgba(255,255,255,.65)}.hxli em{font-style:normal;color:#ffd08a;font-weight:800}.hxli strong{font:800 14px "Plus Jakarta Sans",sans-serif}
+.hxlp{margin:8px 0 0;font-size:11.5px;color:rgba(255,255,255,.6);text-align:center}
+.agh{font-size:12px;font-weight:800;color:var(--mute);margin:14px 2px 6px}.agr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.atl{position:relative;overflow:hidden;min-height:104px;padding:10px;border-radius:16px;background:var(--card2);text-align:left;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;border:2px solid transparent;transition:transform .15s}.atl:active{transform:scale(.97)}
+.atl .aw{position:absolute;left:0;right:0;bottom:0;height:var(--h);background:linear-gradient(180deg,color-mix(in srgb,var(--navy2) 30%,transparent),color-mix(in srgb,var(--navy2) 16%,transparent));transition:height 1s cubic-bezier(.2,.8,.2,1)}
+.atl .aw i{position:absolute;left:-50%;top:-4px;width:200%;height:8px;background:radial-gradient(14px 4px at 14px 4px,color-mix(in srgb,var(--navy2) 30%,transparent) 98%,transparent) 0 0/28px 8px repeat-x;animation:wave 5s linear infinite}
+@keyframes wave{to{transform:translateX(28px)}}@media (prefers-reduced-motion:reduce){.atl .aw i{animation:none}}
+.atl>*:not(.aw){position:relative}.atn{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.2}.atl>b{font:800 24px/1.05 "Plus Jakarta Sans",sans-serif;color:var(--navy2)}.atl>b small{font-size:13px}.ats{font-size:10.5px;font-weight:700;color:var(--mute)}
+.atl>em{position:absolute!important;top:8px;right:8px;font-style:normal;font-size:10px;font-weight:800;color:#fff;background:var(--late);padding:2px 7px;border-radius:99px}.atl.lt{border-color:color-mix(in srgb,var(--late) 45%,transparent)}.atl.on{border-color:var(--navy2)}
+.agr+.ard{margin-top:8px}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -706,13 +721,10 @@ const sid=id=>id.replace(/[^A-Za-z0-9_\-.~:@+]/g,'_');
 let sfxOn=(()=>{try{return localStorage.getItem('ksfx')!=='0'}catch(e){return true}})(),AC=null;
 let sfxT=0,sfxK='';function sfx(k){if(!sfxOn)return;const n=performance.now();if(n-sfxT<350&&k!=='tap'&&sfxK!=='tap')return;sfxT=n;sfxK=k;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime,
   tone=(f,d,v,type='sine',at=0,f2)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t+at);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+at+d);g.gain.setValueAtTime(0,t+at);g.gain.linearRampToValueAtTime(v,t+at+.008);g.gain.exponentialRampToValueAtTime(.0001,t+at+d);o.connect(g).connect(AC.destination);o.start(t+at);o.stop(t+at+d+.02)};
-  if(k==='tap')tone(1400,.035,.018,'sine');
-  else if(k==='save')tone(880,.12,.03,'sine'),tone(1320,.16,.025,'sine',.07);
-  else if(k==='done')tone(784,.14,.03,'sine'),tone(988,.14,.028,'sine',.08),tone(1319,.22,.026,'sine',.16);
-  else if(k==='err')tone(220,.16,.04,'triangle',0,160);
-  else if(k==='swipe')tone(600,.09,.015,'sine',0,1100)}catch(e){}}
+  if(k==='save')tone(660,.18,.014,'sine');
+  else if(k==='done')tone(587,.22,.014,'sine'),tone(880,.32,.012,'sine',.11)}catch(e){}}
 const vib=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}if(Array.isArray(n))sfx(n[0]===15?'done':'err');else if(n>=6)sfx('swipe')};
-document.addEventListener('click',e=>{if(e.isTrusted&&e.target.closest('button,a,label,summary'))sfx('tap')},true);
+
 const IC={back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
@@ -1032,6 +1044,12 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
 function closeWalkResult(){const o=$('#wres');if(!o||!o.classList.contains('on'))return;o.classList.remove('on');clearTimeout(showWalkResult.t);if(tab!=='dash')return;
   setTimeout(()=>{if(tab==='dash'){curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')}},350)}
+let hxLa=false,hxDay='';
+function laHero(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{const k=ymd(new Date((t0+i)*864e5));const l=la.filter(a=>a.pf===k);return{k,i,l,r:l.filter(riskA).length}}),mx=Math.max(1,...days.map(d=>d.l.length)),risk=la.filter(riskA).length;
+ const sel=hxDay?days.find(d=>d.k===hxDay):null,list=sel?sel.l:[];
+ return`<button class="hxla${hxLa?' on':''}" data-hxla><b>Next 2 weeks</b><span>${la.length} due${risk?` · <em>${risk} at risk</em>`:''}</span><i>${hxLa?'▴':'▾'}</i></button>
+ ${hxLa?`<div class="hxl2"><div class="hxd">${days.map(d=>`<button data-hxd="${d.k}" class="${d.k===hxDay?'on':''}${d.i===0?' tdy':''}" ${d.l.length?'':'disabled'}><em>${d.l.length||''}</em><i style="height:${d.l.length?10+d.l.length/mx*44:3}px" class="${d.r?'r':''}"></i><b>${+d.k.slice(8)}</b><span>${new Date(d.k).toLocaleDateString('en-GB',{weekday:'narrow'})}</span></button>`).join('')}</div>
+  ${sel?`<div class="hxll"><div class="hxlh">${new Date(sel.k).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})} · ${list.length} due</div>${list.map(a=>{const p=eff(a).pct,rk=riskA(a);return`<button class="hxli" data-open="${esc(a.id)}"><span><b>${esc(a.sn)}</b><small>${FS[a.R]} ${esc(a.rm)} · ${a.D}${rk?' · <em>at risk</em>':''}</small></span><strong>${p}%</strong></button>`}).join('')}</div>`:'<p class="hxlp">Tap a day to see what is due.</p>'}</div>`:''}`}
 function heroX(o){const f=v=>v.toFixed(2);
  return`<div class="hx"><div class="hxg"></div><div class="hrow"><div><div class="hello">${o.eye}</div><div class="proj">${o.title}</div></div>${o.btn}</div>
   <div class="hxs ${o.st.cls}"><i></i><span>${o.st.txt}</span></div>
@@ -1056,19 +1074,18 @@ function renderDash(){
   const exc=[...bl.map(a=>({a,b:1})),...lt.filter(a=>!blk(a)).map(a=>({a,b:0}))].sort((x,y)=>(y.b-x.b)||(daysLate(y.a)-daysLate(x.a)));
   const la=open.filter(a=>a.pf>=today()&&dn(a.pf)<=dn(today())+13).sort((x,y)=>x.pf<y.pf?-1:1);
   $('#s-dash').innerHTML=`<div class="pd2">
-  ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,tcap:`${dR?FL[dR]:'PMX scope'} · ${dD||'Overall'}${ffin?` · finish ${dmy(ffin)}`:''}`,label:`${R6[0].n} · P6 ${dmy(B.dd)}${R6[0].pl!=null?` · baseline ${R6[0].pl.toFixed(2)}% <b class="${act>=R6[0].pl?'up':'dn'}">${act>=R6[0].pl?'+':''}${(act-R6[0].pl).toFixed(2)}%</b>`:''}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,mark:R6[0].pl,curve:!!B1,la:`<button class="hxla" data-gola><b>Next 2 weeks</b><span>${la.length} due${la.filter(riskA).length?` · <em>${la.filter(riskA).length} at risk</em>`:''}</span><i>›</i></button>`,tiles:[[open.length,'Open'],[lt.length,'Late','lt'],[bl.length,'Blocked','bk'],[dn7,'Done 7d','ok']]})}
+  ${heroX({eye:'KUL071 · PMX construction',title:'Dashboard',btn:'<button class="hbtn" data-gl aria-label="Definitions">i</button>',st:walkStatus(),val:act,tcap:`${dR?FL[dR]:'PMX scope'} · ${dD||'Overall'}${ffin?` · finish ${dmy(ffin)}`:''}`,label:`${R6[0].n} · P6 ${dmy(B.dd)}${R6[0].pl!=null?` · baseline ${R6[0].pl.toFixed(2)}% <b class="${act>=R6[0].pl?'up':'dn'}">${act>=R6[0].pl?'+':''}${(act-R6[0].pl).toFixed(2)}%</b>`:''}`,chip:{lab:'After site walk',v:R6[0].wk,d:walkG},bar2:R6[0].wk,mark:R6[0].pl,curve:!!B1,la:laHero(la),tiles:[[open.length,'Open'],[lt.length,'Late','lt'],[bl.length,'Blocked','bk'],[dn7,'Done 7d','ok']]})}
   <div class="dfl"><div class="seg3">${[['','PMX scope'],['R4','GF'],['R3','1F'],['RF','Roof']].map(([k,l])=>`<button data-dr="${k}" aria-pressed="${dR===k}">${l}</button>`).join('')}</div><div class="seg3">${[['','Overall'],['ELE','ELE'],['MECH','MECH'],['FIRE','FIRE']].map(([k,l])=>`<button data-dd="${k}" aria-pressed="${dD===k}">${l}</button>`).join('')}</div></div>
 ${rptHTML(R6)}
 
   <section class="blk"><div class="bh"><h2>Finishes per week</h2><span>done vs planned</span></div><div id="wkr"></div></section>
   <section class="blk"><div class="bh"><h2>Progress by area</h2><div class="seg2 sm">${[['route','Route'],['pct','% low'],['late','Late']].map(([k,l])=>`<button data-ars="${k}" aria-pressed="${arSort===k}">${l}</button>`).join('')}</div></div>
-   <div class="lg" style="margin:8px 0 2px"><span><i class="sq" style="background:var(--navy2)"></i>Done</span><span><i class="sq" style="background:color-mix(in srgb,var(--navy2) 35%,transparent)"></i>In progress</span><span><i class="sq" style="background:var(--line)"></i>Not started</span><span><em class="lb2">2</em>= late items</span></div>
+   <div class="lg" style="margin:8px 0 2px"><span>Fill = % complete · orange tag = late items · tap a room</span></div>
    <div id="arb"></div>
    <details class="tdet"><summary>Show as table</summary><div class="tbw"><table class="pt"><thead><tr><th>Area</th><th class="n">Acts</th><th class="n">Done</th><th class="n">In prog.</th><th class="n">Not st.</th><th class="n">% compl.</th><th class="n">Late</th><th class="n">Blkd</th></tr></thead><tbody>${areaRows}</tbody></table></div></details></section>
   <section class="blk duo2"><div><div class="bh"><h2>Status mix</h2><span>tap a segment</span></div><div class="dnw"><svg id="dns" viewBox="0 0 160 160"></svg><div class="dnl" id="dnl"></div></div></div>
    <div><div class="bh"><h2>Late items by age</h2><span>tap to list</span></div><div id="agb"></div></div></section>
   ${excHTML(exc.map(({a})=>a),bl,lt)}
-  ${laHTML(la)}
   <footer class="pdft2">KUL071 · PMX Malaysia · generated ${new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</footer></div>`;
   animate($('#s-dash'));(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawHeroCurve(R6.S);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
 }
@@ -1085,11 +1102,10 @@ function chartWeekly(L){const el=$('#wkr');if(!el)return;const T=weekStart(today
 function chartAreas(L){const box=$('#arb');if(!box)return;const W=a=>Math.max(1,a.od||1);
   let rows=[...ORDER.R4,...ORDER.R3,...ORDER.RF].filter(k=>(!dR||ROOMS[k][0]===dR)).map(k=>{const l=L.filter(a=>a.area===k),w=l.reduce((s,a)=>s+W(a),0);return{k,l,n:l.length,c:l.filter(a=>!isOpen(a)).length,ip:l.filter(a=>eff(a).st==='A').length,lt:l.filter(late).length,bk:l.filter(blk).length,p:w?l.reduce((s,a)=>s+W(a)*eff(a).pct,0)/w:0}}).filter(r=>r.n);
   if(arSort==='pct')rows.sort((a,b)=>a.p-b.p);else if(arSort==='late')rows.sort((a,b)=>b.lt-a.lt||a.p-b.p);
-  box.innerHTML=rows.map(r=>{const v=ROOMS[r.k],ns=r.n-r.c-r.ip,on=arSel===r.k;
-    return`<div class="arw ${on?'on':''}"><button class="arr" data-ar="${esc(r.k)}"><span class="arl"><b>${esc(v[1])}</b><small>${FS[v[0]]}</small></span>
-     <span class="art" style="--rc:var(--navy2)"><i class="g1" style="width:0" data-w="${r.c/r.n*100}%"></i><i class="g2" style="width:0" data-w="${r.ip/r.n*100}%"></i><i class="g3" style="width:${ns/r.n*100}%"></i></span>
-     <span class="arp">${r.p.toFixed(0)}%${r.lt?`<em title="late items">${r.lt}</em>`:''}</span></button>
-     ${on?`<div class="ard"><div><b>${r.c}</b><span>Done</span></div><div><b>${r.ip}</b><span>In prog.</span></div><div><b>${ns}</b><span>Not st.</span></div><div><b class="w">${r.lt}</b><span>Late</span></div><div><b class="x">${r.bk}</b><span>Blkd</span></div><button data-walkarea="${esc(r.k)}">Walk ${esc(v[1])} →</button></div>`:''}</div>`}).join('');
+  const tile=r=>{const v=ROOMS[r.k],on=arSel===r.k,p=r.p;return`<button class="atl${on?' on':''}${r.lt?' lt':''}" data-ar="${esc(r.k)}" style="--h:${p}%"><span class="aw"><i></i></span><span class="atn">${esc(v[1])}</span><b>${p.toFixed(0)}<small>%</small></b><span class="ats">${r.c}/${r.n} done</span>${r.lt?`<em>${r.lt} late</em>`:''}</button>`};
+  const det=r=>{if(!r)return'';const v=ROOMS[r.k],ns=r.n-r.c-r.ip;return`<div class="ard"><div><b>${r.c}</b><span>Done</span></div><div><b>${r.ip}</b><span>In prog.</span></div><div><b>${ns}</b><span>Not st.</span></div><div><b class="w">${r.lt}</b><span>Late</span></div><div><b class="x">${r.bk}</b><span>Blkd</span></div><button data-walkarea="${esc(r.k)}">Walk ${esc(v[1])} →</button></div>`};
+  const groups=arSort==='route'?FLRS.filter(f=>!dR||f===dR).map(f=>({h:FL[f],l:rows.filter(r=>ROOMS[r.k][0]===f)})).filter(g=>g.l.length):[{h:'',l:rows}];
+  box.innerHTML=groups.map(g=>`${g.h?`<div class="agh">${g.h}</div>`:''}<div class="agr">${g.l.map(tile).join('')}</div>${det(g.l.find(r=>r.k===arSel))}`).join('');
   animate(box)}
 function chartDonut(L){const s=$('#dns');if(!s)return;const segs=[['Done',L.filter(a=>!isOpen(a)).length,NAVY],['In progress',L.filter(a=>eff(a).st==='A'&&!blk(a)).length,SKY],['Blocked',L.filter(blk).length,RED],['Not started',L.filter(a=>eff(a).st==='N'&&!blk(a)).length,'light-dark(#d5dce8,#2a3858)']],tot=L.length||1;
   const R=62,r=44,c=80;let a0=-Math.PI/2,g='';
@@ -1284,7 +1300,8 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('wresx' in d){closeWalkResult();return}
   if(d.wnext){const f=d.wnext;$('#wres')?.classList.remove('on');romp=f;const k=ORDER[f].find(r=>toCheck(r).length);setTimeout(()=>{if(k)startRoom(k);else renderHome(false);curScr()?.scrollTo({top:0,behavior:'smooth'})},300);return}
   if('wdash' in d){$('#wres')?.classList.remove('on');goTab('dash');setTimeout(()=>{curScr()?.scrollTo({top:0});renderDash();document.querySelector('.hxcv')?.classList.add('replay')},300);return}
-  if('gola' in d){laOpen=true;const x=document.querySelector('#lasec details');if(x)x.open=true;document.querySelector('#lasec')?.scrollIntoView({behavior:'smooth',block:'start'});return}
+  if('hxla' in d){hxLa=!hxLa;if(!hxLa)hxDay='';renderDash();return}
+  if(d.hxd){hxDay=hxDay===d.hxd?'':d.hxd;renderDash();return}
   if('sfx' in d){sfxOn=!sfxOn;try{localStorage.setItem('ksfx',sfxOn?'1':'0')}catch(e){}renderHome(false);if(sfxOn)sfx('save');toast(sfxOn?'Sound on':'Sound off');return}
   if('dr' in d){dR=d.dr;renderDash();return}
   if(d.scr){scR=d.scr;document.querySelectorAll('[data-scr]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scr===scR));drawCurve(DL);return}
