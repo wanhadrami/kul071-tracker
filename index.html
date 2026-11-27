@@ -1813,7 +1813,7 @@ async function sCheckMaster(buf){let zip;try{zip=await JSZip.loadAsync(buf)}catc
   return{err,zip,wb,X}}
 async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel tool did not load');if(!SM.id)return toast('Upload the master SRP file first');
   const W0=sWeek(sCut),ok=sGenOk;sGenOk=false;toast('Checking master…');
-  try{const buf=await (await fetch('/_blob/'+encodeURIComponent(SM.id))).arrayBuffer();const zip=await JSZip.loadAsync(buf);
+  try{const mr=await fetch('/_blob/'+encodeURIComponent(SM.id));if(!mr.ok){SM={};renderSrp();return toast('Master file missing on the server – upload it again')}const buf=await mr.arrayBuffer();const zip=await JSZip.loadAsync(buf);
    let wb=await zip.file('xl/workbook.xml')?.async('string'),rels=await zip.file('xl/_rels/workbook.xml.rels')?.async('string');if(!wb||!rels)throw new Error('Not an Excel workbook');
    const path=name=>{const m=wb.match(new RegExp('<sheet[^>]*?name="'+sXe(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"[^>]*r:id="([^"]+)"'));if(!m)return null;const t=rels.match(new RegExp('Id="'+m[1]+'"[^>]*Target="([^"]+)"'))||rels.match(new RegExp('Target="([^"]+)"[^>]*Id="'+m[1]+'"'));return t?'xl/'+t[1].replace(/^\/?xl\//,''):null};
    // 1. validate every sheet and mapped cell before anything is written
