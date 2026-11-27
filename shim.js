@@ -16,9 +16,9 @@ const cache={},subs=[];const last=p=>p.split('/').pop();
 const snapDoc=p=>({id:last(p),exists:p in cache,data:()=>cache[p],metadata:{fromCache:false,hasPendingWrites:false}});
 const snapCol=c=>{const docs=Object.keys(cache).filter(k=>k.startsWith(c+'/')&&k.split('/').length===c.split('/').length+1).sort().map(snapDoc);return{docs,size:docs.length,empty:!docs.length,metadata:{fromCache:false,hasPendingWrites:false},docChanges:()=>[]}};
 const fire=()=>subs.forEach(s=>s.kind==='doc'?s.next(snapDoc(s.p)):s.next(snapCol(s.p)));
-async function pull(){try{const r=await api('/api/db');const all=await r.json();Object.keys(cache).forEach(k=>delete cache[k]);Object.assign(cache,all);fire()}catch(e){}}
-let timer=null;const startPoll=()=>{if(!timer){pull();timer=setInterval(()=>{if(!document.hidden)pull()},12000)}};
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)pull()});
+let sig='';async function pull(){try{const r=await api('/api/db');const all=await r.json(),n=JSON.stringify(all);if(n===sig)return;sig=n;Object.keys(cache).forEach(k=>delete cache[k]);Object.assign(cache,all);fire()}catch(e){}}window.__pull=pull;
+let timer=null;const startPoll=()=>{if(!timer){pull();timer=1}};
+
 const docRef=p=>({id:last(p),path:p,get:async()=>{await pull();return snapDoc(p)},
  set:async d=>{await api('/api/db',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({path:p,data:d})});cache[p]=d;fire()},
  update:async d=>{const n={...(cache[p]||{}),...d};await docRef(p).set(n)},

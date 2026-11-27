@@ -827,7 +827,7 @@ function laHTML(la){const t0=dn(today()),days=Array.from({length:14},(_,i)=>{con
  ${la.length?groups.map(g=>`<div class="lg2"><div class="lgh"><b>${lab(g.k)}</b><span>${g.l.length}</span></div>${g.l.map(row).join('')}</div>`).join('')+(laDay||f.length<=6?'':moreBtn('la',f.length,laAll)):'<div class="eok">Nothing due in the next 14 days.</div>'}</section>`}
 const p6p=(a,e)=>e.st==='C'?100:(a.pt==='P'||e.src==='site')?e.pct:e.st==='N'?0:(a.od?Math.max(0,Math.min(100,100*(1-a.rd/a.od))):0);
 const RPT=[['Construction',''],['Ground floor','GROUND FLOOR'],['GF Mezzanine','GROUND FLOOR MEZZANINE'],['First floor','FIRST FLOOR'],['FF Mezzanine','FIRST FLOOR MEZZANINE'],['Roof floor','ROOF FLOOR']];
-let rptX=true;const RPTX=['ROMP4-3250'];
+let rptX=false;const RPTX=['ROMP4-3250'];
 function rptCalc(){const S=B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')&&!(rptX&&RPTX.includes(a.id))),wp=(l,f)=>{const w=l.reduce((t,a)=>t+a.od,0);return w?l.reduce((t,a)=>t+a.od*f(a),0)/w:0};
  return RPT.map(([n,lv])=>{const l=S.filter(a=>!lv||a.lvl===lv);return{n,lv,c:l.length,p6:wp(l,a=>p6p(a,{st:a.st,pct:a.pct,src:'p6'})),wk:wp(l,a=>p6p(a,eff(a)))}})}
 function rptHTML(R){const f2=v=>v.toFixed(2);return`<section class="blk rpt"><div class="bh"><h2>Progress summary</h2><span>as P6 · ${dmy(B.dd)}</span></div>
@@ -1022,7 +1022,7 @@ function renderSync(){
 
 /* ---------- nav ---------- */
 function rerender(){if(tab==='home'){if(!qPanel)renderHome(false)}if(tab==='dash')renderDash();if(tab==='sync')renderSync();if(tab==='srp'&&!$('#sheet').classList.contains('on'))renderSrp();if(!$('#s-find').classList.contains('off-r'))renderFind()}
-function goTab(t){tab=t;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
+function goTab(t){tab=t;window.__pull&&window.__pull();document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   ['home','dash','sync','srp'].forEach(s=>$('#s-'+s).classList.toggle('hide',s!==t));$('#s-room').classList.toggle('hide',t!=='home');
   if(t!=='home'){document.body.classList.remove('walking');wRoom=null;$('#s-room').classList.add('off-r');$('#s-home').classList.remove('off-l')}
   if(t==='home')renderHome(true);if(t==='dash')renderDash();if(t==='sync')renderSync();if(t==='srp')renderSrp();vib(6)}
