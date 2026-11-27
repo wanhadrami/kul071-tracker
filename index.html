@@ -520,6 +520,9 @@ details.qa{border-top:1px solid var(--line);padding:12px 0}details.qa summary{fo
 .it.op .itb .inav{margin:12px 0 0;position:static;padding:10px 0 0;border-top:1px solid var(--line)}.it.op .itb .inav button{height:40px}
 .sgb{flex-wrap:wrap}.sgb .sgf{flex:1 1 100%;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:6px;margin-top:2px}.sgf b{white-space:nowrap}.sgb .sgf>div{flex:none;padding:8px 10px;border-radius:12px;background:var(--card)}.sgf small{display:block;font-size:10.5px;font-weight:700;color:var(--mute)}.sgf b{display:block;font:800 13.5px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}.sgf b i{font-style:normal;color:var(--late)}.sgf em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--ok)}
 .sinl{margin:6px 0 12px;padding-left:18px;font-size:13px;line-height:1.55;color:var(--mute)}.sinl li{margin:2px 0}
+.prt{border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-top:8px}.prh,.prr{display:grid;grid-template-columns:minmax(0,1.3fr) 1fr 1fr 1fr;gap:6px;padding:10px 12px;align-items:center}
+.prh{background:var(--navy);color:#fff;font-size:11.5px;font-weight:800}.prh b,.prr b{text-align:right}.prr{border-top:1px solid var(--line);font-size:13px}.prr span{font-weight:700}.prr b{font:700 13px "Plus Jakarta Sans",sans-serif;font-variant-numeric:tabular-nums}
+.prr.tot{background:color-mix(in srgb,var(--navy) 7%,transparent)}.prr.tot span,.prr.tot b{font-weight:800}.prr .pos{color:var(--ok)}.prr .neg{color:var(--r4)}.prn{margin:8px 2px 0;font-size:12px;color:var(--mute)}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -953,6 +956,11 @@ function rptHTML(R){const f2=v=>v.toFixed(2),sg=v=>(v>=0?'+':'')+f2(v);return`<s
  <div class="rph${B1?' b1':''}"><span></span>${B1?'<span>Baseline</span>':''}<span>% compl.</span>${B1?'<span>Var.</span>':''}<span>After walk</span></div>
  ${R.map((r,i)=>{const d=r.wk-r.p6,v=B1?r.p6-r.pl:0;return`<div class="rpr${B1?' b1':''}${i?'':' tot'}"><b>${r.n}</b>${B1?`<span class="rpp">${f2(r.pl)}%</span>`:''}<span class="rpv">${f2(r.p6)}%<i><em style="width:${r.p6}%"></em>${B1?`<u style="left:${Math.min(100,r.pl)}%"></u>`:''}</i></span>${B1?`<span class="rpd ${v<-.005?'neg':v>.005?'pos':''}">${sg(v)}%</span>`:''}<span class="rpw">${f2(r.wk)}%${d>.005?`<small>+${f2(d)}%</small>`:''}</span></div>`}).join('')}
  <p class="rpn">Same calculation as P6 (PMX, Romp 3 &amp; 4, weighted by duration). Var. = % compl. − baseline.</p></section>`}
+function rptCard(){const R=rptCalc().filter(r=>['','GROUND FLOOR','FIRST FLOOR','ROOF FLOOR'].includes(r.lv)),f=v=>v.toFixed(2)+'%';
+ return`<section class="blk srpb prc"><div class="bh"><h2>Progress report</h2><span>P6 ${dmy(B.dd)}</span></div>
+ <div class="prt"><div class="prh"><span></span><b>Plan</b><b>Complete</b><b>Variance</b></div>
+ ${R.map((r,i)=>{const v=r.pl!=null?r.p6-r.pl:null;return`<div class="prr${i?'':' tot'}"><span>${r.lv?r.n:'Construction'}</span><b>${r.pl!=null?f(r.pl):'–'}</b><b>${f(r.p6)}</b><b class="${v==null?'':v<0?'neg':'pos'}">${v==null?'–':(v>=0?'+':'')+f(v)}</b></div>`}).join('')}</div>
+ ${(()=>{const w=R[0].wk-R[0].p6;return w>.005?`<p class="prn">With site walk: Construction ${f(R[0].wk)} (+${w.toFixed(2)}%) once P6 is updated.</p>`:''})()}</section>`}
 function heroX(o){const f=v=>v.toFixed(2);
  return`<div class="hx"><div class="hxg"></div><div class="hrow"><div><div class="hello">${o.eye}</div><div class="proj">${o.title}</div></div>${o.btn}</div>
   <div class="hxs ${o.st.cls}"><i></i><span>${o.st.txt}</span></div>
@@ -1526,6 +1534,7 @@ function renderSrp(){if(!sCut)sCut=nextWed2();const W0=sWeek(sCut);
   $('#s-srp').innerHTML=`${heroX({eye:`Recovery plan · W${W0} · cut-off ${dmy(sCut).slice(0,5)}`,title:'SRP',btn:'<div class="hbtns"><button class="hb" data-sinfo aria-label="How the SRP works">i</button></div>',st:sst,val:act*100,label:`Physical · plan ${p1(pl)}% (${act-pl>=0?'+':'−'}${p1(Math.abs(act-pl))}%) · ${rev}/${SIDS.length} rows reviewed`,chip:svd?{lab:`Saved ${svP.toFixed(1)}% → draft`,v:act*100,d:act*100-svP}:{lab:`vs ${lw?'W'+lw.w:'last SRP'}`,v:act*100,d:(act-last)*100},mark:pl*100})}
   <div class="wset hpills"><label class="wsb"><span class="wsl">Week · cut-off</span><b>W${W0} · ${new Date(sCut+'T00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} ▾</b><input type="date" id="sCut" value="${sCut}"></label><button class="wsb" data-smaster><span class="wsl">Master SRP file</span><b>${SM.name?esc(SM.name.slice(0,18)):'Upload ▸'}</b></button></div>
   ${sInfo?sInfoBox():''}
+  ${rptCard()}
   ${(()=>{const P=sPendAll();if(!P.length)return'';const V={};SIDS.forEach(id=>V[id]=sFinal(id).slice());P.forEach(([id,k,v])=>V[id][k]=v);
     const now=avg(SIDS.map(id=>sPh(sFinal(id))))*100,aft=avg(SIDS.map(id=>sPh(V[id])))*100,fl=[['GF',x=>x.startsWith('gf')],['1F',x=>x.startsWith('ff')]].map(([n,f])=>{const ii=SIDS.filter(f);return[n,avg(ii.map(id=>sPh(sFinal(id))))*100,avg(ii.map(id=>sPh(V[id])))*100]});
     return`<div class="sgb"><div><b>${P.length} suggestion${P.length>1?'s':''} from site walk</b><span>Tap a cell marked → to review it.</span>
