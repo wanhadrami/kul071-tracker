@@ -602,6 +602,7 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .rm.op .rmh{background:var(--card)!important;border-bottom:1px solid var(--line)!important}.rm.op .rmh .sn,.rm.op .rmh .sn *{border-color:var(--navy2)!important;color:var(--navy2)!important}
 .scr4{position:relative}.sci{position:absolute;left:0;top:0;border-radius:14px;background:var(--navy);box-shadow:0 6px 16px rgba(8,22,49,.25);transition:transform .75s cubic-bezier(.3,1.2,.4,1),width .75s cubic-bezier(.3,1.2,.4,1);z-index:0;pointer-events:none}
 .scr4{background:var(--card2);border-radius:16px;padding:4px;gap:2px!important}.scr4+.scr4{border-top:0!important;padding-top:4px!important;margin-top:8px!important}.sc{z-index:1;background:transparent!important}.scr4 .sc:not(.on){transition:background .5s,opacity .5s}.scr4.all .sc:not(.on){background:rgba(8,22,49,.09)!important;opacity:.8}.sc .scl,.sc b,.sc small{transition:color .4s}
+.bld{margin:18px 0 90px;text-align:center;font-size:11px;color:var(--mut);opacity:.7}
 /* item nav */
 .inav{display:grid;grid-template-columns:1fr auto 1fr auto;gap:6px;align-items:center;margin:2px 0 10px;position:sticky;top:0;z-index:3;background:var(--card);padding:6px 0}
 .inav button{height:44px;border-radius:12px;background:var(--card2);font-weight:800;font-size:13.5px;color:var(--navy2)}.inav button:disabled{opacity:.35}.inav span{font-size:12px;font-weight:800;color:var(--mute);padding:0 4px}
@@ -914,7 +915,7 @@ function renderHome(anim){if(B.acts.length)setTimeout(checkFloors,0);$('#s-home'
   <div class="hpills wset"><label class="wsb ${wDate!==today()?'bk':''}"><span class="wsl">Walk date</span><b>${wDate===today()?'Today, ':''}${new Date(wDate+'T00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})} ▾</b><input type="date" id="wDate" value="${wDate}" max="${today()}"></label><button class="wsb ${wEv==='V'?'':'rp'}" data-evt><span class="wsl">Evidence</span><b>${wEv==='V'?'Seen on site':'Reported'} ⇄</b></button></div>
   <div class="swl">Choose floor</div><div class="sw" style="--c:${RC[romp]}"><i style="transform:translateX(${FLRS.indexOf(romp)*100}%)"></i>${FLRS.map(r=>{const lf=ORDER[r].reduce((n,k)=>n+toCheck(k).length,0),tt=ORDER[r].reduce((n,k)=>n+roomOpen(k).length,0),fd=tt>0&&lf===0;return`<button data-romp="${r}" aria-pressed="${romp===r}" class="${fd?'fdone':''}">${FLI(r)}<span class="flt"><span class="fl">${FL[r]}</span><small>${fd?'All checked':(r==='RF'?'':RN[r]+' · ')+lf+' left'}</small></span>${fd?'<i class="flck fdk">✓</i>':romp===r?'<i class="flck">✓</i>':''}</button>`}).join('')}</div>
   ${oRoom?'':`<div class="ctaw">${next?`<button class="cta" data-walk="${esc(next)}"><span class="ct">Start walk<small>${esc(ROOMS[next][1])} · ${left} item${left===1?'':'s'} on ${FL[romp].toLowerCase()}</small></span><span class="ca">→</span></button>`:`<button class="cta ok" data-tab="sync"><span class="ct">${RN[romp]} checked<small>Review and export to P6</small></span><span class="ca">→</span></button>`}</div>`}
-  <div class="sec"><h2>Route</h2><span>${oRoom?'Tap a room to open or close':'Walk in this order'}</span></div><div class="route2">${rooms}</div>
+  <div class="sec"><h2>Route</h2><span>${oRoom?'Tap a room to open or close':'Walk in this order'}</span></div><div class="route2">${rooms}</div><p class="bld">App build ${BUILD}</p>
   ${canAdmin&&done?(()=>{const ids=Object.keys(U).filter(inWalk),rs=[...new Set(ids.map(k=>A.find(a=>a.id===U[k].id)?.area).filter(Boolean))];return rstR==='*'?`<div class="wrs on"><b>Reset the whole walk on ${dmy(wDate)}?</b><span>${ids.length} updates in ${rs.length} room${rs.length>1?'s':''}: ${rs.map(r=>esc(ROOMS[r][1])).join(', ')}. Undo is available for a few seconds.</span><div class="qrow"><button class="qb" data-rrs="0">Cancel</button><button class="qb red" data-rrs="*">Yes, reset ${ids.length}</button></div></div>`:`<button class="wrs" data-rrs="ask|*"><i>↺</i><span><b>Reset this walk</b><small>${ids.length} updates · ${rs.length} room${rs.length>1?'s':''} · ${dmy(wDate)}</small></span><em>›</em></button>`})():''}`;
   if(anim)animate($('#s-home'));
 }
@@ -1080,6 +1081,7 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;hapRoll(1600,500);
   const step=n=>{const k=Math.max(0,Math.min(1,(n-st)/1600)),e=1-Math.pow(1-k,3);b.textContent=(a0+(a1-a0)*e).toFixed(2);g.textContent='+'+((a1-a0)*e).toFixed(2)+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
+const BUILD='28 Nov 06:20';
 let hapT=0,hapSw=null;
 function haptic(){if(Date.now()-hapT<60)return;hapT=Date.now();try{navigator.vibrate?navigator.vibrate(15):hapIOS()}catch(e){}}
 let hapRollEnd=0;
@@ -1155,7 +1157,7 @@ ${rptHTML(R6)}
   <section class="blk duo2"><div><div class="bh"><h2>Status mix</h2><span>tap a segment</span></div><div class="dnw"><svg id="dns" viewBox="0 0 160 160"></svg><div class="dnl" id="dnl"></div></div></div>
    <div><div class="bh"><h2>Late items by age</h2><span>tap to list</span></div><div id="agb"></div></div></section>
   ${excHTML(exc.map(({a})=>a),bl,lt)}
-  <footer class="pdft2">KUL071 · PMX Malaysia · generated ${new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</footer></div>`;
+  <footer class="pdft2">KUL071 · PMX Malaysia · generated ${new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})} · build ${BUILD}</footer></div>`;
   if(!q){animate($('#s-dash'));$('#s-dash').querySelectorAll('[data-n]').forEach((e,i)=>numPrev['n'+i]=+e.dataset.n);requestAnimationFrame(()=>placeSci(false))}else{hapRoll(750);sd.querySelectorAll('[data-n]').forEach((e,i)=>{const v=+e.dataset.n,dc=+e.dataset.dec||0,k='n'+i,f=numPrev[k];numPrev[k]=v;if(f==null||f===v||RM.matches){e.textContent=v.toFixed(dc);return}const t0=performance.now();const st2=n=>{const x=Math.max(0,Math.min(1,(n-t0)/750)),E=1-Math.pow(1-x,3);e.textContent=(f+(v-f)*E).toFixed(dc);if(x<1)requestAnimationFrame(st2)};requestAnimationFrame(st2)});sd.scrollTop=st}placeSci(q);(svgFit.r||[]).forEach(r=>r.disconnect());svgFit.r=[];drawHeroCurve(R6.S,q);chartWeekly(L);chartAreas(L);chartDonut(L);chartAging(L);DL=L;
 }
 
