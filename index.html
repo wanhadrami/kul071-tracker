@@ -1081,6 +1081,10 @@ async function importXer(file){try{const txt=await new Promise((res,rej)=>{const
 
 /* ---------- events ---------- */
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('#glp,[data-gl]'))glClose()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')glClose()});
+document.addEventListener('click',ev=>{if(tab!=='home'||!oItem||tour)return;const t=ev.target;
+  if(!t.isConnected||t.closest('.it.op,.tabs,#toast,#sheet,#dim,#ai,#aiBtn,#tour,#onb,#glp,#s-find'))return;
+  ev.preventDefault();ev.stopPropagation();const k=oRoom;oItem=null;oRoom=null;qPanel='';qVal=null;renderHome(false);
+  requestAnimationFrame(()=>document.getElementById('rm-'+sid(k||''))?.scrollIntoView({behavior:'smooth',block:'center'}))},true);
 document.addEventListener('change',ev=>{const q=ev.target.dataset?.qd;if(q)qStat(q+'d',ev.target.value)});
 document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[data-dn]');if(dp){dnSel=dnSel===+dp.dataset.dn?null:+dp.dataset.dn;chartDonut(DL);vib(4);return}const to=ev.target.closest('tr[data-open]');if(to){openSheet(to.dataset.open);return}const tr=ev.target.closest('tr[data-room],g[data-room]');if(tr){romp=ROOMS[tr.dataset.room][0];goRoom(tr.dataset.room);return}const t=ev.target.closest('button');if(!t)return;const d=t.dataset;
   if(d.tab){goTab(d.tab);return}
