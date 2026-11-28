@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Haptic test</title>
+<style>body{font:16px system-ui;margin:0;padding:20px;background:#0f2a5c;color:#fff}h1{font-size:22px}button,label.t{display:block;width:100%;margin:12px 0;padding:18px;border:0;border-radius:16px;background:#fff;color:#0f2a5c;font:700 16px system-ui;text-align:left}small{opacity:.7}#ua{font-size:12px;opacity:.7;word-break:break-all}</style></head><body>
+<h1>Haptic test</h1><p>Tap each one. Tell Claude which numbers you can feel.</p>
+<button id="b1">1 · Vibration API (Android)</button>
+<label class="t">2 · Tap this switch directly (iPhone) <input type="checkbox" switch style="float:right"></label>
+<button id="b3">3 · Hidden switch, triggered by app (iPhone, what the tracker uses)</button>
+<p>Vibration API: <b id="v"></b><br>Switch supported: <b id="s"></b></p><p id="ua"></p>
+<script>
+const $=id=>document.getElementById(id);$('v').textContent='vibrate' in navigator?'yes':'no';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');$('s').textContent=('switch' in i)?'yes':'unknown';$('ua').textContent=navigator.userAgent;
+$('b1').onclick=()=>{const r=navigator.vibrate?navigator.vibrate(30):'n/a';$('b1').querySelector('small')?.remove();$('b1').insertAdjacentHTML('beforeend',' <small>→ '+r+'</small>')};
+$('b3').onclick=()=>{const l=document.createElement('label');l.setAttribute('aria-hidden','true');l.style.display='none';const c=document.createElement('input');c.type='checkbox';c.setAttribute('switch','');l.appendChild(c);document.head.appendChild(l);l.click();l.remove()};
+</script></body></html>
