@@ -1838,7 +1838,7 @@ async function sGenerate(){if(typeof JSZip==='undefined')return toast('Excel too
     zip.file(p,x)}
    if(iss.length){sDiff={type:'err',items:iss};renderSrp();toast('Some cells could not be written – nothing generated');return}
    wb=/<calcPr[^>]*fullCalcOnLoad/.test(wb)?wb:wb.replace(/<calcPr/,'<calcPr fullCalcOnLoad="1"');zip.file('xl/workbook.xml',wb);
-   const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'}),dd=new Date(sCut+'T00:00'),fn=`PMX Daily SRP_${dd.getDate()} ${dd.toLocaleString('en-GB',{month:'short'})} ${dd.getFullYear()}.xlsx`;
+   const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),dd=new Date(sCut+'T00:00'),fn=`PMX Daily SRP_${dd.getDate()} ${dd.toLocaleString('en-GB',{month:'short'})} ${dd.getFullYear()}.xlsx`;
    srpOut={blob,fn,w:W0,cut:sCut};
    // 3. history only after a valid file; keep every previous submission of this week
    const old=SG[W0]||null,snap={w:W0,cut:sCut,v:Object.fromEntries(SIDS.map(id=>[id,sFinal(id)])),at:Date.now(),by:me||'',rev:[...(old?.rev||[]),...(old?[{v:old.v,at:old.at,by:old.by,cut:old.cut}]:[])]};
