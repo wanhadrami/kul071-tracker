@@ -560,6 +560,8 @@ body.walking .totop{bottom:calc(24px + env(safe-area-inset-bottom))}
 .wrh{display:flex;gap:12px;align-items:center}.wrk{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#5ef0a8;color:#06301f;font-weight:800;font-size:22px}.wrh b{display:block;font:800 18px "Plus Jakarta Sans",sans-serif}.wrh small{font-size:12px;color:rgba(255,255,255,.75)}
 .wrm{margin-top:18px;padding:14px;border-radius:18px;background:rgba(255,255,255,.1)}.wrm small{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.7)}.wrn{display:flex;align-items:baseline;gap:8px;margin-top:4px;font-variant-numeric:tabular-nums}.wrn span{font-size:16px;color:rgba(255,255,255,.7);font-weight:700}.wrn i{font-style:normal;color:#ffd08a}.wrn b{font:800 38px/1 "Plus Jakarta Sans",sans-serif}.wrn b+b{font-size:20px;margin-left:-6px}
 .shb{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:var(--card);text-align:left}.shb>span:first-child{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:800}.shb b{display:block;font-size:14px}.shb small{font-size:11.5px;color:var(--mut)}.shb em{margin-left:auto;font-style:normal;color:var(--mut)}
+#bl{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;padding:16px;background:rgba(6,14,32,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .4s}#bl.on{opacity:1;pointer-events:auto}#bl .shc{transform:translateY(60px) scale(.98);transition:transform .6s cubic-bezier(.2,.9,.3,1.05)}#bl.on .shc{transform:none}
+.blr{margin-top:14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.1)}.blr span{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.6)}.blr b{display:block;margin-top:4px;font-size:15px}.blr small{display:block;margin-top:2px;font-size:11.5px;color:rgba(255,255,255,.6)}.blr button{margin-top:10px;padding:9px 14px;border-radius:12px;background:#fff;color:var(--navy);font-weight:800;font-size:13px}#bl .shl{margin-top:14px}.ble{display:block;min-height:14px;color:#ffb3bb;font-size:12px;margin-top:4px}
 #shr{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;padding:16px;background:rgba(6,14,32,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .35s}#shr.on{opacity:1;pointer-events:auto}
 .shc{width:min(420px,100%);border-radius:26px;padding:20px;color:#fff;background:radial-gradient(120% 80% at 100% 0,#2d5bd1 0,transparent 55%),linear-gradient(165deg,#13306b,#081631 80%);box-shadow:0 30px 80px rgba(0,0,0,.45);transform:translateY(40px);transition:transform .5s cubic-bezier(.2,.9,.3,1.1)}#shr.on .shc{transform:none}
 .shg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;margin:18px 0 14px}.shg button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border:0;border-radius:18px;background:rgba(255,255,255,.12);color:#fff;font-weight:700;font-size:13px}.shg span{font-size:20px}
@@ -728,7 +730,7 @@ details.gl summary{list-style:none;display:flex;justify-content:space-between;al
   <div class="toast" id="toast" role="status"><span id="tmsg"></span><button id="tundo" hidden>Undo</button></div>
   <div class="confetti" id="conf"></div>
 </div>
-<input type="file" id="xerIn" accept=".xer" hidden>
+<input type="file" id="xerIn" accept=".xer" hidden><input type="file" id="b1In" accept=".xer" hidden>
 <input type="file" id="srpIn" accept=".xlsx" hidden>
 <input type="file" id="phIn" accept="image/*" capture="environment" hidden>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1087,7 +1089,7 @@ function showWalkResult(fl){const sv=[dR,dD];dR=fl||'';dD='';const R=rptCalc();d
   const b=o.querySelector('[data-to]'),g=o.querySelector('[data-gain]'),a0=t.p6,a1=t.wk,st=performance.now()+500;hapRoll(1600,500);
   const step=n=>{const k=Math.max(0,Math.min(1,(n-st)/1600)),e=1-Math.pow(1-k,3);b.textContent=(a0+(a1-a0)*e).toFixed(2);g.textContent='+'+((a1-a0)*e).toFixed(2)+'%';if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
   clearTimeout(showWalkResult.t);if(!fl)showWalkResult.t=setTimeout(closeWalkResult,6500)}
-const BUILD='28 Nov 06:25';
+const BUILD='28 Nov 16:10';
 let hapT=0,hapSw=null;
 /* iPhone-style haptics: selection tick, light/medium impact, success double-tap */
 const HP={sel:10,light:16,med:26,ok:[14,70,26],tick:9,end:18};
@@ -1099,6 +1101,25 @@ function hapRoll(dur,delay=0){if(RM.matches||document.hidden)return;const now=Da
 function hapIOS(){if(!hapSw){hapSw=document.createElement('label');hapSw.setAttribute('aria-hidden','true');hapSw.style.display='none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');hapSw.appendChild(i);document.head.appendChild(hapSw)}try{hapSw.click()}catch(e){}}
 document.addEventListener('click',e=>{if(!e.isTrusted)return;const t=e.target.closest('button,[role=tab],[data-dr],[data-dd],input[type=checkbox],input[type=radio],label');if(t&&t!==hapSw&&!t.disabled)haptic(t)},true);
 let srpOut=null;
+function openBL(){let o=$('#bl');if(!o){o=document.createElement('div');o.id='bl';document.body.appendChild(o)}const un=!!window.__EDIT,f=t=>t?new Date(t).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+  o.innerHTML=`<div class="shc blc" role="dialog" aria-label="Baselines"><div class="wrh"><span class="wrk">⚑</span><div><b>Baselines</b><small>Reports use these until you replace them</small></div></div>
+   <div class="blr"><span>SRP master file</span><b>${SM.name?esc(SM.name):'Not uploaded'}</b><small>${SM.at?'Uploaded '+f(SM.at)+(SM.by?' · '+esc(SM.by):''):'Needed to generate the SRP Excel'}</small>${un?(SM.name?'<button data-smaster>Replace master ›</button>':'<button data-smaster>Upload master ›</button>'):''}</div>
+   <div class="blr"><span>P6 baseline</span><b>${B1?esc(B1.name||'B1'):'None'}</b><small>${B1?Object.keys(B1.acts).length+' activities'+(B1.at?' · updated '+f(B1.at)+(B1.by?' · '+esc(B1.by):''):' · built-in'):''}</small>${un?'<button data-blxer>Replace baseline XER ›</button>':''}</div>
+   ${un?'':`<label class="shl">Password to change<input id="blpw" type="password" autocomplete="current-password" placeholder="Password"></label><small id="blpe" class="ble"></small><button class="wrb" data-blunlock>Unlock</button>`}
+   <button class="wrb2" data-blx>Close</button></div>`;requestAnimationFrame(()=>o.classList.add('on'))}
+function closeBL(){$('#bl')?.classList.remove('on')}
+async function blUnlock(){const v=$('#blpw')?.value||'';if(await sha(v)===EH){window.__EDIT=v;openBL();renderSrp();toast('Unlocked')}else{$('#blpe').textContent='Wrong password';vib(20)}}
+function buildB1(txt){const T={};let tb=null,F=null;for(const l0 of txt.split('\n')){const l=l0.replace(/\r$/,'');if(l.startsWith('%T\t')){tb=l.slice(3);T[tb]=[]}else if(l.startsWith('%F\t'))F=l.split('\t').slice(1);else if(l.startsWith('%R\t')&&tb){const v=l.split('\t').slice(1),o={};F.forEach((k,i)=>o[k]=v[i]||'');T[tb].push(o)}}
+  if(!T.TASK||!T.CALENDAR)throw new Error('Not a P6 XER (no TASK/CALENDAR)');const sd=n=>{const d=new Date(Date.UTC(1899,11,30)+n*864e5);return d.toISOString().slice(0,10)},cals={},dh={};
+  for(const c of T.CALENDAR){const [dw,ex='']=c.clndr_data.split('Exceptions'),p=dw.split(/\(0\|\|(\d)\(\)\(/),d=[];for(let i=1;i<p.length;i+=2)if(p[i+1].includes('s|'))d.push(+p[i]);
+   const q=ex.split(/\(0\|\|\d+\(d\|(\d+)\)\(/),h=[],x=[];for(let i=1;i<q.length;i+=2){const dt=sd(+q[i]),wd=new Date(dt+'T00:00Z').getUTCDay()+1,w=q[i+1].includes('s|');if(w&&!d.includes(wd))x.push(dt);if(!w&&d.includes(wd))h.push(dt)}
+   cals[c.clndr_id]={d,h:h.sort(),x:x.sort()};dh[c.clndr_id]=+c.day_hr_cnt||8}
+  const acts={};for(const t of T.TASK){if(!t.target_start_date)continue;acts[t.task_code]=[t.target_start_date.slice(0,10),t.target_end_date.slice(0,10),(+t.target_drtn_hr_cnt||0)/(dh[t.clndr_id]||8),t.clndr_id]}
+  if(!Object.keys(acts).length)throw new Error('No activities with baseline dates');return{name:T.PROJECT?.[0]?.proj_short_name||'Baseline',acts,cals}}
+async function uploadB1(file){try{const txt=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsText(file,'windows-1252')});const nb=buildB1(txt);
+  const miss=B?B.acts.filter(a=>a.scope==='PMX'&&(a.romp==='R3'||a.romp==='R4')&&!nb.acts[a.id]).length:0;
+  if(!confirm(`Replace P6 baseline with “${nb.name}”?\n${Object.keys(nb.acts).length} activities${miss?` · ${miss} PMX R3/R4 activities not in this baseline`:''}.\nPlan % and variance will use it from now on.`))return;
+  const doc={...nb,at:Date.now(),by:me||''};await db.doc('srpm/b1').set(doc);B1=doc;for(const k in b1Cache)delete b1Cache[k];rerender();openBL();toast('P6 baseline updated')}catch(e){toast('Baseline not changed – '+(e.message||e))}}
 function shFile(){return new File([srpOut.blob],srpOut.fn,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
 function openShare(){if(!srpOut)return;let o=$('#shr');if(!o){o=document.createElement('div');o.id='shr';document.body.appendChild(o)}
   const cs=!!(navigator.canShare&&navigator.canShare({files:[shFile()]})),em=(()=>{try{return localStorage.getItem('srpMail')||''}catch(e){return''}})();
@@ -1373,7 +1394,7 @@ async function importXer(file){try{const txt=await new Promise((res,rej)=>{const
 /* ---------- events ---------- */
 document.addEventListener('pointerdown',ev=>{if(!ev.target.closest('#glp,[data-gl]'))glClose()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')glClose()});
 document.addEventListener('click',ev=>{if(!ev.isTrusted||tab!=='home'||!oItem||tour)return;const t=ev.target;if(t.tagName==='INPUT')return;
-  if(!t.isConnected||t.closest('.it.op,.rsa,#wres,#shr,.totop,.tabs,#toast,#sheet,#dim,#ai,#aiBtn,#tour,#onb,#glp,#s-find'))return;
+  if(!t.isConnected||t.closest('.it.op,.rsa,#wres,#shr,#bl,.totop,.tabs,#toast,#sheet,#dim,#ai,#aiBtn,#tour,#onb,#glp,#s-find'))return;
   ev.preventDefault();ev.stopPropagation();const k=oRoom;oItem=null;oRoom=null;qPanel='';qVal=null;renderHome(false);
   requestAnimationFrame(()=>document.getElementById('rm-'+sid(k||''))?.scrollIntoView({behavior:'smooth',block:'center'}))},true);
 {let sw=null,x0=0,y0=0,dx=0,mv=false,openEl=null,dragT=0,W=92;
@@ -1444,7 +1465,8 @@ document.addEventListener('click',async ev=>{const dp=ev.target.closest('path[da
   if('sdm' in d){const D=sDiff,W0=D.W0,by={};D.items.forEach(x=>{(by[x.id]??=sFinal(x.id).slice())[x.i]=x.mv});const r=await Promise.all(Object.entries(by).map(([id,v])=>soW(id,{v,sg:[null,null,null],w:W0,at:Date.now(),by:me||'',src:'master'})));sDiff=null;renderSrp();toast(r.every(Boolean)?`Master values loaded into W${W0} – generate again`:'Some rows not saved – retry');return}
   if(d.sconf){const id=d.sconf,W0=sWeek(sCut);if(soG(id)){toast('Already reviewed – tap a cell to change');return}const st=sSite(id),ok=await soW(id,{v:sFinal(id).slice(),sg:st.map(x=>x?x.v:null),w:W0,at:Date.now(),by:me||''});renderSrp();vib(6);toast(ok?SITEM[id].area+' confirmed for W'+W0:'Not saved – check signal and retry');return}
   if('sreset' in d){sReset(sTmp.id);return}
-  if('smaster' in d){$('#srpIn').click();return}
+  if('smaster' in d){if(!window.__EDIT)return openBL();$('#srpIn').click();return}
+  if('blopen' in d){openBL();return}if('blx' in d){closeBL();return}if('blunlock' in d){blUnlock();return}if('blxer' in d){if(window.__EDIT)$('#b1In').click();return}
   if('sgen' in d){sGenerate();return}
   if(d.reset){resetAsk(d.reset);return}
   if(d.resetgo){resetGo(d.resetgo);return}
@@ -1528,7 +1550,8 @@ $('#sheet').addEventListener('touchend',e=>{if(sy0!==null&&e.changedTouches[0].c
 $('#srpIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)sUploadMaster(f)});
 document.addEventListener('input',e=>{const t=e.target;if(t.classList?.contains('hin')&&hDraft){hDraft.v[t.dataset.hid][+t.dataset.hk]=Math.max(0,Math.min(100,+t.value||0))/100}});
 document.addEventListener('keydown',e=>{if(e.target.id==='hpw'&&e.key==='Enter')hUnlock()});
-function cutMax(){const d=new Date(today()+'T00:00');d.setDate(d.getDate()+((3-d.getDay()+7)%7));return ymd(d)}
+function cutMax(){const d=new Date(today()+'T00:00');d.setDate(d.getDate()+((3-d.getDay()+7)%7||7));return ymd(d)}
+document.addEventListener('change',e=>{if(e.target.id==='b1In'&&e.target.files[0]){uploadB1(e.target.files[0]);e.target.value=''}});
 document.addEventListener('change',e=>{if(e.target.id==='sCut'&&e.target.value){const d=new Date(e.target.value+'T00:00');d.setDate(d.getDate()+((3-d.getDay()+7)%7));sCut=ymd(d);const pv=e.target.defaultValue;if(sCut>cutMax()){sCut=cutMax();toast('Future weeks are locked · using this week (Wed '+dmy(sCut)+')')}else if(sWeek(sCut)!==sWeek(cutMax())&&SWK[sWeek(sCut)]){toast(`W${sWeek(sCut)} already has data – locked`);sCut=pv||cutMax()}else if(sCut!==e.target.value)toast('Cut-off moved to Wed '+dmy(sCut));renderSrp();db&&db.doc('srpm/cut').set({date:sCut}).catch(()=>{})}});
 $('#xerIn').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)importXer(f)});
 let pmxLogo;async function getLogo(){if(pmxLogo!==undefined)return pmxLogo;try{const r=await fetch('pmx-logo.png');pmxLogo=r.ok?await createImageBitmap(await r.blob()):null}catch(e){pmxLogo=null}return pmxLogo}
@@ -1697,7 +1720,7 @@ let SO={},SG={},SE={},SWK={...SEED},hOpen=null,hAll=false,hSel=null,hDraft=null,
 const sMerge=()=>{SWK=Object.assign({},SEED,SG,SE)};
 const sWeek=s=>74+Math.round((Date.parse(s)-Date.parse('2026-11-18'))/6048e5);
 const sWid=w=>'W'+String(w).padStart(3,'0');
-const nextWed2=()=>{const d=new Date();d.setDate(d.getDate()+((3-d.getDay()+7)%7));return ymd(d)};
+const nextWed2=()=>{const d=new Date();d.setDate(d.getDate()+((3-d.getDay()+7)%7||7));return ymd(d)};
 const sActs=id=>A.filter(a=>SMAP[a.area]?.[a.D]===id);
 function sSite(id){const L=sActs(id),W=a=>Math.max(1,a.od||1),lv=sLast(id);return[0,1,2].map(k=>{const l=L.filter(a=>fixOf(a)===k);if(!l.length||!l.some(a=>eff(a).src==='site'))return null;const w=l.reduce((s,a)=>s+W(a),0);
   const use=a=>eff(a).src==='site'?eff(a).pct/100:lv[k];return{v:Math.max(lv[k],l.reduce((s,a)=>s+W(a)*use(a),0)/w),n:l.length,l,last:lv[k]}})}
@@ -1762,10 +1785,10 @@ function renderSrp(){if(!sCut||sCut>cutMax())sCut=cutMax();const W0=sWeek(sCut);
   const hw=Object.values(SWK).filter(x=>x.w!==W0).sort((a,b)=>a.w-b.w),allW=[...hw.map(x=>x.w),W0].sort((a,b)=>a-b),PV={};hw.forEach(x=>PV[x.w]=wPh(x)*100);PV[W0]=act*100;
   const lastSv=Math.max(-1,...Object.keys(SE).map(Number),...Object.keys(SG).map(Number));
   const rsB=w=>w===lastSv&&(SE[w]||SG[w])?`<button class="hwe hwr2" data-hreset="${w}">↺ ${SE[w]?'Undo edit':SG[w]?.rev?.length?'Undo last generate':'Undo generate'}</button>`:'';
-  const slide=x=>{const i=allW.indexOf(x.w),pw=allW[i-1],v=PV[x.w],d=pw!=null?v-PV[pw]:null;return`<div class="hws" data-w="${x.w}"><div class="hwtag">W${x.w} · ${dmy(x.cut)}<i>${SE[x.w]?'Edited':'Saved'}</i></div><div class="hxm"><div><div class="hxv"><b data-n="${v.toFixed(2)}" data-dec="2">0</b><em>%</em></div><div class="hxl">Physical · saved SRP</div></div>${d!=null?`<div class="hxc ${d<0?'dn':''}"><small>vs W${pw}</small><b>${v.toFixed(2)}%</b><span>${d>=0?'▲ +':'▼ '}${d.toFixed(2)}%</span></div>`:''}</div><div class="hxb"><i class="b1" style="width:${Math.min(100,v)}%"></i></div><button class="hwe ${hOpen===x.w?'on':''}" data-hrow="${x.w}">${hOpen===x.w?'Close editor':'Edit W'+x.w+' ✎'}</button>${rsB(x.w)}</div>`};
+  const slide=x=>{const i=allW.indexOf(x.w),pw=allW[i-1],v=PV[x.w],d=pw!=null?v-PV[pw]:null;return`<div class="hws" data-w="${x.w}"><div class="hwtag">W${x.w} · ${dmy(x.cut)}<i>${SE[x.w]?'Edited':SG[x.w]?.auto?'Auto-saved':'Saved'}</i></div><div class="hxm"><div><div class="hxv"><b data-n="${v.toFixed(2)}" data-dec="2">0</b><em>%</em></div><div class="hxl">Physical · saved SRP</div></div>${d!=null?`<div class="hxc ${d<0?'dn':''}"><small>vs W${pw}</small><b>${v.toFixed(2)}%</b><span>${d>=0?'▲ +':'▼ '}${d.toFixed(2)}%</span></div>`:''}</div><div class="hxb"><i class="b1" style="width:${Math.min(100,v)}%"></i></div><button class="hwe ${hOpen===x.w?'on':''}" data-hrow="${x.w}">${hOpen===x.w?'Close editor':'Edit W'+x.w+' ✎'}</button>${rsB(x.w)}</div>`};
   $('#s-srp').innerHTML=`${heroX({prev:hw.filter(x=>x.w<W0).map(slide),next:hw.filter(x=>x.w>W0).map(slide).join(''),curW:W0,curX:rsB(W0),curTag:`<div class="hwtag">W${W0} · ${dmy(sCut)}<i class="dr">${gen?'Generated':'Draft'}</i></div>`,dots:(()=>{const vs=allW.map(w=>PV[w]),mn=Math.min(...vs),mx=Math.max(...vs);return allW.map(w=>`<button class="${w===W0?'on':''}" aria-label="W${w}"><i style="height:${(18+(mx>mn?(PV[w]-mn)/(mx-mn):1)*82).toFixed(0)}%"></i></button>`).join('')+`<div class="hwda"><span>W${allW[0]}</span><span>Swipe weeks</span><span>W${allW[allW.length-1]}</span></div>`})(),eye:`Recovery plan · W${W0} · cut-off ${dmy(sCut).slice(0,5)}`,title:'SRP',btn:'<div class="hbtns"><button class="hb" data-sinfo aria-label="How the SRP works">i</button></div>',st:sst,val:act*100,label:`Physical · plan ${p1(pl)}% (${act-pl>=0?'+':'−'}${p1(Math.abs(act-pl))}%) · ${rev}/${SIDS.length} rows reviewed`,chip:svd?{lab:`Saved ${svP.toFixed(1)}% → draft`,v:act*100,d:act*100-svP}:{lab:`vs ${lw?'W'+lw.w:'last SRP'}`,v:act*100,d:(act-last)*100},mark:pl*100})}
   ${hOpen&&SWK[hOpen]?`<div class="blk srpb hwedit"><div class="bh"><h2>Edit W${hOpen}</h2><button class="ix" data-hrow="${hOpen}">×</button></div>${hEdit(SWK[hOpen])}</div>`:''}
-  <div class="wset hpills"><label class="wsb"><span class="wsl">Week · cut-off</span><b>W${W0} · ${new Date(sCut+'T00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} ▾</b><input type="date" id="sCut" value="${sCut}" max="${cutMax()}"></label><button class="wsb" data-smaster><span class="wsl">Master SRP file</span><b>${SM.name?esc(SM.name.slice(0,18)):'Upload ▸'}</b></button></div>
+  <div class="wset hpills"><label class="wsb"><span class="wsl">Week · cut-off</span><b>W${W0} · ${new Date(sCut+'T00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})} ▾</b><input type="date" id="sCut" value="${sCut}" max="${cutMax()}"></label><button class="wsb" data-blopen><span class="wsl">Baselines 🔒</span><b>${SM.name?'SRP '+esc((SM.name.match(/\d{1,2} \w{3} \d{4}/)||[SM.name.slice(0,10)])[0]):'SRP —'} · ${B1?esc((B1.name||'B1').split(' - ').pop()):'P6 —'}</b></button></div>
   ${sInfo?sInfoBox():''}
   ${rptCard()}
   ${(()=>{const P=sPendAll();if(!P.length)return'';const V={};SIDS.forEach(id=>V[id]=sFinal(id).slice());P.forEach(([id,k,v])=>V[id][k]=v);
@@ -1799,7 +1822,7 @@ async function sAcceptAll(){const P=sPendAll(),W0=sWeek(sCut),by={};P.forEach(([
 async function sReset(id){closeSheet();const W0=sWeek(sCut),ok=await soW(id,null);if(SO[id]&&(SO[id].w===W0||!SO[id].w)){delete SO[id];try{db&&await db.doc('srpo/'+id).delete()}catch(e){}}renderSrp();if(!ok)toast('Not reset – check signal')}
 async function sUploadMaster(f){if(!assets){toast('Upload not available');return}try{if(typeof JSZip==='undefined')return toast('Excel tool did not load');toast('Checking workbook…');const c=await sCheckMaster(await f.arrayBuffer());
   if(c.err.length){sDiff={type:'err',head:`“${f.name}” rejected – ${SM.name?`still using ${SM.name}`:'no master active'}`,items:c.err};renderSrp();toast('Wrong workbook – master not changed');return}
-  toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now()};if(db)await db.doc('srpm/master').set(SM);renderSrp();toast('Master SRP saved')}catch(e){toast('Upload failed – master not changed')}}
+  toast('Uploading master…');const r=await assets.upload(f);SM={id:r.id,name:f.name,at:Date.now(),by:me||''};if(db)await db.doc('srpm/master').set(SM);renderSrp();if($('#bl.on'))openBL();toast('Master SRP saved')}catch(e){toast('Upload failed – master not changed')}}
 const sColN=c=>[...c].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0),sXe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sRx=ref=>new RegExp('<c r="'+ref+'"([^>]*?)(/>|>([\\s\\S]*?)</c>)');
 function sPut(x,ref,mk,opt={}){const m=x.match(sRx(ref)),f=a=>mk(a).replace('"__"','"'+ref+'"');
@@ -1873,6 +1896,7 @@ async function boot(){
   db.collection('srpo').onSnapshot(q=>{SO={};q.docs.forEach(d=>SO[d.id]=d.data());if(tab==='srp'&&!$('#sheet').classList.contains('on'))renderSrp()},()=>{});
   db.collection('srpw').onSnapshot(q=>{SE={};q.docs.forEach(d=>{const x=d.data();if(Number.isInteger(x.w))SE[x.w]=x});sMerge();if(tab==='srp'&&hOpen==null&&!$('#sheet').classList.contains('on'))renderSrp()},()=>{});
   db.collection('srpg').onSnapshot(q=>{SG={};q.docs.forEach(d=>{const x=d.data();if(Number.isInteger(x.w))SG[x.w]=x});sMerge();if(tab==='srp'&&hOpen==null&&!$('#sheet').classList.contains('on'))renderSrp()},()=>{});
+  db.doc('srpm/b1').onSnapshot(d=>{if(d.exists&&d.data()?.acts){B1=d.data();for(const k in b1Cache)delete b1Cache[k];rerender()}},()=>{});
   db.doc('srpm/master').onSnapshot(d=>{SM=d.exists?d.data():{};if(tab==='srp')renderSrp()},()=>{});
   db.doc('srpm/cut').onSnapshot(d=>{if(d.exists&&/^\d{4}-\d\d-\d\d$/.test(d.data().date))sCut=d.data().date>cutMax()?cutMax():d.data().date},()=>{});
   db.doc('base/current').onSnapshot(s=>{if(s.exists){const d=s.data();prevBase=d.prev||null;setBase({...d});live()}},()=>{});

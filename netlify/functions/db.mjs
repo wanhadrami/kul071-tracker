@@ -5,7 +5,7 @@ export default async req=>{const r=role(req);if(!r)return deny();const st=getSto
  if(req.method==='GET'){const {blobs}=await st.list();const out={};await Promise.all(blobs.map(async b=>{out[b.key]=await st.get(b.key,{type:'json'})}));return Response.json(out)}
  const path=req.method==='DELETE'?u.searchParams.get('path'):(await req.clone().json()).path;
  if(!path||!/^[A-Za-z0-9_\-.~:@+\/]+$/.test(path))return new Response('bad path',{status:400});
- if(path.startsWith('srpw/')&&createHash('sha256').update(req.headers.get('x-edit')||'').digest('hex')!==EH)return new Response('password',{status:403});
+ if((path.startsWith('srpw/')||path==='srpm/master'||path==='srpm/b1')&&createHash('sha256').update(req.headers.get('x-edit')||'').digest('hex')!==EH)return new Response('password',{status:403});
  if(ADMIN_ONLY.some(p=>path.startsWith(p))&&r!=='admin')return new Response('admin only',{status:403});
  if(req.method==='PUT'){const {data}=await req.json();
   const day=o=>new Date(Date.now()+8*36e5+o*864e5).toISOString().slice(0,10),T=day(1);
